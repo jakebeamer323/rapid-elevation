@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Filament Diameter Variance — Rapid Elevation</title>
+  <meta name="description" content="Log diameter measurements across your filament spool to check consistency and get a flow compensation suggestion for inconsistent filament.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">Rapid <span class="logo-accent">Elevation</span></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="diagnosis.html">Print Diagnosis</a>
+      <a href="models.html">Models</a>
+    </div>
+  </nav>
+
+  <main>
+
+    <div class="page-header">
+      <h1>Filament Diameter Variance</h1>
+      <p>Inconsistent filament diameter causes uneven extrusion, surface rippling, and flow issues no slicer setting can fully compensate for. Enter caliper measurements taken at intervals across your spool to assess quality and get a flow adjustment suggestion.</p>
+    </div>
+
+    <div class="ad-placeholder" style="margin-bottom: 2rem;">
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-size">728 × 90 — Leaderboard</div>
+    </div>
+
+    <div class="diag-form">
+
+      <div class="form-section-label">Setup</div>
+      <div class="settings-grid" style="margin-bottom: 1.5rem;">
+        <div class="field">
+          <label for="nominal">Nominal Diameter</label>
+          <select id="nominal">
+            <option value="1.75">1.75mm (standard)</option>
+            <option value="2.85">2.85mm (3mm)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-section-label">Diameter measurements (mm)</div>
+      <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1rem; line-height: 1.7;">
+        Use digital calipers. Measure at 5–10 points spread across the spool — take each reading 10–20cm apart and rotate 90° between measurements to catch oval cross-sections. Enter at least 3 measurements.
+      </p>
+
+      <div class="meas-list" id="measList"></div>
+      <button class="add-meas-btn" id="addBtn">+ Add measurement</button>
+
+      <hr class="form-divider">
+      <button class="btn" id="calcBtn">Analyze Variance</button>
+
+    </div>
+
+    <!-- Result -->
+    <div class="result-wrap" id="resultWrap">
+      <div class="result-sublabel">Filament Quality</div>
+      <div class="result-value-row" style="align-items: center;">
+        <span class="result-big-value" id="meanVal">—</span>
+        <span class="result-big-unit">mm mean</span>
+        <span class="grade-badge" id="gradeBadge"></span>
+      </div>
+      <div class="result-delta" id="resultDelta"></div>
+      <div class="result-explanation" id="resultExplanation"></div>
+      <div class="result-stats-grid" id="statsGrid"></div>
+      <div class="result-secondary" id="resultSecondary"></div>
+      <div class="result-warning" id="resultWarning" style="display:none;"></div>
+    </div>
+
+    <div class="ad-placeholder" style="margin-bottom: 3rem;">
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-size">300 × 250 — Medium Rectangle</div>
+    </div>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Rapid Elevation &mdash; Built by <a href="https://jakebeamer323.github.io/my-site" target="_blank">Jake Lewien</a></p>
+  </footer>
+
+  <script>
+    const measList = document.getElementById('measList');
+    let count = 0;
+
+    function addRow(defaultVal) {
+      count++;
+      const row = document.createElement('div');
+      row.className = 'meas-row';
+      row.dataset.id = count;
+      row.innerHTML = `
+        <span class="meas-num">${count}</span>
+        <input type="number" placeholder="e.g. 1.74" step="0.001" min="0.5" max="5" value="${defaultVal || ''}">
+        <button class="meas-remove" title="Remove">×</button>`;
+      row.querySelector('.meas-remove').addEventListener('click', () => {
+        row.remove();
+        renumber();
+      });
+      measList.appendChild(row);
+    }
+
+    function renumber() {
+      measList.querySelectorAll('.meas-row').forEach((r, i) => {
+        r.querySelector('.meas-num').textContent = i + 1;
+      });
+    }
+
+    // Start with 5 empty rows
+    for (let i = 0; i < 5; i++) addRow();
+
+    document.getElementById('addBtn').addEventListener('click', () => addRow());
+
+    document.getElementById('calcBtn').addEventListener('click', () => {
+      const nominal = parseFloat(document.getElementById('nominal').value);
+      const inputs = [...measList.querySelectorAll('input')];
+      const vals = inputs.map(i => parseFloat(i.value)).filter(v => !isNaN(v) && v > 0);
+
+      if (vals.length < 3) { alert('Please enter at least 3 measurements.'); return; }
+
+      const n = vals.length;
+      const mean = vals.reduce((a, b) => a + b, 0) / n;
+      const variance = vals.reduce((sum, v) => sum + (v - mean) ** 2, 0) / n;
+      const stdDev = Math.sqrt(variance);
+      const min = Math.min(...vals);
+      const max = Math.max(...vals);
+      const range = max - min;
+
+      // Flow compensation: area-based
+      // actual_area / nominal_area = (mean/nominal)^2
+      // To correct, multiply flow by nominal^2 / mean^2
+      const flowMultiplier = (nominal / mean) ** 2 * 100;
+      const flowDelta = flowMultiplier - 100;
+
+      // Grade
+      let grade, gradeClass, gradeDesc;
+      if (stdDev < 0.02) {
+        grade = 'Excellent'; gradeClass = 'grade-excellent';
+        gradeDesc = 'Premium filament quality. Diameter is highly consistent — no flow compensation needed beyond mean correction.';
+      } else if (stdDev < 0.05) {
+        grade = 'Good'; gradeClass = 'grade-good';
+        gradeDesc = 'Standard quality. Minor variance is normal and manageable with flow rate tuning.';
+      } else if (stdDev < 0.10) {
+        grade = 'Fair'; gradeClass = 'grade-fair';
+        gradeDesc = 'Noticeable variance. You may see surface inconsistencies or slight over/under-extrusion zones. Flow compensation will help but won\'t fully solve it.';
+      } else {
+        grade = 'Poor'; gradeClass = 'grade-poor';
+        gradeDesc = 'High variance — this filament will cause visible print quality issues. Consider replacing the spool for critical prints.';
+      }
+
+      document.getElementById('meanVal').textContent = mean.toFixed(3);
+      const badge = document.getElementById('gradeBadge');
+      badge.textContent = grade;
+      badge.className = `grade-badge ${gradeClass}`;
+
+      const delta = document.getElementById('resultDelta');
+      const meanDiff = mean - nominal;
+      if (Math.abs(meanDiff) < 0.005) {
+        delta.className = 'result-delta neutral';
+        delta.textContent = `Mean diameter is within 0.005mm of nominal (${nominal}mm) — no flow correction needed.`;
+      } else {
+        delta.className = 'result-delta adjusted';
+        const dir = meanDiff < 0 ? 'under' : 'over';
+        delta.textContent = `Mean is ${Math.abs(meanDiff).toFixed(3)}mm ${dir} nominal — set flow to ${flowMultiplier.toFixed(1)}% to compensate.`;
+      }
+
+      document.getElementById('resultExplanation').textContent = gradeDesc;
+
+      document.getElementById('statsGrid').innerHTML = `
+        <div class="result-stat"><span class="result-stat-label">Mean</span><span class="result-stat-value">${mean.toFixed(3)}mm</span></div>
+        <div class="result-stat"><span class="result-stat-label">Std Deviation</span><span class="result-stat-value">${stdDev.toFixed(4)}mm</span></div>
+        <div class="result-stat"><span class="result-stat-label">Min</span><span class="result-stat-value">${min.toFixed(3)}mm</span></div>
+        <div class="result-stat"><span class="result-stat-label">Max</span><span class="result-stat-value">${max.toFixed(3)}mm</span></div>
+        <div class="result-stat"><span class="result-stat-label">Range</span><span class="result-stat-value">${range.toFixed(3)}mm</span></div>
+        <div class="result-stat"><span class="result-stat-label">Measurements</span><span class="result-stat-value">${n}</span></div>`;
+
+      let secondary = `<strong>Flow compensation:</strong> Set your slicer flow rate (extrusion multiplier) to <strong>${flowMultiplier.toFixed(1)}%</strong>. `;
+      secondary += `This corrects for the mean diameter difference — it won't fix variance-related inconsistency, only the average offset. `;
+      secondary += `<br><br><strong>How to apply:</strong> In PrusaSlicer/OrcaSlicer, set "Extrusion multiplier" to ${(flowMultiplier / 100).toFixed(3)}. In Cura, set "Flow" to ${flowMultiplier.toFixed(1)}%. `;
+      if (stdDev >= 0.05) {
+        secondary += `<br><br><strong>High variance note:</strong> With std dev of ${stdDev.toFixed(4)}mm, flow compensation only helps on average — sections with wide diameter will over-extrude and narrow sections will under-extrude regardless of your setting.`;
+      }
+      document.getElementById('resultSecondary').innerHTML = secondary;
+
+      const warn = document.getElementById('resultWarning');
+      if (grade === 'Poor') {
+        warn.textContent = `Std dev of ${stdDev.toFixed(3)}mm is beyond what flow compensation can fix. For quality prints, replace this spool or use it only for drafts and non-critical parts.`;
+        warn.style.display = 'block';
+      } else if (range > 0.2) {
+        warn.textContent = `Range of ${range.toFixed(3)}mm (${min.toFixed(3)}mm – ${max.toFixed(3)}mm) is very wide. Check for one or two outlier measurements — re-measure those points and re-run the analysis.`;
+        warn.style.display = 'block';
+      } else {
+        warn.style.display = 'none';
+      }
+
+      const rw = document.getElementById('resultWrap');
+      rw.style.display = 'block';
+      rw.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+  </script>
+
+</body>
+</html>

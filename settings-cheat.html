@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings Cheat Sheet — Rapid Elevation</title>
+  <meta name="description" content="Recommended nozzle temperature, bed temperature, print speed, retraction, and cooling settings for PLA, PETG, ABS, ASA, TPU, Nylon, and PC.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">Rapid <span class="logo-accent">Elevation</span></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="diagnosis.html">Print Diagnosis</a>
+      <a href="models.html">Models</a>
+    </div>
+  </nav>
+
+  <main>
+
+    <div class="page-header">
+      <h1>Settings Cheat Sheet</h1>
+      <p>Quick-reference starting points for the most common filament materials. These are tuned ranges — your ideal settings may vary by brand and printer. Use these as a baseline and dial in from there.</p>
+    </div>
+
+    <div class="ad-placeholder" style="margin-bottom: 2rem;">
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-size">728 × 90 — Leaderboard</div>
+    </div>
+
+    <!-- Material tabs -->
+    <div class="mat-tabs" id="matTabs">
+      <button class="mat-tab active" data-mat="pla">PLA</button>
+      <button class="mat-tab" data-mat="petg">PETG</button>
+      <button class="mat-tab" data-mat="abs">ABS</button>
+      <button class="mat-tab" data-mat="asa">ASA</button>
+      <button class="mat-tab" data-mat="tpu">TPU</button>
+      <button class="mat-tab" data-mat="nylon">Nylon</button>
+      <button class="mat-tab" data-mat="pc">PC</button>
+    </div>
+
+    <!-- PLA -->
+    <div class="cheat-panel active" id="panel-pla">
+      <div class="cheat-row"><span class="cheat-label">Nozzle Temp</span><span class="cheat-value"><strong>190–220°C</strong> — typical sweet spot 200–215°C. Go lower to reduce stringing; higher for better layer adhesion on fast prints.</span></div>
+      <div class="cheat-row"><span class="cheat-label">Bed Temp</span><span class="cheat-value"><strong>50–65°C</strong> — or unheated on textured PEI. Higher bed temps improve first-layer adhesion on smooth surfaces.</span></div>
+      <div class="cheat-row"><span class="cheat-label">Print Speed</span><span class="cheat-value"><strong>40–80 mm/s</strong> — PLA is forgiving at speed. First layer: 20–25 mm/s.</span></div>
+      <div class="cheat-row"><span class="cheat-label">Retraction — Direct</span><span class="cheat-value"><strong>0.5–1.5mm</strong> at <strong>35–45 mm/s</strong>. Start at 0.8mm and adjust.</span></div>
+      <div class="cheat-row"><span class="cheat-label">Retraction — Bowden</span><span class="cheat-value"><strong>3–6mm</strong> at <strong>40–60 mm/s</strong>. Longer tube = more retraction needed.</span></div>
+      <div class="cheat-row"><span class="cheat-label">Cooling Fan</span><span class="cheat-value"><strong>100%</strong> — PLA needs maximum cooling for clean overhangs and bridges.</span></div>
+      <div class="cheat-row"><span class="cheat-label">Enclosure</span><span class="cheat-value"><strong>Not recommended</strong> — heat buildup can cause heat creep and warping on PLA. Print open or with enclosure vented.</span></div>
+      <div class="cheat-row"><span class="cheat-label">Bed Surface</span><span class="cheat-value">Textured PEI, smooth PEI, glass + hairspray, BuildTak. PLA sticks well to most surfaces.</span></div>
+      <div class="cheat-row"><span class="cheat-label">Nozzle</span><span class="cheat-value">Brass is ideal. PLA is non-abrasive and prints well below 270°C.</span></div>
+      <div class="cheat-note">PLA is the most beginner-friendly material. It's brittle under impact and softens around 60°C — not suitable for high-heat or outdoor use. Store sealed with desiccant; wet PLA shows rough surfaces and reduced bridge quality.</div>
+    </div>
+
+    <!-- PETG -->
+    <div class="cheat-panel" id="panel-petg">
+      <div class="cheat-row"><span class="cheat-label">Nozzle Temp</span><span class="cheat-value"><strong>225–250°C</strong> — typical sweet spot 235–245°C. PETG strings heavily if temp is too high.</span></div>
+      <div class="cheat-row"><span class="cheat-label">Bed Temp</span><span class="cheat-value"><strong>70–85°C</strong> — PETG bonds very aggressively to some surfaces. Use a release agent on PEI.</span></div>
+      <div class="cheat-row"><span class="cheat-label">Print Speed</span><span class="cheat-value"><strong>30–60 mm/s</strong> — slower than PLA to control stringing. First layer: 20 mm/s.</span></div>
+      <div class="cheat-row"><span class="cheat-label">Retraction — Direct</span><span class="cheat-value"><strong>0.5–1.5mm</strong> at <strong>25–35 mm/s</strong>. Lower speed than PLA to avoid grinding.</span></div>
+      <div class="cheat-row"><span class="cheat-label">Retraction — Bowden</span><span class="cheat-value"><strong>3–6mm</strong> at <strong>40–55 mm/s</strong>.</span></div>
+      <div class="cheat-row"><span class="cheat-label">Cooling Fan</span><span class="cheat-value"><strong>30–60%</strong> — too much cooling hurts layer adhesion. Avoid 100% fan.</span></div>
+      <div class="cheat-row"><span class="cheat-label">Enclosure</span><span class="cheat-value"><strong>Optional</strong> — helps with tall prints but not required. PETG doesn't warp like ABS.</span></div>
+      <div class="cheat-row"><span class="cheat-label">Bed Surface</span><span class="cheat-value">Glass + hairspray/glue stick, PEI with release agent (glue stick or Magigoo). Can permanently bond to bare PEI — add release!</span></div>
+      <div class="cheat-row"><span class="cheat-label">Nozzle</span><span class="cheat-value">Brass is fine. PETG is non-abrasive.</span></div>
+      <div class="cheat-note">PETG is strong, flexible, and chemical-resistant. Highly hygroscopic — dry your spool before printing if stored loosely, or expect heavy stringing and surface bubbles. Not as hard as PLA but far tougher under impact.</div>
+    </div>
+
+    <!-- ABS -->
+    <div class="cheat-panel" id="panel-abs">
+      <div class="cheat-row"><span class="cheat-label">Nozzle Temp</span><span class="cheat-value"><strong>230–255°C</strong> — typical sweet spot 240–250°C.</span></div>
+      <div class="cheat-row"><span class="cheat-label">Bed Temp</span><span class="cheat-value"><strong>100–115°C</strong> — consistent bed heat is critical. Use a PEI sheet with high temps.</span></div>
+      <div class="cheat-row"><span class="cheat-label">Print Speed</span><span class="cheat-value"><strong>40–60 mm/s</strong> — slower speeds reduce thermal stress and cracking.</span></div>
+      <div class="cheat-row"><span class="cheat-label">Retraction — Direct</span><span class="cheat-value"><strong>1–2mm</strong> at <strong>35–45 mm/s</strong>.</span></div>
+      <div class="cheat-row"><span class="cheat-label">Retraction — Bowden</span><span class="cheat-value"><strong>4–7mm</strong> at <strong>45–60 mm/s</strong>.</span></div>
+      <div class="cheat-row"><span class="cheat-label">Cooling Fan</span><span class="cheat-value"><strong>0–20%</strong> — minimal or no fan. Thermal gradients cause layer cracking and warping.</span></div>
+      <div class="cheat-row"><span class="cheat-label">Enclosure</span><span class="cheat-value"><strong>Required</strong> — ABS warps severely in open air. Chamber temp of 40–50°C is ideal.</span></div>
+      <div class="cheat-row"><span class="cheat-label">Bed Surface</span><span class="cheat-value">Garolite (G10), ABS slurry on glass, PEI at high bed temp, Kapton tape.</span></div>
+      <div class="cheat-row"><span class="cheat-label">Nozzle</span><span class="cheat-value">Brass is fine for unfilled ABS. Hardened steel for filled ABS variants.</span></div>
+      <div class="cheat-note">ABS emits styrene fumes — always use ventilation or an enclosure with filtration. Heat-resistant to ~100°C and sandable/acetone-smoothable. Challenging to print reliably; consider ASA as a more printable UV-resistant alternative.</div>
+    </div>
+
+    <!-- ASA -->
+    <div class="cheat-panel" id="panel-asa">
+      <div class="cheat-row"><span class="cheat-label">Nozzle Temp</span><span class="cheat-value"><strong>240–265°C</strong> — typical sweet spot 250–260°C.</span></div>
+      <div class="cheat-row"><span class="cheat-label">Bed Temp</span><span class="cheat-value"><strong>90–110°C</strong> — slightly lower than ABS but still needs consistent heat.</span></div>
+      <div class="cheat-row"><span class="cheat-label">Print Speed</span><span class="cheat-value"><strong>40–60 mm/s</strong>.</span></div>
+      <div class="cheat-row"><span class="cheat-label">Retraction — Direct</span><span class="cheat-value"><strong>1–2mm</strong> at <strong>35–45 mm/s</strong>.</span></div>
+      <div class="cheat-row"><span class="cheat-label">Retraction — Bowden</span><span class="cheat-value"><strong>4–7mm</strong> at <strong>45–60 mm/s</strong>.</span></div>
+      <div class="cheat-row"><span class="cheat-label">Cooling Fan</span><span class="cheat-value"><strong>0–20%</strong> — same as ABS. Minimal fan to prevent warping and cracking.</span></div>
+      <div class="cheat-row"><span class="cheat-label">Enclosure</span><span class="cheat-value"><strong>Required</strong> — same warping behavior as ABS.</span></div>
+      <div class="cheat-row"><span class="cheat-label">Bed Surface</span><span class="cheat-value">Same as ABS — Garolite, PEI, ABS/ASA slurry on glass.</span></div>
+      <div class="cheat-row"><span class="cheat-label">Nozzle</span><span class="cheat-value">Brass is fine for unfilled ASA.</span></div>
+      <div class="cheat-note">ASA is ABS with UV resistance — the go-to material for outdoor functional parts. Slightly less prone to warping than ABS in practice. Also emits fumes; ventilate appropriately. Excellent for enclosures, brackets, and outdoor fixtures.</div>
+    </div>
+
+    <!-- TPU -->
+    <div class="cheat-panel" id="panel-tpu">
+      <div class="cheat-row"><span class="cheat-label">Nozzle Temp</span><span class="cheat-value"><strong>220–240°C</strong> — typical 225–235°C for Shore 95A. Softer TPU (85A) may need lower temps.</span></div>
+      <div class="cheat-row"><span class="cheat-label">Bed Temp</span><span class="cheat-value"><strong>30–60°C</strong> — often printable without bed heat. 40–50°C improves first-layer adhesion.</span></div>
+      <div class="cheat-row"><span class="cheat-label">Print Speed</span><span class="cheat-value"><strong>15–30 mm/s</strong> — TPU must print slowly. The material stretches instead of buckling under pressure; speed causes blobs and jams.</span></div>
+      <div class="cheat-row"><span class="cheat-label">Retraction — Direct</span><span class="cheat-value"><strong>0–0.5mm</strong> at <strong>25–35 mm/s</strong>. Use minimal retraction — TPU stretches and snaps back, causing blobs.</span></div>
+      <div class="cheat-row"><span class="cheat-label">Retraction — Bowden</span><span class="cheat-value"><strong>Not recommended.</strong> TPU is extremely difficult to print via Bowden. Use direct drive if at all possible.</span></div>
+      <div class="cheat-row"><span class="cheat-label">Cooling Fan</span><span class="cheat-value"><strong>50–100%</strong> — good cooling helps TPU hold its shape and prevents blobs.</span></div>
+      <div class="cheat-row"><span class="cheat-label">Enclosure</span><span class="cheat-value"><strong>Not needed</strong> — TPU doesn't warp.</span></div>
+      <div class="cheat-row"><span class="cheat-label">Bed Surface</span><span class="cheat-value">PEI (textured or smooth), glass, most smooth surfaces. TPU sticks well but releases cleanly after cooling.</span></div>
+      <div class="cheat-row"><span class="cheat-label">Nozzle</span><span class="cheat-value">Brass is fine. TPU is non-abrasive.</span></div>
+      <div class="cheat-note">TPU requires direct drive — Bowden setups cause the filament to buckle in the tube. Stiffer TPU (95A) is more manageable; softer grades (85A, 75A) require more patience. Dry your filament — wet TPU strings severely. Never use high retraction.</div>
+    </div>
+
+    <!-- Nylon -->
+    <div class="cheat-panel" id="panel-nylon">
+      <div class="cheat-row"><span class="cheat-label">Nozzle Temp</span><span class="cheat-value"><strong>240–265°C</strong> — PA6 typically 250–260°C; PA12 can be lower at 240–250°C.</span></div>
+      <div class="cheat-row"><span class="cheat-label">Bed Temp</span><span class="cheat-value"><strong>70–90°C</strong> — some PA6 variants need 100°C+. Garolite holds much better than PEI.</span></div>
+      <div class="cheat-row"><span class="cheat-label">Print Speed</span><span class="cheat-value"><strong>30–60 mm/s</strong> — moderate speeds for good layer bonding.</span></div>
+      <div class="cheat-row"><span class="cheat-label">Retraction — Direct</span><span class="cheat-value"><strong>1–2mm</strong> at <strong>30–45 mm/s</strong>.</span></div>
+      <div class="cheat-row"><span class="cheat-label">Retraction — Bowden</span><span class="cheat-value"><strong>4–7mm</strong> at <strong>45–60 mm/s</strong>.</span></div>
+      <div class="cheat-row"><span class="cheat-label">Cooling Fan</span><span class="cheat-value"><strong>20–40%</strong> — some cooling helps bridging without causing delamination.</span></div>
+      <div class="cheat-row"><span class="cheat-label">Enclosure</span><span class="cheat-value"><strong>Recommended</strong> — reduces warping, especially on large flat parts.</span></div>
+      <div class="cheat-row"><span class="cheat-label">Bed Surface</span><span class="cheat-value">Garolite (G10) is the gold standard for Nylon. PVA glue on glass also works. Nylon won't stick to bare PEI reliably.</span></div>
+      <div class="cheat-row"><span class="cheat-label">Nozzle</span><span class="cheat-value">Hardened steel recommended — Nylon becomes mildly abrasive at high temps and can wear brass over time.</span></div>
+      <div class="cheat-note">Nylon is extremely hygroscopic — even a few hours of open-air exposure makes it unprintable. Always dry to &lt;10% humidity before printing and print directly from a dry box. Rewarded with excellent toughness, flexibility, and chemical resistance.</div>
+    </div>
+
+    <!-- PC -->
+    <div class="cheat-panel" id="panel-pc">
+      <div class="cheat-row"><span class="cheat-label">Nozzle Temp</span><span class="cheat-value"><strong>270–310°C</strong> — most PC prints well at 285–300°C. Requires all-metal hotend.</span></div>
+      <div class="cheat-row"><span class="cheat-label">Bed Temp</span><span class="cheat-value"><strong>110–120°C</strong> — high and consistent. Use an enclosure to maintain ambient temp.</span></div>
+      <div class="cheat-row"><span class="cheat-label">Print Speed</span><span class="cheat-value"><strong>30–50 mm/s</strong> — slow for reliable layer bonding. PC is unforgiving at high speeds.</span></div>
+      <div class="cheat-row"><span class="cheat-label">Retraction — Direct</span><span class="cheat-value"><strong>1–2mm</strong> at <strong>30–40 mm/s</strong>.</span></div>
+      <div class="cheat-row"><span class="cheat-label">Retraction — Bowden</span><span class="cheat-value"><strong>Not recommended</strong> — the high temps required degrade PTFE liners; all-metal hotend + direct drive strongly preferred.</span></div>
+      <div class="cheat-row"><span class="cheat-label">Cooling Fan</span><span class="cheat-value"><strong>0–20%</strong> — avoid cooling. PC bonds best when layers cool slowly together.</span></div>
+      <div class="cheat-row"><span class="cheat-label">Enclosure</span><span class="cheat-value"><strong>Required</strong> — PC warps severely in open air. Chamber temps of 50–70°C significantly improve success rate.</span></div>
+      <div class="cheat-row"><span class="cheat-label">Bed Surface</span><span class="cheat-value">Garolite, polycarbonate sheet, Kapton tape. PC will bond very strongly — a release agent helps.</span></div>
+      <div class="cheat-row"><span class="cheat-label">Nozzle</span><span class="cheat-value">Hardened steel — temperatures above 270°C accelerate brass wear significantly.</span></div>
+      <div class="cheat-note">Polycarbonate is extremely strong, impact-resistant, and heat-tolerant to ~130°C. It's one of the hardest materials to print reliably — enclosure, all-metal hotend, and dry filament are non-negotiable. Very hygroscopic; store and dry aggressively.</div>
+    </div>
+
+    <div style="height: 3rem;"></div>
+
+    <div class="ad-placeholder" style="margin-bottom: 3rem;">
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-size">300 × 250 — Medium Rectangle</div>
+    </div>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Rapid Elevation &mdash; Built by <a href="https://jakebeamer323.github.io/my-site" target="_blank">Jake Lewien</a></p>
+  </footer>
+
+  <script>
+    document.getElementById('matTabs').addEventListener('click', e => {
+      const tab = e.target.closest('.mat-tab');
+      if (!tab) return;
+      document.querySelectorAll('.mat-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.cheat-panel').forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('panel-' + tab.dataset.mat).classList.add('active');
+    });
+  </script>
+
+</body>
+</html>

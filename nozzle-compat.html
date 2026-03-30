@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nozzle & Hotend Compatibility — Rapid Elevation</title>
+  <meta name="description" content="Check which nozzle material you need for your filament. See abrasion resistance, max temp, and recommendations for filled and abrasive filaments.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">Rapid <span class="logo-accent">Elevation</span></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="diagnosis.html">Print Diagnosis</a>
+      <a href="models.html">Models</a>
+    </div>
+  </nav>
+
+  <main>
+
+    <div class="page-header">
+      <h1>Nozzle &amp; Hotend Compatibility</h1>
+      <p>Using the wrong nozzle with abrasive filaments destroys the bore over time, causing under-extrusion and dimensional inaccuracy. Select your filament type to see what you need — and why.</p>
+    </div>
+
+    <div class="ad-placeholder" style="margin-bottom: 2rem;">
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-size">728 × 90 — Leaderboard</div>
+    </div>
+
+    <!-- Lookup -->
+    <div class="diag-form" style="margin-bottom: 2rem;">
+      <div class="form-section-label">What are you printing?</div>
+      <div class="field" style="margin-bottom: 1.5rem; max-width: 480px;">
+        <label for="filamentType">Filament Type</label>
+        <select id="filamentType">
+          <option value="">— Select your filament —</option>
+          <option value="standard">Standard — PLA, PETG, ABS, ASA, TPU</option>
+          <option value="cf">Carbon Fiber Filled</option>
+          <option value="gf">Glass Fiber Filled</option>
+          <option value="metal">Metal Filled (copper, bronze, steel)</option>
+          <option value="wood">Wood / Cork / Ceramic Filled</option>
+          <option value="gid">Glow-in-Dark / Glitter</option>
+          <option value="hightemp">High-Temp — Nylon, PC, PEEK</option>
+        </select>
+      </div>
+      <div id="nozzleResult" style="display:none;">
+        <hr class="form-divider">
+        <div class="rec-grid" style="margin-top: 1rem;" id="nozzleCards"></div>
+        <div class="result-warning" id="nozzleWarning" style="display:none; margin-top: 0.5rem;"></div>
+      </div>
+    </div>
+
+    <!-- Reference table -->
+    <div class="section" style="padding-top: 2rem;">
+      <div class="tool-category-label" style="margin-top: 0;">Nozzle Material Reference</div>
+      <div class="calc-table-wrap">
+        <table class="calc-table">
+          <thead>
+            <tr>
+              <th>Nozzle Material</th>
+              <th>Max Temp</th>
+              <th>Abrasion Resistance</th>
+              <th>Thermal Conductivity</th>
+              <th>Best For</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="layer-val">Brass</td>
+              <td>~300°C</td>
+              <td style="color: var(--sev-red);">Low</td>
+              <td style="color: var(--sev-green);">★★★★★</td>
+              <td>PLA, PETG, ABS, ASA, TPU — any non-abrasive filament</td>
+            </tr>
+            <tr>
+              <td class="layer-val">Hardened Steel</td>
+              <td>&gt;500°C</td>
+              <td style="color: var(--sev-green);">High</td>
+              <td style="color: var(--sev-yellow);">★★★</td>
+              <td>All filaments including CF, GF, metal fills, high-temp</td>
+            </tr>
+            <tr>
+              <td class="layer-val">Stainless Steel</td>
+              <td>&gt;500°C</td>
+              <td style="color: var(--sev-yellow);">Medium</td>
+              <td style="color: var(--sev-red);">★★</td>
+              <td>Food-safe applications, corrosive or reactive filaments</td>
+            </tr>
+            <tr>
+              <td class="layer-val">Plated Copper</td>
+              <td>~300°C</td>
+              <td style="color: var(--sev-red);">Low</td>
+              <td style="color: var(--sev-green);">★★★★★</td>
+              <td>High-speed printing with standard filaments — superior heat transfer</td>
+            </tr>
+            <tr>
+              <td class="layer-val">Ruby / Sapphire</td>
+              <td>&gt;500°C</td>
+              <td style="color: var(--sev-green);">★★★★★</td>
+              <td style="color: var(--sev-red);">★★</td>
+              <td>Any filament, maximum longevity — premium cost</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="tool-category-label">Hotend Notes</div>
+      <div style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.8;">
+        <p style="margin-bottom: 0.75rem;"><strong style="color: var(--text);">PTFE-lined hotends (e.g. Creality stock)</strong> — the PTFE tube runs all the way to the nozzle. This limits safe printing to ~240°C. Above that, PTFE degrades and releases fumes. Suitable for PLA, PETG, and standard ABS only.</p>
+        <p style="margin-bottom: 0.75rem;"><strong style="color: var(--text);">All-metal hotends (e.g. E3D V6, Dragon, Rapido)</strong> — no PTFE in the heat zone. Required for Nylon, PC, PEEK, and any high-temp material. Some flexible filaments (TPU) can be trickier without PTFE guide.</p>
+        <p><strong style="color: var(--text);">Nozzle size and particle fills</strong> — filled filaments (CF, GF, wood, metal) contain particles that can clog a 0.4mm nozzle. Consider a 0.5mm or 0.6mm nozzle to reduce clog risk, at the cost of some detail.</p>
+      </div>
+    </div>
+
+    <div class="ad-placeholder" style="margin: 2rem 0 3rem;">
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-size">300 × 250 — Medium Rectangle</div>
+    </div>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Rapid Elevation &mdash; Built by <a href="https://jakebeamer323.github.io/my-site" target="_blank">Jake Lewien</a></p>
+  </footer>
+
+  <script>
+    const FILAMENT_DATA = {
+      standard: {
+        nozzle: 'Brass',
+        alt: 'Any nozzle material',
+        why: 'Standard filaments are non-abrasive and print below 270°C. Brass provides the best thermal conductivity for consistent extrusion and is by far the most cost-effective option.',
+        hotend: 'PTFE-lined or all-metal both work for standard filaments at these temperatures.',
+        warning: null,
+      },
+      cf: {
+        nozzle: 'Hardened Steel',
+        alt: 'Ruby/Sapphire tip for longevity',
+        why: 'Carbon fiber particles are extremely abrasive. A brass nozzle typically wears out within 1–2 spools — you\'ll notice under-extrusion and dimensional inaccuracy as the bore widens. Hardened steel is the minimum; ruby tip for frequent use.',
+        hotend: 'PTFE-lined hotends work for CF-PLA and CF-PETG. CF-Nylon and CF-PC require all-metal.',
+        warning: 'Will destroy brass nozzles within 1–2 spools. Hardened steel is non-negotiable.',
+      },
+      gf: {
+        nozzle: 'Hardened Steel',
+        alt: 'Ruby/Sapphire tip for longevity',
+        why: 'Glass fiber is similarly abrasive to carbon fiber and will wear brass nozzles rapidly. Hardened steel required as a minimum.',
+        hotend: 'Depends on the base material — PETG-GF works with PTFE-lined; PA-GF or PC-GF requires all-metal.',
+        warning: 'Highly abrasive — hardened steel minimum.',
+      },
+      metal: {
+        nozzle: 'Hardened Steel',
+        alt: 'Ruby/Sapphire tip for maximum life',
+        why: 'Metal-filled filaments (copper, bronze, iron) are the most abrasive category. Even hardened steel shows measurable wear over several spools. A ruby or sapphire tip is the best long-term investment if you print metal fills regularly.',
+        hotend: 'Most metal fills are PLA-based — PTFE-lined hotend works. Check your filament\'s base material.',
+        warning: 'Most abrasive filament type — brass wears within one spool. Consider ruby tip for regular use.',
+      },
+      wood: {
+        nozzle: 'Hardened Steel (recommended)',
+        alt: 'Brass short-term, but wears faster',
+        why: 'Wood, cork, and ceramic fills are mildly abrasive. Brass can handle them but wears noticeably faster than normal. Hardened steel recommended for more than occasional use.',
+        hotend: 'Wood fills are usually PLA-based — standard hotend works fine.',
+        warning: 'Use a 0.5mm+ nozzle to prevent particle clogs — wood fiber particles are larger than typical pigments.',
+      },
+      gid: {
+        nozzle: 'Hardened Steel (recommended)',
+        alt: 'Brass for occasional use',
+        why: 'Glow-in-dark filament uses strontium aluminate as the phosphorescent pigment — this is mildly abrasive. Glitter particles add more abrasion. Brass lasts shorter than normal; hardened steel recommended for regular use.',
+        hotend: 'Standard hotend works — GID and glitter are typically PLA or PETG-based.',
+        warning: null,
+      },
+      hightemp: {
+        nozzle: 'Hardened Steel',
+        alt: 'Ruby/Sapphire for PEEK',
+        why: 'High-temp materials require temperatures above 260°C where brass softens slightly and PTFE degrades. Hardened steel handles the heat and any mild abrasion from these materials.',
+        hotend: 'All-metal hotend is required — no PTFE in the heat zone above 240°C. PEEK requires 400°C+ capable hotend (e.g. Slice Mosquito, Phaetus Rapido HF).',
+        warning: 'All-metal hotend required — PTFE liners are not safe above 240°C.',
+      },
+    };
+
+    document.getElementById('filamentType').addEventListener('change', function () {
+      const val = this.value;
+      const result = document.getElementById('nozzleResult');
+      if (!val) { result.style.display = 'none'; return; }
+
+      const d = FILAMENT_DATA[val];
+
+      document.getElementById('nozzleCards').innerHTML = `
+        <div class="rec-card">
+          <div class="rec-card-label">Recommended Nozzle</div>
+          <div class="rec-card-value">${d.nozzle}</div>
+          <div class="rec-card-sub">${d.alt}</div>
+          <div class="rec-card-why">${d.why}</div>
+        </div>
+        <div class="rec-card">
+          <div class="rec-card-label">Hotend Requirements</div>
+          <div class="rec-card-value" style="font-size: 1rem; line-height: 1.4;">${d.hotend.split('—')[0].trim()}</div>
+          <div class="rec-card-why">${d.hotend}</div>
+        </div>
+      `;
+
+      const warn = document.getElementById('nozzleWarning');
+      if (d.warning) {
+        warn.textContent = d.warning;
+        warn.style.display = 'block';
+      } else {
+        warn.style.display = 'none';
+      }
+
+      result.style.display = 'block';
+    });
+  </script>
+
+</body>
+</html>

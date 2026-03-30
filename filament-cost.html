@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Filament Cost Calculator — Rapid Elevation</title>
+  <meta name="description" content="Calculate exactly how much each 3D print costs based on your spool price, spool weight, and estimated print usage.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">Rapid <span class="logo-accent">Elevation</span></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="diagnosis.html">Print Diagnosis</a>
+      <a href="models.html">Models</a>
+    </div>
+  </nav>
+
+  <main>
+
+    <div class="page-header">
+      <h1>Filament Cost Calculator</h1>
+      <p>Enter your spool price, spool weight, and how much filament your print uses. Get the exact cost per print — plus cost per gram and per meter for future estimates.</p>
+    </div>
+
+    <div class="ad-placeholder" style="margin-bottom: 2rem;">
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-size">728 × 90 — Leaderboard</div>
+    </div>
+
+    <div class="diag-form">
+
+      <div class="form-section-label">Spool details</div>
+      <div class="settings-grid" style="margin-bottom: 1.5rem;">
+        <div class="field">
+          <label for="spoolPrice">Spool Price ($)</label>
+          <input type="number" id="spoolPrice" placeholder="e.g. 22.99" step="0.01" min="0">
+        </div>
+        <div class="field">
+          <label for="spoolWeight">Spool Net Weight (g)</label>
+          <input type="number" id="spoolWeight" placeholder="e.g. 1000" step="1" min="1" value="1000">
+          <span class="field-hint">Filament only — not including the spool itself</span>
+        </div>
+        <div class="field">
+          <label for="diameter">Filament Diameter</label>
+          <select id="diameter">
+            <option value="1.75">1.75mm (standard)</option>
+            <option value="2.85">2.85mm (3mm)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="material">Material (for cost/meter)</label>
+          <select id="material">
+            <option value="">— Optional —</option>
+            <option value="1.24">PLA (1.24 g/cm³)</option>
+            <option value="1.27">PETG (1.27 g/cm³)</option>
+            <option value="1.04">ABS (1.04 g/cm³)</option>
+            <option value="1.07">ASA (1.07 g/cm³)</option>
+            <option value="1.21">TPU (1.21 g/cm³)</option>
+            <option value="1.13">Nylon (1.13 g/cm³)</option>
+            <option value="1.20">PC (1.20 g/cm³)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-section-label">Print usage</div>
+      <div class="settings-grid" style="margin-bottom: 1rem;">
+        <div class="field">
+          <label for="printWeight">Print Weight (g)</label>
+          <input type="number" id="printWeight" placeholder="e.g. 47" step="0.1" min="0">
+          <span class="field-hint">Reported by your slicer in the print summary</span>
+        </div>
+        <div class="field">
+          <label for="printLength">Print Length (m) — optional</label>
+          <input type="number" id="printLength" placeholder="e.g. 15.7" step="0.1" min="0">
+          <span class="field-hint">Also reported by slicer — used instead of weight if weight is blank</span>
+        </div>
+      </div>
+
+      <hr class="form-divider">
+      <button class="btn" id="calcBtn">Calculate Print Cost</button>
+
+    </div>
+
+    <div class="result-wrap" id="resultWrap">
+      <div class="result-sublabel">Estimated Print Cost</div>
+      <div class="result-value-row">
+        <span class="result-big-value" id="printCostVal">—</span>
+        <span class="result-big-unit" id="currencyUnit">USD</span>
+      </div>
+      <div class="result-delta" id="resultDelta"></div>
+      <div class="result-explanation" id="resultExplanation"></div>
+      <div class="result-stats-grid" id="statsGrid"></div>
+      <div class="result-secondary" id="resultSecondary"></div>
+    </div>
+
+    <div class="ad-placeholder" style="margin-bottom: 3rem;">
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-size">300 × 250 — Medium Rectangle</div>
+    </div>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Rapid Elevation &mdash; Built by <a href="https://jakebeamer323.github.io/my-site" target="_blank">Jake Lewien</a></p>
+  </footer>
+
+  <script>
+    document.getElementById('calcBtn').addEventListener('click', () => {
+      const price  = parseFloat(document.getElementById('spoolPrice').value);
+      const weight = parseFloat(document.getElementById('spoolWeight').value);
+      const pWeight = parseFloat(document.getElementById('printWeight').value);
+      const pLength = parseFloat(document.getElementById('printLength').value);
+      const diameter = parseFloat(document.getElementById('diameter').value);
+      const density = parseFloat(document.getElementById('material').value);
+
+      if (isNaN(price) || price <= 0)  { alert('Please enter the spool price.'); return; }
+      if (isNaN(weight) || weight <= 0) { alert('Please enter the spool net weight.'); return; }
+
+      const costPerGram = price / weight;
+
+      // Resolve print weight — prefer direct weight, convert from length if needed
+      let printGrams = null;
+      let usedLength = false;
+      if (!isNaN(pWeight) && pWeight > 0) {
+        printGrams = pWeight;
+      } else if (!isNaN(pLength) && pLength > 0 && !isNaN(density)) {
+        const r_cm = (diameter / 2) / 10;
+        const volPerMeter = Math.PI * r_cm * r_cm * 100; // cm³ per meter
+        printGrams = pLength * volPerMeter * density;
+        usedLength = true;
+      } else if (!isNaN(pLength) && pLength > 0) {
+        alert('Select a material to convert length to weight, or enter print weight in grams directly.');
+        return;
+      } else {
+        alert('Please enter print weight (grams) or print length (meters).');
+        return;
+      }
+
+      const printCost = costPerGram * printGrams;
+
+      // Cost per meter (if material + diameter known)
+      let costPerMeter = null;
+      if (!isNaN(density)) {
+        const r_cm = (diameter / 2) / 10;
+        const volPerMeter = Math.PI * r_cm * r_cm * 100;
+        const gramsPerMeter = volPerMeter * density;
+        costPerMeter = costPerGram * gramsPerMeter;
+      }
+
+      // Total meters on full spool
+      let metersPerSpool = null;
+      if (!isNaN(density)) {
+        const r_cm = (diameter / 2) / 10;
+        const volPerMeter = Math.PI * r_cm * r_cm * 100;
+        metersPerSpool = weight / (volPerMeter * density);
+      }
+
+      document.getElementById('printCostVal').textContent = `$${printCost.toFixed(2)}`;
+      document.getElementById('currencyUnit').textContent = '';
+
+      const delta = document.getElementById('resultDelta');
+      delta.className = 'result-delta neutral';
+      const printPct = ((printGrams / weight) * 100).toFixed(1);
+      delta.textContent = `${printGrams.toFixed(1)}g used — ${printPct}% of a ${weight}g spool.${usedLength ? ` (converted from ${pLength}m)` : ''}`;
+
+      document.getElementById('resultExplanation').innerHTML =
+        `Cost per gram: <strong>$${costPerGram.toFixed(4)}</strong>. ` +
+        `Print uses ${printGrams.toFixed(1)}g × $${costPerGram.toFixed(4)}/g = <strong>$${printCost.toFixed(2)}</strong>.`;
+
+      let stats = `
+        <div class="result-stat"><span class="result-stat-label">Print Cost</span><span class="result-stat-value">$${printCost.toFixed(2)}</span></div>
+        <div class="result-stat"><span class="result-stat-label">Cost / Gram</span><span class="result-stat-value">$${costPerGram.toFixed(4)}</span></div>`;
+      if (costPerMeter !== null) {
+        stats += `<div class="result-stat"><span class="result-stat-label">Cost / Meter</span><span class="result-stat-value">$${costPerMeter.toFixed(3)}</span></div>`;
+      }
+      if (metersPerSpool !== null) {
+        stats += `<div class="result-stat"><span class="result-stat-label">Meters / Spool</span><span class="result-stat-value">${metersPerSpool.toFixed(0)}m</span></div>`;
+      }
+      document.getElementById('statsGrid').innerHTML = stats;
+
+      let secondary = `<strong>Tip:</strong> This is filament cost only — it doesn't include electricity, wear, or failed prints. `;
+      secondary += `A typical FDM printer uses 50–150W; at $0.12/kWh, a 6-hour print adds roughly $0.04–0.11 in electricity. `;
+      if (printCost < 0.50) secondary += `This is a very inexpensive print — material cost is negligible.`;
+      else if (printCost < 5.00) secondary += `Mid-range cost. Acceptable for most hobby and functional prints.`;
+      else secondary += `Higher material cost. Consider optimizing infill density or wall count to reduce usage.`;
+      document.getElementById('resultSecondary').innerHTML = secondary;
+
+      const rw = document.getElementById('resultWrap');
+      rw.style.display = 'block';
+      rw.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+  </script>
+
+</body>
+</html>

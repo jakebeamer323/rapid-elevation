@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spool Weight Estimator — Rapid Elevation</title>
+  <meta name="description" content="Weigh your partial filament spool on a scale to calculate remaining filament length in meters and how much of the spool is left.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">Rapid <span class="logo-accent">Elevation</span></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="diagnosis.html">Print Diagnosis</a>
+      <a href="models.html">Models</a>
+    </div>
+  </nav>
+
+  <main>
+
+    <div class="page-header">
+      <h1>Spool Weight Estimator</h1>
+      <p>Put your spool on a kitchen scale, enter the weight, and find out how many meters of filament you have left — and whether it's enough for your next print.</p>
+    </div>
+
+    <div class="ad-placeholder" style="margin-bottom: 2rem;">
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-size">728 × 90 — Leaderboard</div>
+    </div>
+
+    <div class="diag-form">
+
+      <div class="form-section-label">Filament &amp; spool details</div>
+      <div class="settings-grid" style="margin-bottom: 1.5rem;">
+        <div class="field">
+          <label for="material">Material</label>
+          <select id="material">
+            <option value="1.24">PLA (1.24 g/cm³)</option>
+            <option value="1.27">PETG (1.27 g/cm³)</option>
+            <option value="1.04">ABS (1.04 g/cm³)</option>
+            <option value="1.07">ASA (1.07 g/cm³)</option>
+            <option value="1.21">TPU (1.21 g/cm³)</option>
+            <option value="1.13">Nylon (1.13 g/cm³)</option>
+            <option value="1.20">PC (1.20 g/cm³)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="diameter">Filament Diameter</label>
+          <select id="diameter">
+            <option value="1.75">1.75mm (standard)</option>
+            <option value="2.85">2.85mm (3mm)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="emptyWeight">Empty Spool Weight (g)</label>
+          <input type="number" id="emptyWeight" placeholder="e.g. 230" step="1" min="0">
+          <span class="field-hint">Weigh spool without filament, or use brand default below</span>
+        </div>
+      </div>
+
+      <div class="form-section-label" style="margin-bottom: 0.6rem;">Common empty spool weights</div>
+      <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem;" id="spoolPresets">
+        <button class="mat-tab" data-weight="250">Bambu Lab — 250g</button>
+        <button class="mat-tab" data-weight="200">Generic cardboard — 200g</button>
+        <button class="mat-tab" data-weight="190">Prusa — 190g</button>
+        <button class="mat-tab" data-weight="220">Hatchbox / eSUN — 220g</button>
+        <button class="mat-tab" data-weight="180">Overture — 180g</button>
+      </div>
+
+      <div class="settings-grid" style="margin-bottom: 1rem;">
+        <div class="field">
+          <label for="currentWeight">Current Spool Weight (g)</label>
+          <input type="number" id="currentWeight" placeholder="e.g. 847" step="1" min="0">
+          <span class="field-hint">Weigh your partial spool on a scale right now</span>
+        </div>
+        <div class="field">
+          <label for="fullWeight">Full Spool Weight (g) — optional</label>
+          <input type="number" id="fullWeight" placeholder="e.g. 1230" step="1" min="0">
+          <span class="field-hint">Full spool weight (filament + spool) to show remaining %</span>
+        </div>
+        <div class="field">
+          <label for="nextPrint">Next Print Weight (g) — optional</label>
+          <input type="number" id="nextPrint" placeholder="e.g. 95" step="1" min="0">
+          <span class="field-hint">Will check if you have enough for your next print</span>
+        </div>
+      </div>
+
+      <hr class="form-divider">
+      <button class="btn" id="calcBtn">Calculate Remaining Filament</button>
+
+    </div>
+
+    <div class="result-wrap" id="resultWrap">
+      <div class="result-sublabel">Remaining Filament</div>
+      <div class="result-value-row">
+        <span class="result-big-value" id="metersVal">—</span>
+        <span class="result-big-unit">m</span>
+      </div>
+      <div class="result-delta" id="resultDelta"></div>
+      <div class="result-stats-grid" id="statsGrid"></div>
+      <div class="result-secondary" id="resultSecondary"></div>
+      <div class="result-warning" id="resultWarning" style="display:none;"></div>
+    </div>
+
+    <div class="ad-placeholder" style="margin-bottom: 3rem;">
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-size">300 × 250 — Medium Rectangle</div>
+    </div>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Rapid Elevation &mdash; Built by <a href="https://jakebeamer323.github.io/my-site" target="_blank">Jake Lewien</a></p>
+  </footer>
+
+  <script>
+    // Preset spool buttons
+    document.getElementById('spoolPresets').addEventListener('click', e => {
+      const btn = e.target.closest('[data-weight]');
+      if (!btn) return;
+      document.getElementById('emptyWeight').value = btn.dataset.weight;
+      document.querySelectorAll('#spoolPresets .mat-tab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+
+    document.getElementById('calcBtn').addEventListener('click', () => {
+      const density   = parseFloat(document.getElementById('material').value);
+      const diameter  = parseFloat(document.getElementById('diameter').value);
+      const emptyW    = parseFloat(document.getElementById('emptyWeight').value);
+      const currentW  = parseFloat(document.getElementById('currentWeight').value);
+      const fullW     = parseFloat(document.getElementById('fullWeight').value);
+      const nextPrint = parseFloat(document.getElementById('nextPrint').value);
+
+      if (isNaN(emptyW) || emptyW < 0)  { alert('Please enter the empty spool weight.'); return; }
+      if (isNaN(currentW) || currentW <= 0) { alert('Please enter the current spool weight.'); return; }
+      if (currentW <= emptyW) { alert('Current weight must be greater than empty spool weight.'); return; }
+
+      const filamentGrams = currentW - emptyW;
+      const r_cm = (diameter / 2) / 10;
+      const volPerMeter_cm3 = Math.PI * r_cm * r_cm * 100;
+      const gramsPerMeter = volPerMeter_cm3 * density;
+      const remainingMeters = filamentGrams / gramsPerMeter;
+
+      document.getElementById('metersVal').textContent = remainingMeters.toFixed(1);
+
+      const delta = document.getElementById('resultDelta');
+      delta.className = 'result-delta neutral';
+      delta.textContent = `${filamentGrams.toFixed(0)}g of filament remaining on the spool.`;
+
+      let stats = `
+        <div class="result-stat"><span class="result-stat-label">Remaining Weight</span><span class="result-stat-value">${filamentGrams.toFixed(0)}g</span></div>
+        <div class="result-stat"><span class="result-stat-label">Remaining Length</span><span class="result-stat-value">${remainingMeters.toFixed(1)}m</span></div>`;
+
+      let pct = null;
+      if (!isNaN(fullW) && fullW > emptyW) {
+        const originalGrams = fullW - emptyW;
+        pct = (filamentGrams / originalGrams) * 100;
+        stats += `<div class="result-stat"><span class="result-stat-label">Spool Remaining</span><span class="result-stat-value">${pct.toFixed(1)}%</span></div>`;
+      }
+
+      if (!isNaN(nextPrint) && nextPrint > 0) {
+        const enough = filamentGrams >= nextPrint * 1.05; // 5% buffer
+        const printMeters = nextPrint / gramsPerMeter;
+        const leftoverG = filamentGrams - nextPrint;
+        stats += `<div class="result-stat"><span class="result-stat-label">After Next Print</span><span class="result-stat-value" style="color: ${enough ? 'var(--sev-green)' : 'var(--sev-red)'}">${enough ? leftoverG.toFixed(0) + 'g left' : 'Not enough'}</span></div>`;
+      }
+
+      document.getElementById('statsGrid').innerHTML = stats;
+
+      let secondary = `<strong>Formula:</strong> ${filamentGrams.toFixed(0)}g ÷ ${gramsPerMeter.toFixed(3)}g/m = ${remainingMeters.toFixed(1)}m remaining. `;
+      secondary += `(${gramsPerMeter.toFixed(3)}g/m based on ${diameter}mm diameter and density ${density} g/cm³.)`;
+      document.getElementById('resultSecondary').innerHTML = secondary;
+
+      const warn = document.getElementById('resultWarning');
+      if (!isNaN(nextPrint) && nextPrint > 0 && filamentGrams < nextPrint * 1.05) {
+        warn.textContent = `Your spool has ${filamentGrams.toFixed(0)}g but your next print needs ${nextPrint}g — you may run out mid-print. Consider a filament runout sensor or splitting the print.`;
+        warn.style.display = 'block';
+      } else if (filamentGrams < 50) {
+        warn.textContent = 'Less than 50g remaining — this may not be enough to complete most prints. Weigh carefully before starting.';
+        warn.style.display = 'block';
+      } else {
+        warn.style.display = 'none';
+      }
+
+      const rw = document.getElementById('resultWrap');
+      rw.style.display = 'block';
+      rw.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+  </script>
+
+</body>
+</html>
