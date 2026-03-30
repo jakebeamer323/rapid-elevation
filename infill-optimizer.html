@@ -256,7 +256,7 @@
         <div class="rec-card">
           <div class="rec-card-label">Wall Count</div>
           <div class="rec-card-value">${rec.walls} walls</div>
-          <div class="rec-card-sub">${rec.walls * 0.4}mm shell at 0.4mm nozzle</div>
+          <div class="rec-card-sub">${(rec.walls * 0.4).toFixed(1)}mm shell at 0.4mm nozzle</div>
           <div class="rec-card-why">Walls determine part strength and surface quality far more than infill density. For structural parts, increasing walls beats increasing infill every time.</div>
         </div>
         <div class="rec-card">
