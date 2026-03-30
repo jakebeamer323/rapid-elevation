@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Max Volumetric Flow Calculator — Rapid Elevation</title>
+  <meta name="description" content="Find the highest safe print speed your hotend can handle before under-extrusion sets in.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">Rapid <span class="logo-accent">Elevation</span></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="diagnosis.html">Print Diagnosis</a>
+      <a href="models.html">Models</a>
+    </div>
+  </nav>
+
+  <main>
+
+    <div class="page-header">
+      <h1>Max Volumetric Flow Calculator</h1>
+      <p>Every hotend has a maximum rate at which it can melt filament. Exceed it and you get under-extrusion — no matter how well your other settings are tuned. Enter your setup details to find your speed ceiling.</p>
+    </div>
+
+    <div class="ad-placeholder" style="margin-bottom: 2rem;">
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-size">728 × 90 — Leaderboard</div>
+    </div>
+
+    <div class="diag-form">
+
+      <div class="form-section-label">Hotend</div>
+      <div class="settings-grid" style="margin-bottom: 1.5rem;">
+        <div class="field">
+          <label for="hotendPreset">Hotend Preset</label>
+          <select id="hotendPreset">
+            <option value="">— Custom / enter manually —</option>
+            <option value="12">Creality stock (12 mm³/s)</option>
+            <option value="15">E3D V6 (15 mm³/s)</option>
+            <option value="20">Bambu X1/P1 hotend (20 mm³/s)</option>
+            <option value="30">Revo Voron / Dragon HF (30 mm³/s)</option>
+            <option value="45">Rapido HF / Volcano (45 mm³/s)</option>
+            <option value="60">Goliath / CHC Pro (60 mm³/s)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="maxVolFlow">Max Volumetric Flow Rate (mm³/s)</label>
+          <input type="number" id="maxVolFlow" placeholder="e.g. 15" step="1" min="1" max="200">
+          <span class="field-hint">From hotend specs, or measured via flow test</span>
+        </div>
+      </div>
+
+      <div class="form-section-label">Print settings</div>
+      <div class="settings-grid" style="margin-bottom: 1.5rem;">
+        <div class="field">
+          <label for="layerHeight">Layer Height (mm)</label>
+          <input type="number" id="layerHeight" placeholder="e.g. 0.2" step="0.01" min="0.05" max="2">
+        </div>
+        <div class="field">
+          <label for="lineWidth">Line Width (mm)</label>
+          <input type="number" id="lineWidth" placeholder="e.g. 0.4" step="0.01" min="0.1" max="2">
+          <span class="field-hint">Usually equals nozzle diameter</span>
+        </div>
+      </div>
+
+      <hr class="form-divider">
+      <button class="btn" id="calcBtn">Calculate Max Speed</button>
+
+    </div>
+
+    <div class="result-wrap" id="resultWrap">
+      <div class="result-sublabel">Max Safe Print Speed</div>
+      <div class="result-value-row">
+        <span class="result-big-value" id="speedVal">—</span>
+        <span class="result-big-unit">mm/s</span>
+      </div>
+      <div class="result-delta" id="resultDelta"></div>
+      <div class="result-stats-grid" id="statsGrid"></div>
+      <div class="result-secondary" id="resultSecondary"></div>
+      <div class="result-warning" id="resultWarning" style="display:none;"></div>
+    </div>
+
+    <!-- Reference table -->
+    <div class="section" style="padding-top: 2rem;">
+      <div class="tool-category-label" style="margin-top: 0;">Common Hotend Flow Ratings</div>
+      <div class="calc-table-wrap">
+        <table class="calc-table">
+          <thead>
+            <tr>
+              <th>Hotend</th>
+              <th>Max Flow (mm³/s)</th>
+              <th>Category</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="layer-val">Creality stock (MK8 style)</td><td>10–14</td><td>Budget</td></tr>
+            <tr><td class="layer-val">E3D V6</td><td>12–18</td><td>Standard</td></tr>
+            <tr><td class="layer-val">E3D Revo Six</td><td>20–24</td><td>Standard</td></tr>
+            <tr><td class="layer-val">Bambu X1C / P1P</td><td>18–22</td><td>High speed</td></tr>
+            <tr><td class="layer-val">Dragon SF / HF</td><td>18 / 28</td><td>Standard / High flow</td></tr>
+            <tr><td class="layer-val">Rapido HF</td><td>40–50</td><td>High flow</td></tr>
+            <tr><td class="layer-val">Volcano (E3D)</td><td>40–60</td><td>High flow (long melt zone)</td></tr>
+            <tr><td class="layer-val">Goliath / CHC Pro</td><td>55–70</td><td>Ultra high flow</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.75rem; line-height: 1.6;">Ratings vary by temperature, filament type, and nozzle size. Higher temperatures and larger nozzles increase effective max flow. Values above are for PLA at rated print temperature with a 0.4mm nozzle.</p>
+    </div>
+
+    <div class="ad-placeholder" style="margin: 2rem 0 3rem;">
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-size">300 × 250 — Medium Rectangle</div>
+    </div>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Rapid Elevation &mdash; Built by <a href="https://jakebeamer323.github.io/my-site" target="_blank">Jake Lewien</a></p>
+  </footer>
+
+  <script>
+    document.getElementById('hotendPreset').addEventListener('change', function () {
+      if (this.value) document.getElementById('maxVolFlow').value = this.value;
+    });
+
+    document.getElementById('calcBtn').addEventListener('click', () => {
+      const maxFlow   = parseFloat(document.getElementById('maxVolFlow').value);
+      const layerH    = parseFloat(document.getElementById('layerHeight').value);
+      const lineW     = parseFloat(document.getElementById('lineWidth').value);
+
+      if (isNaN(maxFlow) || maxFlow <= 0) { alert('Please enter or select a max volumetric flow rate.'); return; }
+      if (isNaN(layerH) || layerH <= 0)  { alert('Please enter a layer height.'); return; }
+      if (isNaN(lineW) || lineW <= 0)    { alert('Please enter a line width.'); return; }
+
+      // max_speed = max_flow / (layer_height × line_width)
+      const maxSpeed = maxFlow / (layerH * lineW);
+      // Recommend 80% of max for safe margin
+      const safeSpeed = maxSpeed * 0.8;
+
+      document.getElementById('speedVal').textContent = Math.floor(safeSpeed);
+
+      const delta = document.getElementById('resultDelta');
+      delta.className = 'result-delta neutral';
+      delta.textContent = `Theoretical maximum is ${Math.floor(maxSpeed)}mm/s — recommended safe limit is 80% of that (${Math.floor(safeSpeed)}mm/s).`;
+
+      document.getElementById('statsGrid').innerHTML = `
+        <div class="result-stat"><span class="result-stat-label">Max Flow</span><span class="result-stat-value">${maxFlow} mm³/s</span></div>
+        <div class="result-stat"><span class="result-stat-label">Layer Height</span><span class="result-stat-value">${layerH}mm</span></div>
+        <div class="result-stat"><span class="result-stat-label">Line Width</span><span class="result-stat-value">${lineW}mm</span></div>
+        <div class="result-stat"><span class="result-stat-label">Flow per mm</span><span class="result-stat-value">${(layerH * lineW).toFixed(4)} mm³/mm</span></div>
+        <div class="result-stat"><span class="result-stat-label">Theoretical Max</span><span class="result-stat-value">${Math.floor(maxSpeed)} mm/s</span></div>
+        <div class="result-stat"><span class="result-stat-label">Safe Limit (80%)</span><span class="result-stat-value">${Math.floor(safeSpeed)} mm/s</span></div>`;
+
+      document.getElementById('resultSecondary').innerHTML =
+        `<strong>Formula:</strong> Max speed = Max flow ÷ (layer height × line width) = ${maxFlow} ÷ (${layerH} × ${lineW}) = ${Math.floor(maxSpeed)} mm/s<br><br>` +
+        `<strong>This is a ceiling, not a target.</strong> Mechanical limits (acceleration, resonance, belt stretch) will often be the practical speed limit at lower values. Approach this ceiling gradually and watch for under-extrusion symptoms.`;
+
+      const warn = document.getElementById('resultWarning');
+      if (maxSpeed > 300) {
+        warn.textContent = `Theoretical max exceeds 300mm/s — at this speed, mechanical and resonance limits will be the real constraint, not flow. Verify your printer is capable of these speeds before testing.`;
+        warn.style.display = 'block';
+      } else {
+        warn.style.display = 'none';
+      }
+
+      const rw = document.getElementById('resultWrap');
+      rw.style.display = 'block';
+      rw.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+  </script>
+
+</body>
+</html>

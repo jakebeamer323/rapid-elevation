@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Multi-Material / AMS Planner — Rapid Elevation</title>
+  <meta name="description" content="Plan purge volumes, color order, and waste minimization for multi-filament and AMS setups.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">Rapid <span class="logo-accent">Elevation</span></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="diagnosis.html">Print Diagnosis</a>
+      <a href="models.html">Models</a>
+    </div>
+  </nav>
+
+  <main>
+
+    <div class="page-header">
+      <h1>Multi-Material / AMS Planner</h1>
+      <p>Plan your filament slot order, estimate purge waste, and get tips for minimizing material use in multi-color and multi-material prints.</p>
+    </div>
+
+    <div class="ad-placeholder" style="margin-bottom: 2rem;">
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-size">728 × 90 — Leaderboard</div>
+    </div>
+
+    <div class="diag-form">
+
+      <div class="form-section-label">Filament slots</div>
+      <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1rem; line-height: 1.7;">
+        Enter your filament colors (name or hex) and approximate darkness (0 = white, 100 = black). The planner will recommend a loading order to minimize contamination bleeding between slots.
+      </p>
+      <div class="ams-slots" id="amsSlots"></div>
+      <button class="add-meas-btn" id="addSlotBtn" style="margin-bottom: 1.5rem;">+ Add slot</button>
+
+      <div class="form-section-label">Purge volume</div>
+      <div class="settings-grid" style="margin-bottom: 1.5rem;">
+        <div class="field">
+          <label for="basePurge">Base purge volume per swap (mm³)</label>
+          <input type="number" id="basePurge" value="60" step="5" min="10" max="500">
+          <span class="field-hint">Bambu default: 60mm³. Increase for darker-to-lighter transitions.</span>
+        </div>
+        <div class="field">
+          <label for="numSwaps">Estimated number of color swaps</label>
+          <input type="number" id="numSwaps" placeholder="e.g. 40" step="1" min="1">
+          <span class="field-hint">Check your slicer's swap count after slicing</span>
+        </div>
+      </div>
+
+      <hr class="form-divider">
+      <button class="btn" id="calcBtn">Calculate &amp; Recommend Order</button>
+
+    </div>
+
+    <div class="result-wrap" id="resultWrap">
+      <div class="result-sublabel">Recommended Slot Order</div>
+      <div class="ams-order-list" id="orderList" style="margin: 1rem 0;"></div>
+      <div class="result-stats-grid" id="statsGrid"></div>
+      <div class="result-secondary" id="resultSecondary"></div>
+      <div class="result-warning" id="resultWarning" style="display:none;"></div>
+    </div>
+
+    <!-- Reference section -->
+    <div class="section" style="padding-top: 2rem;">
+      <div class="tool-category-label" style="margin-top: 0;">Purge Volume Guide</div>
+      <div class="calc-table-wrap">
+        <table class="calc-table">
+          <thead>
+            <tr>
+              <th>Transition Type</th>
+              <th>Recommended Purge</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="layer-val">Light → Light</td><td>40–60mm³</td><td>Low contamination risk</td></tr>
+            <tr><td class="layer-val">Dark → Light</td><td>100–200mm³</td><td>Requires more purge to clear pigment</td></tr>
+            <tr><td class="layer-val">Light → Dark</td><td>40–60mm³</td><td>Dark covers contamination easily</td></tr>
+            <tr><td class="layer-val">Dark → Dark</td><td>60–100mm³</td><td>Depends on color contrast</td></tr>
+            <tr><td class="layer-val">Any → White</td><td>150–300mm³</td><td>White requires maximum purge</td></tr>
+            <tr><td class="layer-val">Different material</td><td>200–400mm³</td><td>PLA→PETG etc. needs full flush</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="tool-category-label">Tips for Minimizing Waste</div>
+      <div style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.8;">
+        <p style="margin-bottom: 0.75rem;"><strong style="color: var(--text);">Order from light to dark in your slot sequence.</strong> Most printers flush into a purge block or tower — going light → dark means the "contaminated" purge is a dark color where residue is invisible.</p>
+        <p style="margin-bottom: 0.75rem;"><strong style="color: var(--text);">Minimize swaps by reorganizing your model.</strong> In your slicer, group same-color regions near each other in Z height to reduce the number of transitions per layer.</p>
+        <p style="margin-bottom: 0.75rem;"><strong style="color: var(--text);">Use infill as purge (Bambu).</strong> Enable "Purge into infill" where available — this uses infill to flush instead of wasting material into a purge tower.</p>
+        <p><strong style="color: var(--text);">Re-use purge waste.</strong> Purge blocks are often structurally sound — collect them and use as filler material for projects that don't require specific colors.</p>
+      </div>
+    </div>
+
+    <div class="ad-placeholder" style="margin: 2rem 0 3rem;">
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-size">300 × 250 — Medium Rectangle</div>
+    </div>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Rapid Elevation &mdash; Built by <a href="https://jakebeamer323.github.io/my-site" target="_blank">Jake Lewien</a></p>
+  </footer>
+
+  <script>
+    let slotCount = 0;
+    const slotsEl = document.getElementById('amsSlots');
+
+    function addSlot(defaultName = '', defaultDark = '') {
+      slotCount++;
+      const id = slotCount;
+      const row = document.createElement('div');
+      row.className = 'ams-slot';
+      row.dataset.id = id;
+      row.innerHTML = `
+        <div class="ams-slot-num">${id}</div>
+        <div class="field" style="flex:1; margin:0;">
+          <input type="text" placeholder="Color name (e.g. Blue, #1E90FF)" value="${defaultName}" style="width:100%;">
+        </div>
+        <div class="field" style="width: 140px; margin:0;">
+          <input type="number" placeholder="Darkness 0–100" min="0" max="100" value="${defaultDark}" style="width:100%;">
+          <span class="field-hint" style="white-space:nowrap;">0=white, 100=black</span>
+        </div>
+        <button class="meas-remove" title="Remove slot" style="margin-top:0;">×</button>`;
+      row.querySelector('.meas-remove').addEventListener('click', () => {
+        row.remove();
+        renumberSlots();
+      });
+      slotsEl.appendChild(row);
+    }
+
+    function renumberSlots() {
+      slotsEl.querySelectorAll('.ams-slot').forEach((r, i) => {
+        r.querySelector('.ams-slot-num').textContent = i + 1;
+      });
+    }
+
+    // Default 4 slots
+    addSlot('White', 5);
+    addSlot('Yellow', 30);
+    addSlot('Blue', 60);
+    addSlot('Black', 95);
+
+    document.getElementById('addSlotBtn').addEventListener('click', () => addSlot());
+
+    document.getElementById('calcBtn').addEventListener('click', () => {
+      const rows = [...slotsEl.querySelectorAll('.ams-slot')];
+      if (rows.length < 2) { alert('Add at least 2 slots.'); return; }
+
+      const slots = rows.map((r, i) => ({
+        index: i + 1,
+        name: r.querySelector('input[type="text"]').value.trim() || `Slot ${i+1}`,
+        dark: parseFloat(r.querySelector('input[type="number"]').value) || 50,
+      }));
+
+      const basePurge = parseFloat(document.getElementById('basePurge').value) || 60;
+      const numSwaps  = parseFloat(document.getElementById('numSwaps').value);
+
+      // Sort from lightest to darkest for recommended order
+      const sorted = [...slots].sort((a, b) => a.dark - b.dark);
+
+      document.getElementById('orderList').innerHTML = sorted.map((s, i) => `
+        <div class="ams-order-card">
+          <div class="ams-order-num">Slot ${i + 1}</div>
+          <div class="ams-order-name">${s.name}</div>
+          <div class="ams-order-purge">Darkness: ${s.dark}/100</div>
+        </div>
+      `).join('');
+
+      // Estimate total purge waste
+      let totalPurge = 0;
+      if (!isNaN(numSwaps) && numSwaps > 0) {
+        // Weighted average purge based on transitions in sorted order
+        let purgePerSwap = basePurge;
+        // If any transition goes dark→light, add extra
+        let darkToLightCount = 0;
+        for (let i = 0; i < sorted.length - 1; i++) {
+          if (sorted[i].dark > 60 && sorted[i+1].dark < 40) darkToLightCount++;
+        }
+        purgePerSwap = basePurge + (darkToLightCount / slots.length) * 60;
+        totalPurge = purgePerSwap * numSwaps;
+      }
+
+      const density = 1.24; // PLA g/cm3
+      const gramsWasted = totalPurge > 0 ? (totalPurge / 1000) * density : null;
+
+      let stats = `
+        <div class="result-stat"><span class="result-stat-label">Slots</span><span class="result-stat-value">${slots.length}</span></div>
+        <div class="result-stat"><span class="result-stat-label">Base Purge</span><span class="result-stat-value">${basePurge}mm³</span></div>`;
+
+      if (gramsWasted !== null) {
+        stats += `
+          <div class="result-stat"><span class="result-stat-label">Total Swaps</span><span class="result-stat-value">${numSwaps}</span></div>
+          <div class="result-stat"><span class="result-stat-label">Estimated Waste</span><span class="result-stat-value">${gramsWasted.toFixed(1)}g</span></div>`;
+      }
+      document.getElementById('statsGrid').innerHTML = stats;
+
+      let secondary = `<strong>Recommended loading order</strong> (lightest to darkest) minimizes color contamination in dark→light transitions.<br><br>`;
+      if (gramsWasted !== null) {
+        secondary += `<strong>Estimated purge waste:</strong> ~${gramsWasted.toFixed(0)}g across ${numSwaps} swaps at ${basePurge}mm³ base purge. `;
+        secondary += `This assumes average transitions — actual waste depends on which colors transition to which.`;
+      } else {
+        secondary += `Enter estimated swap count to calculate total purge waste.`;
+      }
+      document.getElementById('resultSecondary').innerHTML = secondary;
+
+      document.getElementById('resultWarning').style.display = 'none';
+      if (slots.some(s => s.dark < 15)) {
+        const warn = document.getElementById('resultWarning');
+        warn.textContent = `You have very light/white filament — this requires the highest purge volumes. Load white in slot 1 (first) and increase per-swap purge for transitions into white to 150–300mm³.`;
+        warn.style.display = 'block';
+      }
+
+      const rw = document.getElementById('resultWrap');
+      rw.style.display = 'block';
+      rw.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+  </script>
+
+</body>
+</html>

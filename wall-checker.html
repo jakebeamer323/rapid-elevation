@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wall Thickness Checker — Rapid Elevation</title>
+  <meta name="description" content="Find the minimum printable wall thickness for your nozzle diameter and check if your model's walls are thick enough to print reliably.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">Rapid <span class="logo-accent">Elevation</span></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="diagnosis.html">Print Diagnosis</a>
+      <a href="models.html">Models</a>
+    </div>
+  </nav>
+
+  <main>
+
+    <div class="page-header">
+      <h1>Wall Thickness Checker</h1>
+      <p>Walls that are too thin for your nozzle will simply be skipped by the slicer — leaving gaps in your model without warning. Enter your nozzle size and wall thickness to check printability before you waste a print.</p>
+    </div>
+
+    <div class="ad-placeholder" style="margin-bottom: 2rem;">
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-size">728 × 90 — Leaderboard</div>
+    </div>
+
+    <div class="diag-form">
+
+      <div class="form-section-label">Your setup</div>
+      <div class="settings-grid" style="margin-bottom: 1.5rem;">
+        <div class="field">
+          <label for="nozzle">Nozzle Diameter (mm)</label>
+          <select id="nozzle">
+            <option value="0.2">0.2mm</option>
+            <option value="0.25">0.25mm</option>
+            <option value="0.3">0.3mm</option>
+            <option value="0.4" selected>0.4mm (standard)</option>
+            <option value="0.5">0.5mm</option>
+            <option value="0.6">0.6mm</option>
+            <option value="0.8">0.8mm</option>
+            <option value="1.0">1.0mm</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="lineWidth">Line Width (mm)</label>
+          <input type="number" id="lineWidth" placeholder="e.g. 0.4" step="0.01" min="0.1" max="2">
+          <span class="field-hint">Usually equals nozzle diameter; some slicers default to 120%</span>
+        </div>
+        <div class="field">
+          <label for="wallThickness">Wall Thickness to Check (mm)</label>
+          <input type="number" id="wallThickness" placeholder="e.g. 0.8" step="0.01" min="0.1" max="20">
+          <span class="field-hint">Thinnest wall dimension from your model</span>
+        </div>
+      </div>
+
+      <hr class="form-divider">
+      <button class="btn" id="calcBtn">Check Wall</button>
+
+    </div>
+
+    <div class="result-wrap" id="resultWrap">
+      <div class="result-sublabel">Wall Check Result</div>
+      <div class="result-value-row" style="align-items: center;">
+        <span class="result-big-value" id="resultIcon" style="font-size: 2.5rem;"></span>
+        <span class="result-big-unit" id="resultLabel" style="font-size: 1.1rem; font-weight: 600; margin-left: 0.75rem;"></span>
+      </div>
+      <div class="result-delta" id="resultDelta"></div>
+      <div class="result-stats-grid" id="statsGrid"></div>
+      <div class="result-secondary" id="resultSecondary"></div>
+      <div class="result-warning" id="resultWarning" style="display:none;"></div>
+    </div>
+
+    <!-- Reference table -->
+    <div class="section" style="padding-top: 2rem;">
+      <div class="tool-category-label" style="margin-top: 0;">Wall Thickness Reference by Nozzle</div>
+      <div class="calc-table-wrap">
+        <table class="calc-table" id="refTable">
+          <thead>
+            <tr>
+              <th>Nozzle</th>
+              <th>Min Printable Wall</th>
+              <th>1-Perimeter Wall</th>
+              <th>2-Perimeter Wall</th>
+              <th>3-Perimeter Wall</th>
+              <th>4-Perimeter Wall</th>
+            </tr>
+          </thead>
+          <tbody id="refBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="ad-placeholder" style="margin: 2rem 0 3rem;">
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-size">300 × 250 — Medium Rectangle</div>
+    </div>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Rapid Elevation &mdash; Built by <a href="https://jakebeamer323.github.io/my-site" target="_blank">Jake Lewien</a></p>
+  </footer>
+
+  <script>
+    const NOZZLES = [0.2, 0.25, 0.3, 0.4, 0.5, 0.6, 0.8, 1.0];
+
+    // Build reference table
+    const refBody = document.getElementById('refBody');
+    refBody.innerHTML = NOZZLES.map(n => {
+      const lw = n; // assume 100% line width
+      return `<tr>
+        <td class="layer-val">${n}mm</td>
+        <td>${(lw * 0.75).toFixed(2)}mm</td>
+        <td>${(lw).toFixed(2)}mm</td>
+        <td>${(lw * 2).toFixed(2)}mm</td>
+        <td>${(lw * 3).toFixed(2)}mm</td>
+        <td>${(lw * 4).toFixed(2)}mm</td>
+      </tr>`;
+    }).join('');
+
+    // Auto-fill line width
+    document.getElementById('nozzle').addEventListener('change', function () {
+      document.getElementById('lineWidth').value = this.value;
+    });
+    document.getElementById('lineWidth').value = document.getElementById('nozzle').value;
+
+    document.getElementById('calcBtn').addEventListener('click', () => {
+      const nozzle = parseFloat(document.getElementById('nozzle').value);
+      const lineW  = parseFloat(document.getElementById('lineWidth').value);
+      const wall   = parseFloat(document.getElementById('wallThickness').value);
+
+      if (isNaN(lineW) || lineW <= 0) { alert('Enter a line width.'); return; }
+      if (isNaN(wall) || wall <= 0)   { alert('Enter a wall thickness.'); return; }
+
+      const minWall = lineW * 0.75; // slicer typically skips walls thinner than ~75% of line width
+      const perimeters = wall / lineW;
+      const printablePerimeters = Math.floor(perimeters);
+      const actualPrinted = printablePerimeters * lineW;
+
+      let icon, label, deltaClass, deltaText;
+
+      if (wall < minWall) {
+        icon = '✗'; label = 'Too thin to print';
+        deltaClass = 'result-delta adjusted';
+        deltaText = `${wall}mm wall is below the minimum of ${minWall.toFixed(2)}mm for a ${nozzle}mm nozzle. This wall will be completely skipped by the slicer.`;
+      } else if (printablePerimeters < 1) {
+        icon = '⚠'; label = 'Borderline';
+        deltaClass = 'result-delta adjusted';
+        deltaText = `Wall may be skipped or printed inconsistently. Recommend at least ${lineW.toFixed(2)}mm for reliable results.`;
+      } else {
+        icon = '✓'; label = 'Printable';
+        deltaClass = 'result-delta neutral';
+        deltaText = `${wall}mm wall will print as ${printablePerimeters} perimeter${printablePerimeters > 1 ? 's' : ''} (${actualPrinted.toFixed(2)}mm actual).`;
+      }
+
+      document.getElementById('resultIcon').textContent = icon;
+      document.getElementById('resultIcon').style.color = wall < minWall ? 'var(--sev-red)' : wall < lineW ? 'var(--sev-yellow)' : 'var(--sev-green)';
+      document.getElementById('resultLabel').textContent = label;
+
+      const deltaEl = document.getElementById('resultDelta');
+      deltaEl.className = deltaClass;
+      deltaEl.textContent = deltaText;
+
+      document.getElementById('statsGrid').innerHTML = `
+        <div class="result-stat"><span class="result-stat-label">Nozzle</span><span class="result-stat-value">${nozzle}mm</span></div>
+        <div class="result-stat"><span class="result-stat-label">Line Width</span><span class="result-stat-value">${lineW}mm</span></div>
+        <div class="result-stat"><span class="result-stat-label">Wall Thickness</span><span class="result-stat-value">${wall}mm</span></div>
+        <div class="result-stat"><span class="result-stat-label">Min Printable</span><span class="result-stat-value">${minWall.toFixed(2)}mm</span></div>
+        <div class="result-stat"><span class="result-stat-label">Perimeters</span><span class="result-stat-value">${printablePerimeters}</span></div>
+        <div class="result-stat"><span class="result-stat-label">Actual Printed</span><span class="result-stat-value">${actualPrinted.toFixed(2)}mm</span></div>`;
+
+      let secondary = '';
+      if (wall > actualPrinted + 0.01) {
+        secondary += `<strong>Gap note:</strong> ${(wall - actualPrinted).toFixed(2)}mm of the wall thickness won't be filled — the slicer will print ${printablePerimeters} perimeters (${actualPrinted.toFixed(2)}mm) and leave the rest as air.<br><br>`;
+      }
+      secondary += `<strong>Design tip:</strong> Make walls a multiple of your line width for zero gaps. With a ${lineW}mm line width: ${[1,2,3,4].map(n=>(n*lineW).toFixed(2)+'mm').join(', ')} are ideal wall thicknesses.`;
+      document.getElementById('resultSecondary').innerHTML = secondary;
+
+      document.getElementById('resultWarning').style.display = 'none';
+
+      const rw = document.getElementById('resultWrap');
+      rw.style.display = 'block';
+      rw.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+  </script>
+
+</body>
+</html>

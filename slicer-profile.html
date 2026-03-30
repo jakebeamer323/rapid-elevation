@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slicer Profile Generator — Rapid Elevation</title>
+  <meta name="description" content="Input your printer and filament details and get a starter slicer profile with recommended settings for Cura, PrusaSlicer, or OrcaSlicer.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">Rapid <span class="logo-accent">Elevation</span></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="diagnosis.html">Print Diagnosis</a>
+      <a href="models.html">Models</a>
+    </div>
+  </nav>
+
+  <main>
+
+    <div class="page-header">
+      <h1>Slicer Profile Generator</h1>
+      <p>Enter your printer and filament details to get a starting-point slicer profile — not a magic fix, but a solid baseline to tune from.</p>
+    </div>
+
+    <div class="ad-placeholder" style="margin-bottom: 2rem;">
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-size">728 × 90 — Leaderboard</div>
+    </div>
+
+    <div class="diag-form">
+
+      <div class="form-section-label">Printer</div>
+      <div class="settings-grid" style="margin-bottom: 1.5rem;">
+        <div class="field">
+          <label for="printerType">Printer type</label>
+          <select id="printerType">
+            <option value="cartesian_bed_slinger">Cartesian bed-slinger (Ender 3, CR-10, etc.)</option>
+            <option value="cartesian_fixed">Cartesian fixed bed (Prusa MK3/MK4)</option>
+            <option value="corexy">CoreXY (Voron, Bambu, RatRig)</option>
+            <option value="delta">Delta</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="nozzleSize">Nozzle diameter (mm)</label>
+          <select id="nozzleSize">
+            <option value="0.2">0.2mm</option>
+            <option value="0.4" selected>0.4mm (standard)</option>
+            <option value="0.6">0.6mm</option>
+            <option value="0.8">0.8mm</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="extruderType">Extruder type</label>
+          <select id="extruderType">
+            <option value="direct">Direct drive</option>
+            <option value="bowden">Bowden</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="hotendType">Hotend type</label>
+          <select id="hotendType">
+            <option value="ptfe">PTFE-lined (stock Creality, etc.)</option>
+            <option value="allmetal">All-metal (E3D V6, Dragon, etc.)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-section-label">Filament</div>
+      <div class="settings-grid" style="margin-bottom: 1.5rem;">
+        <div class="field">
+          <label for="material">Material</label>
+          <select id="material">
+            <option value="pla">PLA</option>
+            <option value="petg">PETG</option>
+            <option value="abs">ABS</option>
+            <option value="asa">ASA</option>
+            <option value="tpu">TPU (flexible)</option>
+            <option value="nylon">Nylon (PA)</option>
+            <option value="pc">PC (Polycarbonate)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="quality">Quality preset</label>
+          <select id="quality">
+            <option value="draft">Draft (fast, less detail)</option>
+            <option value="standard" selected>Standard (balanced)</option>
+            <option value="fine">Fine (slow, high detail)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="slicer">Target slicer</label>
+          <select id="slicer">
+            <option value="prusaslicer">PrusaSlicer / OrcaSlicer</option>
+            <option value="cura">Cura / UltiMaker Cura</option>
+            <option value="bambu">Bambu Studio</option>
+          </select>
+        </div>
+      </div>
+
+      <hr class="form-divider">
+      <button class="btn" id="genBtn">Generate Profile</button>
+
+    </div>
+
+    <div id="profileOutput" style="display:none; margin-top: 1.5rem;">
+      <div class="form-section-label">Generated Profile — <span id="profileTitle"></span></div>
+      <div style="position: relative;">
+        <pre class="profile-output" id="profileText"></pre>
+        <button class="copy-btn" id="copyBtn">Copy</button>
+      </div>
+      <div class="result-secondary" id="profileNotes" style="margin-top: 1rem;"></div>
+    </div>
+
+    <div class="ad-placeholder" style="margin: 2rem 0 3rem;">
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-size">300 × 250 — Medium Rectangle</div>
+    </div>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Rapid Elevation &mdash; Built by <a href="https://jakebeamer323.github.io/my-site" target="_blank">Jake Lewien</a></p>
+  </footer>
+
+  <script>
+    const MATERIAL_DATA = {
+      pla:   { tempMin: 195, tempMax: 220, tempNom: 210, bed: 60,  cooling: 100, retDirect: 1.0, retBowden: 5.0, retSpeed: 45, name: 'PLA' },
+      petg:  { tempMin: 230, tempMax: 250, tempNom: 240, bed: 75,  cooling: 40,  retDirect: 1.5, retBowden: 6.0, retSpeed: 35, name: 'PETG' },
+      abs:   { tempMin: 240, tempMax: 260, tempNom: 250, bed: 105, cooling: 20,  retDirect: 1.5, retBowden: 6.5, retSpeed: 45, name: 'ABS' },
+      asa:   { tempMin: 245, tempMax: 265, tempNom: 255, bed: 100, cooling: 15,  retDirect: 1.5, retBowden: 6.5, retSpeed: 45, name: 'ASA' },
+      tpu:   { tempMin: 220, tempMax: 240, tempNom: 230, bed: 50,  cooling: 80,  retDirect: 0.5, retBowden: 2.0, retSpeed: 25, name: 'TPU' },
+      nylon: { tempMin: 250, tempMax: 270, tempNom: 260, bed: 80,  cooling: 50,  retDirect: 1.5, retBowden: 6.0, retSpeed: 40, name: 'Nylon' },
+      pc:    { tempMin: 270, tempMax: 310, tempNom: 290, bed: 110, cooling: 0,   retDirect: 1.5, retBowden: 6.0, retSpeed: 40, name: 'PC' },
+    };
+
+    const QUALITY_DATA = {
+      draft:    { layer: 0.3, speedMult: 1.5, walls: 2, top: 3, bottom: 3, infill: 15, label: 'Draft' },
+      standard: { layer: 0.2, speedMult: 1.0, walls: 3, top: 4, bottom: 4, infill: 20, label: 'Standard' },
+      fine:     { layer: 0.12, speedMult: 0.6, walls: 3, top: 5, bottom: 5, infill: 20, label: 'Fine' },
+    };
+
+    const BASE_SPEED = { cartesian_bed_slinger: 50, cartesian_fixed: 70, corexy: 120, delta: 90 };
+
+    document.getElementById('genBtn').addEventListener('click', () => {
+      const printer  = document.getElementById('printerType').value;
+      const nozzle   = parseFloat(document.getElementById('nozzleSize').value);
+      const extruder = document.getElementById('extruderType').value;
+      const hotend   = document.getElementById('hotendType').value;
+      const mat      = MATERIAL_DATA[document.getElementById('material').value];
+      const qual     = QUALITY_DATA[document.getElementById('quality').value];
+      const slicer   = document.getElementById('slicer').value;
+
+      const baseSpeed = BASE_SPEED[printer] * qual.speedMult;
+      const printSpeed = Math.round(baseSpeed);
+      const travelSpeed = Math.round(baseSpeed * 2.5);
+      const firstLayerSpeed = Math.round(printSpeed * 0.4);
+      const retraction = extruder === 'direct' ? mat.retDirect : mat.retBowden;
+      const lineWidth = (nozzle * 1.0).toFixed(2);
+      const firstLayerH = (qual.layer * 1.2).toFixed(2);
+
+      const notes = [];
+      if (mat.name === 'ABS' || mat.name === 'ASA') notes.push('ABS/ASA requires an enclosure to prevent warping. Disable part cooling for the first 5+ layers.');
+      if (mat.name === 'PC') notes.push('PC requires an all-metal hotend and temperatures above 270°C. Ensure your hotend is capable before attempting.');
+      if (mat.name === 'Nylon') notes.push('Nylon is highly hygroscopic — dry before printing (80°C for 12+ hours) or expect stringing and poor layer adhesion.');
+      if (mat.name === 'TPU') notes.push('TPU retraction should be minimal to avoid jams. If using Bowden, consider 0mm retraction and rely on temperature/speed to control stringing.');
+      if (hotend === 'ptfe' && (mat.name === 'ABS' || mat.name === 'ASA' || mat.name === 'Nylon' || mat.name === 'PC')) {
+        notes.push(`⚠ ${mat.name} requires temperatures above 240°C. PTFE-lined hotends are not safe above 240°C — upgrade to an all-metal hotend before printing this material.`);
+      }
+
+      let profile = '';
+      const title = `${mat.name} — ${qual.label} quality — ${nozzle}mm nozzle`;
+
+      if (slicer === 'prusaslicer') {
+        profile = `; ${title}
+; Generated by Rapid Elevation — adjust based on your calibration results
+
+[print_settings]
+layer_height = ${qual.layer}
+first_layer_height = ${firstLayerH}
+perimeters = ${qual.walls}
+top_solid_layers = ${qual.top}
+bottom_solid_layers = ${qual.bottom}
+fill_density = ${qual.infill}%
+fill_pattern = gyroid
+perimeter_speed = ${printSpeed}
+infill_speed = ${Math.round(printSpeed * 1.2)}
+travel_speed = ${travelSpeed}
+first_layer_speed = ${firstLayerSpeed}
+
+[filament_settings]
+temperature = ${mat.tempNom}
+first_layer_temperature = ${mat.tempNom + 5}
+bed_temperature = ${mat.bed}
+first_layer_bed_temperature = ${mat.bed + 5}
+fan_always_on = ${mat.cooling > 0 ? 1 : 0}
+fan_below_layer_time = 60
+max_fan_speed = ${mat.cooling}
+min_fan_speed = ${Math.round(mat.cooling * 0.5)}
+cooling = ${mat.cooling > 0 ? 1 : 0}
+retract_length = ${retraction}
+retract_speed = ${mat.retSpeed}
+retract_lift = 0.4
+extrusion_multiplier = 1.0`;
+      } else if (slicer === 'cura') {
+        profile = `; ${title}
+; Generated by Rapid Elevation — adjust based on your calibration results
+; Paste these values into Cura's Custom FFF Profile settings
+
+layer_height = ${qual.layer}
+initial_layer_height = ${firstLayerH}
+wall_count = ${qual.walls}
+top_layers = ${qual.top}
+bottom_layers = ${qual.bottom}
+infill_sparse_density = ${qual.infill}
+infill_pattern = gyroid
+speed_print = ${printSpeed}
+speed_infill = ${Math.round(printSpeed * 1.2)}
+speed_travel = ${travelSpeed}
+speed_layer_0 = ${firstLayerSpeed}
+material_print_temperature = ${mat.tempNom}
+material_print_temperature_layer_0 = ${mat.tempNom + 5}
+material_bed_temperature = ${mat.bed}
+material_bed_temperature_layer_0 = ${mat.bed + 5}
+cool_fan_speed = ${mat.cooling}
+cool_fan_speed_0 = 0
+cool_min_layer_time = 10
+retraction_enable = true
+retraction_amount = ${retraction}
+retraction_speed = ${mat.retSpeed}
+retraction_hop_enabled = true
+retraction_hop = 0.4
+material_flow = 100`;
+      } else {
+        profile = `; ${title}
+; Generated by Rapid Elevation — use as a starting point in Bambu Studio
+
+[filament_settings]
+nozzle_temperature = ${mat.tempNom}
+bed_temperature = ${mat.bed}
+fan_cooling_layer_time = 60
+fan_min_speed = ${Math.round(mat.cooling * 0.5)}
+fan_max_speed = ${mat.cooling}
+retraction_length = ${retraction}
+retraction_speed = ${mat.retSpeed}
+flow_ratio = 1.0
+
+[print_settings]
+layer_height = ${qual.layer}
+initial_layer_height = ${firstLayerH}
+wall_loops = ${qual.walls}
+top_shell_layers = ${qual.top}
+bottom_shell_layers = ${qual.bottom}
+sparse_infill_density = ${qual.infill}%
+sparse_infill_pattern = gyroid
+outer_wall_speed = ${Math.round(printSpeed * 0.6)}
+inner_wall_speed = ${printSpeed}
+sparse_infill_speed = ${Math.round(printSpeed * 1.2)}
+travel_speed = ${travelSpeed}
+initial_layer_speed = ${firstLayerSpeed}`;
+      }
+
+      document.getElementById('profileTitle').textContent = title;
+      document.getElementById('profileText').textContent = profile;
+      document.getElementById('profileNotes').innerHTML = notes.length
+        ? '<strong>Notes for this material:</strong><ul style="margin: 0.5rem 0 0; padding-left: 1.25rem;">' + notes.map(n => `<li style="margin-bottom: 0.3rem;">${n}</li>`).join('') + '</ul>'
+        : '<strong>No special notes for this setup.</strong> Run the calibration sequence (E-steps → temp tower → flow rate) to dial in from this baseline.';
+
+      document.getElementById('profileOutput').style.display = 'block';
+      document.getElementById('profileOutput').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+
+    document.getElementById('copyBtn').addEventListener('click', function () {
+      navigator.clipboard.writeText(document.getElementById('profileText').textContent).then(() => {
+        this.textContent = 'Copied!';
+        setTimeout(() => this.textContent = 'Copy', 2000);
+      });
+    });
+  </script>
+
+</body>
+</html>

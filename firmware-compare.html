@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Firmware Settings Compare — Rapid Elevation</title>
+  <meta name="description" content="Compare two Marlin or Klipper config files side by side, or generate recommended start/end G-code snippets.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">Rapid <span class="logo-accent">Elevation</span></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="diagnosis.html">Print Diagnosis</a>
+      <a href="models.html">Models</a>
+    </div>
+  </nav>
+
+  <main>
+
+    <div class="page-header">
+      <h1>Firmware Settings Compare</h1>
+      <p>Paste two Marlin or Klipper config files to see exactly what changed — or generate recommended start/end G-code snippets for your printer type.</p>
+    </div>
+
+    <div class="ad-placeholder" style="margin-bottom: 2rem;">
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-size">728 × 90 — Leaderboard</div>
+    </div>
+
+    <!-- Mode tabs -->
+    <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem;" id="modeTabs">
+      <button class="mat-tab active" data-mode="diff">Config Diff</button>
+      <button class="mat-tab" data-mode="gcode">Start/End G-code Generator</button>
+    </div>
+
+    <!-- Diff panel -->
+    <div id="diffPanel">
+      <div class="diff-cols">
+        <div>
+          <div class="form-section-label" style="margin-bottom: 0.5rem;">Original / Before</div>
+          <textarea class="diff-textarea" id="textA" placeholder="Paste your original Marlin Configuration.h or printer.cfg here…" spellcheck="false"></textarea>
+        </div>
+        <div>
+          <div class="form-section-label" style="margin-bottom: 0.5rem;">Modified / After</div>
+          <textarea class="diff-textarea" id="textB" placeholder="Paste the updated version here…" spellcheck="false"></textarea>
+        </div>
+      </div>
+      <button class="btn" id="diffBtn" style="margin-top: 1rem;">Compare Files</button>
+
+      <div id="diffOutput" style="display:none; margin-top: 1.5rem;">
+        <div class="form-section-label">Diff Results</div>
+        <div class="diff-output" id="diffResult"></div>
+        <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;" id="diffSummary"></div>
+      </div>
+    </div>
+
+    <!-- G-code generator panel -->
+    <div id="gcodePanel" style="display:none;">
+      <div class="diag-form">
+        <div class="form-section-label">Printer type</div>
+        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem;" id="printerTabs">
+          <button class="mat-tab active" data-printer="cartesian">Cartesian (Ender, etc.)</button>
+          <button class="mat-tab" data-printer="corexy">CoreXY (Voron, Bambu, etc.)</button>
+          <button class="mat-tab" data-printer="delta">Delta</button>
+        </div>
+
+        <div class="form-section-label">Options</div>
+        <div class="settings-grid" style="margin-bottom: 1.5rem;">
+          <div class="field">
+            <label>Bed leveling</label>
+            <select id="levelingType">
+              <option value="manual">Manual / no ABL</option>
+              <option value="bl">BLTouch / CR Touch</option>
+              <option value="probe">Any other probe (PROBE_ACCURACY, etc.)</option>
+              <option value="klipper">Klipper (BED_MESH_CALIBRATE)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Include purge line?</label>
+            <select id="purgeLine">
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+          </div>
+        </div>
+
+        <button class="btn" id="gcodeGenBtn">Generate G-code</button>
+      </div>
+
+      <div id="gcodeOutput" style="display:none; margin-top: 1.5rem;">
+        <div class="form-section-label">Start G-code</div>
+        <div style="position: relative;">
+          <pre class="profile-output" id="startGcode"></pre>
+          <button class="copy-btn" id="copyStart">Copy</button>
+        </div>
+        <div class="form-section-label" style="margin-top: 1.5rem;">End G-code</div>
+        <div style="position: relative;">
+          <pre class="profile-output" id="endGcode"></pre>
+          <button class="copy-btn" id="copyEnd">Copy</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="ad-placeholder" style="margin: 2rem 0 3rem;">
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-size">300 × 250 — Medium Rectangle</div>
+    </div>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Rapid Elevation &mdash; Built by <a href="https://jakebeamer323.github.io/my-site" target="_blank">Jake Lewien</a></p>
+  </footer>
+
+  <script>
+    // Mode tabs
+    document.getElementById('modeTabs').addEventListener('click', e => {
+      const btn = e.target.closest('[data-mode]');
+      if (!btn) return;
+      document.querySelectorAll('#modeTabs .mat-tab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('diffPanel').style.display = btn.dataset.mode === 'diff' ? '' : 'none';
+      document.getElementById('gcodePanel').style.display = btn.dataset.mode === 'gcode' ? '' : 'none';
+    });
+
+    // Printer type tabs
+    document.getElementById('printerTabs').addEventListener('click', e => {
+      const btn = e.target.closest('[data-printer]');
+      if (!btn) return;
+      document.querySelectorAll('#printerTabs .mat-tab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+
+    // Simple line-by-line diff
+    document.getElementById('diffBtn').addEventListener('click', () => {
+      const linesA = document.getElementById('textA').value.split('\n');
+      const linesB = document.getElementById('textB').value.split('\n');
+
+      if (!linesA.join('').trim() || !linesB.join('').trim()) {
+        alert('Please paste content into both text areas.');
+        return;
+      }
+
+      const setA = new Map();
+      linesA.forEach((line, i) => setA.set(line.trim(), i));
+
+      let added = 0, removed = 0, changed = 0;
+      const html = [];
+
+      const maxLen = Math.max(linesA.length, linesB.length);
+      for (let i = 0; i < maxLen; i++) {
+        const a = (linesA[i] || '').trim();
+        const b = (linesB[i] || '').trim();
+        if (a === b) continue;
+        if (!a && b) {
+          html.push(`<div class="diff-line diff-add">+ ${escHtml(b)}</div>`);
+          added++;
+        } else if (a && !b) {
+          html.push(`<div class="diff-line diff-remove">- ${escHtml(a)}</div>`);
+          removed++;
+        } else {
+          html.push(`<div class="diff-line diff-remove">- ${escHtml(a)}</div>`);
+          html.push(`<div class="diff-line diff-add">+ ${escHtml(b)}</div>`);
+          changed++;
+        }
+      }
+
+      if (html.length === 0) {
+        document.getElementById('diffResult').innerHTML = '<div style="color: var(--sev-green); padding: 1rem;">Files are identical — no differences found.</div>';
+      } else {
+        document.getElementById('diffResult').innerHTML = html.join('');
+      }
+
+      document.getElementById('diffSummary').textContent = `${added} additions, ${removed} removals, ${changed} changed lines.`;
+      document.getElementById('diffOutput').style.display = 'block';
+      document.getElementById('diffOutput').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+
+    function escHtml(str) {
+      return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+
+    // G-code generator
+    document.getElementById('gcodeGenBtn').addEventListener('click', () => {
+      const printer  = document.querySelector('#printerTabs .mat-tab.active').dataset.printer;
+      const leveling = document.getElementById('levelingType').value;
+      const purge    = document.getElementById('purgeLine').value;
+
+      let start = `; === Start G-code ===
+G90 ; absolute positioning
+M82 ; absolute extruder mode
+M104 S[first_layer_temperature] ; set extruder temp (no wait)
+M140 S[first_layer_bed_temperature] ; set bed temp (no wait)
+M190 S[first_layer_bed_temperature] ; wait for bed temp
+M109 S[first_layer_temperature] ; wait for extruder temp
+`;
+
+      if (printer === 'cartesian') {
+        start += `G28 ; home all axes\n`;
+      } else if (printer === 'corexy') {
+        start += `G28 ; home all axes\nG1 Z20 F3000 ; lower gantry\n`;
+      } else if (printer === 'delta') {
+        start += `G28 ; home all axes (delta homes up)\n`;
+      }
+
+      if (leveling === 'bl') {
+        start += `G29 ; BLTouch / CR Touch auto-level\n`;
+      } else if (leveling === 'probe') {
+        start += `G29 ; auto bed leveling\n`;
+      } else if (leveling === 'klipper') {
+        start += `BED_MESH_CALIBRATE ; Klipper bed mesh\n`;
+      }
+
+      if (purge === 'yes') {
+        if (printer === 'delta') {
+          start += `\n; Purge line (delta — adjust X/Y for your build)\nG1 X-90 Y0 Z0.3 F5000\nG1 E5 F200 ; purge prime\nG1 X-90 Y60 E15 F1000 ; purge line\nG1 Z2 F3000\n`;
+        } else {
+          start += `\nG1 X0 Y0 Z0.3 F5000 ; move to start of purge line
+G1 E5 F200 ; prime
+G1 X60 E12 F1000 ; purge line
+G1 X70 F3000 ; wipe
+G1 Z2 F3000 ; lift\n`;
+        }
+      }
+
+      const end = `; === End G-code ===
+M104 S0 ; turn off extruder
+M140 S0 ; turn off bed
+G91 ; relative positioning
+G1 Z10 F3000 ; lift nozzle
+G90 ; back to absolute
+G1 X0 Y${printer === 'delta' ? '0' : '[machine_depth]'} F5000 ; present print / move to front
+M84 ; disable motors
+`;
+
+      document.getElementById('startGcode').textContent = start.trim();
+      document.getElementById('endGcode').textContent = end.trim();
+      document.getElementById('gcodeOutput').style.display = 'block';
+      document.getElementById('gcodeOutput').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+
+    function copyText(id, btn) {
+      const text = document.getElementById(id).textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        btn.textContent = 'Copied!';
+        setTimeout(() => btn.textContent = 'Copy', 2000);
+      });
+    }
+    document.getElementById('copyStart').addEventListener('click', function () { copyText('startGcode', this); });
+    document.getElementById('copyEnd').addEventListener('click', function () { copyText('endGcode', this); });
+  </script>
+
+</body>
+</html>

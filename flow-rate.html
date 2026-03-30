@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flow Rate Calculator — Rapid Elevation</title>
+  <meta name="description" content="Calibrate your extrusion multiplier using a single-wall test cube measurement for accurate flow rate.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">Rapid <span class="logo-accent">Elevation</span></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="diagnosis.html">Print Diagnosis</a>
+      <a href="models.html">Models</a>
+    </div>
+  </nav>
+
+  <main>
+
+    <div class="page-header">
+      <h1>Flow Rate Calculator</h1>
+      <p>Print a single-wall calibration cube, measure the actual wall thickness with calipers, and get the corrected extrusion multiplier for your slicer.</p>
+    </div>
+
+    <div class="ad-placeholder" style="margin-bottom: 2rem;">
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-size">728 × 90 — Leaderboard</div>
+    </div>
+
+    <div class="diag-form">
+
+      <div class="form-section-label">Slicer settings</div>
+      <div class="settings-grid" style="margin-bottom: 1.5rem;">
+        <div class="field">
+          <label for="nozzleDiameter">Nozzle Diameter (mm)</label>
+          <select id="nozzleDiameter">
+            <option value="0.2">0.2mm</option>
+            <option value="0.25">0.25mm</option>
+            <option value="0.3">0.3mm</option>
+            <option value="0.4" selected>0.4mm (standard)</option>
+            <option value="0.5">0.5mm</option>
+            <option value="0.6">0.6mm</option>
+            <option value="0.8">0.8mm</option>
+            <option value="1.0">1.0mm</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="slicedWall">Sliced Line Width (mm)</label>
+          <input type="number" id="slicedWall" placeholder="e.g. 0.4" step="0.01" min="0.1" max="2">
+          <span class="field-hint">Line width setting in your slicer — usually equals nozzle diameter</span>
+        </div>
+        <div class="field">
+          <label for="currentFlow">Current Flow Rate (%)</label>
+          <input type="number" id="currentFlow" placeholder="e.g. 100" step="0.1" min="50" max="200" value="100">
+          <span class="field-hint">Your current extrusion multiplier / flow setting</span>
+        </div>
+      </div>
+
+      <div class="form-section-label">Measurement</div>
+      <div class="settings-grid" style="margin-bottom: 1.5rem;">
+        <div class="field">
+          <label for="measuredWall">Measured Wall Thickness (mm)</label>
+          <input type="number" id="measuredWall" placeholder="e.g. 0.43" step="0.001" min="0.1" max="5">
+          <span class="field-hint">Measure at 4–5 points around the cube and average them</span>
+        </div>
+      </div>
+
+      <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 1.5rem;">
+        <strong style="color: var(--text);">How to print the test cube:</strong> Use a single-perimeter, 0% infill cube (20mm × 20mm, any height). Disable top/bottom layers if possible. Use the same temperature and speed as your normal prints. Let it cool fully before measuring.
+      </p>
+
+      <div class="btn-row" style="margin-top: 0.5rem;">
+        <button class="btn" id="calcBtn">Calculate Flow Rate</button>
+        <a href="models.html#flow-cube" class="btn btn-outline">↗ Get Flow Cube STL</a>
+      </div>
+
+    </div>
+
+    <div class="result-wrap" id="resultWrap">
+      <div class="result-sublabel">Corrected Flow Rate</div>
+      <div class="result-value-row">
+        <span class="result-big-value" id="flowVal">—</span>
+        <span class="result-big-unit">%</span>
+      </div>
+      <div class="result-delta" id="resultDelta"></div>
+      <div class="result-stats-grid" id="statsGrid"></div>
+      <div class="result-secondary" id="resultSecondary"></div>
+      <div class="result-warning" id="resultWarning" style="display:none;"></div>
+    </div>
+
+    <div class="ad-placeholder" style="margin-bottom: 3rem;">
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-size">300 × 250 — Medium Rectangle</div>
+    </div>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Rapid Elevation &mdash; Built by <a href="https://jakebeamer323.github.io/my-site" target="_blank">Jake Lewien</a></p>
+  </footer>
+
+  <script>
+    // Auto-fill sliced wall with nozzle diameter
+    document.getElementById('nozzleDiameter').addEventListener('change', function () {
+      document.getElementById('slicedWall').value = this.value;
+    });
+    document.getElementById('slicedWall').value = document.getElementById('nozzleDiameter').value;
+
+    document.getElementById('calcBtn').addEventListener('click', () => {
+      const slicedWall  = parseFloat(document.getElementById('slicedWall').value);
+      const measuredWall = parseFloat(document.getElementById('measuredWall').value);
+      const currentFlow = parseFloat(document.getElementById('currentFlow').value);
+
+      if (isNaN(slicedWall) || slicedWall <= 0) { alert('Please enter the sliced line width.'); return; }
+      if (isNaN(measuredWall) || measuredWall <= 0) { alert('Please enter the measured wall thickness.'); return; }
+      if (isNaN(currentFlow) || currentFlow <= 0) { alert('Please enter the current flow rate.'); return; }
+
+      // New flow = current_flow * (sliced_wall / measured_wall)
+      const newFlow = currentFlow * (slicedWall / measuredWall);
+      const delta = newFlow - currentFlow;
+
+      document.getElementById('flowVal').textContent = newFlow.toFixed(1);
+
+      const deltaEl = document.getElementById('resultDelta');
+      if (Math.abs(delta) < 0.5) {
+        deltaEl.className = 'result-delta neutral';
+        deltaEl.textContent = `Flow is within 0.5% of target — your current setting is effectively correct.`;
+      } else {
+        deltaEl.className = 'result-delta adjusted';
+        const dir = delta < 0 ? 'down' : 'up';
+        deltaEl.textContent = `Adjust flow ${dir} by ${Math.abs(delta).toFixed(1)}% from your current ${currentFlow}% setting.`;
+      }
+
+      document.getElementById('statsGrid').innerHTML = `
+        <div class="result-stat"><span class="result-stat-label">Expected Wall</span><span class="result-stat-value">${slicedWall}mm</span></div>
+        <div class="result-stat"><span class="result-stat-label">Measured Wall</span><span class="result-stat-value">${measuredWall}mm</span></div>
+        <div class="result-stat"><span class="result-stat-label">Difference</span><span class="result-stat-value">${(measuredWall - slicedWall).toFixed(3)}mm</span></div>
+        <div class="result-stat"><span class="result-stat-label">Old Flow</span><span class="result-stat-value">${currentFlow}%</span></div>
+        <div class="result-stat"><span class="result-stat-label">New Flow</span><span class="result-stat-value">${newFlow.toFixed(1)}%</span></div>
+        <div class="result-stat"><span class="result-stat-label">Change</span><span class="result-stat-value">${delta >= 0 ? '+' : ''}${delta.toFixed(1)}%</span></div>`;
+
+      let secondary = `<strong>How to apply in your slicer:</strong><br>`;
+      secondary += `PrusaSlicer / OrcaSlicer: Filament Settings → "Extrusion multiplier" → set to <strong>${(newFlow / 100).toFixed(3)}</strong><br>`;
+      secondary += `Cura: Material → "Flow" → set to <strong>${newFlow.toFixed(1)}%</strong><br>`;
+      secondary += `Bambu Studio: Filament → "Flow ratio" → set to <strong>${(newFlow / 100).toFixed(3)}</strong>`;
+      document.getElementById('resultSecondary').innerHTML = secondary;
+
+      const warn = document.getElementById('resultWarning');
+      if (Math.abs(delta) > 15) {
+        warn.textContent = `A correction of ${Math.abs(delta).toFixed(1)}% is unusually large. Double-check your measurement, and verify that your E-steps are properly calibrated first — large flow corrections often mask an E-steps problem.`;
+        warn.style.display = 'block';
+      } else {
+        warn.style.display = 'none';
+      }
+
+      const rw = document.getElementById('resultWrap');
+      rw.style.display = 'block';
+      rw.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D Printing FAQ — Rapid Elevation</title>
+  <meta name="description" content="Quick answers to common 3D printing questions. Browse by category or search for your topic.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">Rapid <span class="logo-accent">Elevation</span></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="diagnosis.html">Print Diagnosis</a>
+      <a href="models.html">Models</a>
+    </div>
+  </nav>
+
+  <main>
+
+    <div class="page-header">
+      <h1>3D Printing FAQ</h1>
+      <p>Quick answers to the most common questions — organized by topic. Use the search to jump straight to what you need.</p>
+    </div>
+
+    <div class="ad-placeholder" style="margin-bottom: 2rem;">
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-size">728 × 90 — Leaderboard</div>
+    </div>
+
+    <div class="search-wrap" style="margin-bottom: 2rem;">
+      <span class="search-icon">&#128269;</span>
+      <input class="search-input" id="searchInput" type="text" placeholder="Search questions — e.g. bed leveling, stringing, PETG…">
+    </div>
+
+    <div id="faqContainer"></div>
+
+    <div id="noResults" style="display:none; color: var(--text-muted); padding: 2rem 0; text-align: center;">No questions match your search.</div>
+
+    <div class="ad-placeholder" style="margin: 2rem 0 3rem;">
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-size">300 × 250 — Medium Rectangle</div>
+    </div>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Rapid Elevation &mdash; Built by <a href="https://jakebeamer323.github.io/my-site" target="_blank">Jake Lewien</a></p>
+  </footer>
+
+  <script>
+    const FAQ = [
+      {
+        category: 'Getting Started',
+        items: [
+          {
+            q: 'What are the most important settings to calibrate first?',
+            a: 'In order: (1) bed leveling / Z-offset, (2) E-steps, (3) temperature (temp tower), (4) flow rate / extrusion multiplier, (5) retraction. Get these right before tuning anything else.',
+            links: [{ label: 'E-Steps Calculator', href: 'esteps.html' }, { label: 'Temp Tower Analyzer', href: 'temp-tower.html' }, { label: 'Flow Rate Calculator', href: 'flow-rate.html' }]
+          },
+          {
+            q: 'What filament should I start with as a beginner?',
+            a: 'PLA. It\'s the easiest material to print — it requires no enclosure, sticks well to most bed surfaces, prints at low temperatures (195–220°C), and has minimal warping or fumes. Once you have your settings dialed, move to PETG for more durable parts.',
+            links: [{ label: 'Settings Cheat Sheet', href: 'settings-cheat.html' }]
+          },
+          {
+            q: 'What layer height should I use?',
+            a: 'For a 0.4mm nozzle: use 0.2mm for standard prints, 0.12–0.15mm for detail work, 0.28–0.3mm for drafts. The "magic number" rule says to use multiples of your leadscrew step distance for the cleanest results.',
+            links: [{ label: 'Layer Height Optimizer', href: 'layer-height.html' }]
+          },
+        ]
+      },
+      {
+        category: 'Bed Adhesion',
+        items: [
+          {
+            q: 'Why won\'t my print stick to the bed?',
+            a: 'Most common causes: Z-offset too high (nozzle too far from bed), dirty bed surface (oils from handling), bed temperature too low, or first layer speed too fast. Clean with IPA before every print. Lower Z-offset in 0.02mm steps until first layer is slightly squished.',
+            links: [{ label: 'Troubleshooting Database', href: 'troubleshooting-db.html' }]
+          },
+          {
+            q: 'My corners keep lifting. How do I fix warping?',
+            a: 'Add a brim (5–10mm) in your slicer, increase bed temperature, ensure the bed is clean, and disable fan cooling for the first 3–5 layers. ABS and ASA need an enclosure to retain ambient heat.',
+            links: []
+          },
+          {
+            q: 'What\'s the best bed surface for PLA / PETG / ABS?',
+            a: 'PLA: PEI sheet (smooth or textured), glass with hairspray or glue stick. PETG: Textured PEI works well — avoid smooth PEI as PETG may stick too hard and damage it. ABS/ASA: Garolite (G10 sheet), PEI with ABS slurry, or a heated enclosure with standard PEI.',
+            links: []
+          },
+        ]
+      },
+      {
+        category: 'Stringing & Extrusion',
+        items: [
+          {
+            q: 'How do I fix stringing?',
+            a: 'Lower print temperature (5°C at a time), increase retraction distance (Direct drive: 1–3mm, Bowden: 4–7mm), increase travel speed to 150–200mm/s, and enable "Avoid Crossing Perimeters" in your slicer. Wet filament also causes stringing — dry it first.',
+            links: [{ label: 'Retraction Test Tool', href: 'retraction-tool.html' }, { label: 'Filament Drying Guide', href: 'drying-guide.html' }]
+          },
+          {
+            q: 'Why do I have gaps in my walls / under-extrusion?',
+            a: 'Check for a partial clog first (cold pull). Then verify E-steps, check flow rate with a single-wall cube, and confirm print temperature is high enough. Reduce speed by 20% to see if it improves.',
+            links: [{ label: 'E-Steps Calculator', href: 'esteps.html' }, { label: 'Flow Rate Calculator', href: 'flow-rate.html' }]
+          },
+          {
+            q: 'What is the extrusion multiplier / flow rate and how do I tune it?',
+            a: 'The extrusion multiplier (or flow rate %) scales how much filament is pushed out. 100% = your slicer\'s theoretical amount. Print a single-wall cube, measure the wall thickness, and use the flow rate calculator to find the corrected value.',
+            links: [{ label: 'Flow Rate Calculator', href: 'flow-rate.html' }]
+          },
+        ]
+      },
+      {
+        category: 'Materials',
+        items: [
+          {
+            q: 'Why is my PETG stringing so badly?',
+            a: 'PETG is naturally stringy due to its high viscosity and adhesion. Dry it thoroughly (70–75°C for 6hr), reduce temperature to the lower end of range, increase retraction slightly, and ensure travel speed is at least 150mm/s. Some stringing with PETG is normal.',
+            links: [{ label: 'Filament Drying Guide', href: 'drying-guide.html' }, { label: 'Settings Cheat Sheet', href: 'settings-cheat.html' }]
+          },
+          {
+            q: 'Does filament go bad? How do I dry it?',
+            a: 'Yes — most filaments absorb moisture from the air over hours to days (Nylon and TPU fastest, PLA slowest). Wet filament pops/crackles when printing, causes stringing, and produces weaker parts. Dry in a food dehydrator or oven at material-specific temperature.',
+            links: [{ label: 'Filament Drying Guide', href: 'drying-guide.html' }]
+          },
+          {
+            q: 'Do I need a hardened steel nozzle for CF / GF filaments?',
+            a: 'Yes. Carbon fiber and glass fiber particles are abrasive and will erode a brass nozzle within 1–2 spools. Use a hardened steel nozzle as a minimum; ruby or sapphire tip for frequent use.',
+            links: [{ label: 'Nozzle Compatibility', href: 'nozzle-compat.html' }]
+          },
+        ]
+      },
+      {
+        category: 'Print Quality',
+        items: [
+          {
+            q: 'What causes ghosting / ringing / waves in my prints?',
+            a: 'Ghosting is caused by vibration and resonance at speed changes and direction reversals. Reduce print speed, lower acceleration (500–800 mm/s²), and tension your belts. Klipper users can use input shaping (ADXL345) to measure and compensate for resonance frequencies.',
+            links: [{ label: 'Troubleshooting Database', href: 'troubleshooting-db.html' }]
+          },
+          {
+            q: 'Why does my top surface look rough or have holes?',
+            a: 'Increase top layer count (4–5 minimum, or 0.8mm), increase infill to ≥20%, and ensure cooling is sufficient. Enable "Ironing" in PrusaSlicer/OrcaSlicer for a very smooth top surface.',
+            links: []
+          },
+          {
+            q: 'How do I get smoother surfaces?',
+            a: 'Use a finer layer height (0.1–0.15mm), ensure good cooling, print at the optimal temperature for your material, and tune flow rate accurately. For top surfaces, enable ironing. For side walls, use more perimeters and lower speed.',
+            links: [{ label: 'Temp Tower Analyzer', href: 'temp-tower.html' }]
+          },
+        ]
+      },
+      {
+        category: 'Speed & Performance',
+        items: [
+          {
+            q: 'How fast can I print without losing quality?',
+            a: 'It depends on your hotend\'s max volumetric flow rate. Every hotend has a melt capacity ceiling — exceed it and you get under-extrusion. Use the Max Volumetric Flow Calculator to find your speed limit based on hotend, layer height, and line width.',
+            links: [{ label: 'Max Flow Calculator', href: 'max-flow.html' }]
+          },
+          {
+            q: 'What is Pressure Advance / Linear Advance and do I need it?',
+            a: 'PA/LA compensates for pressure that builds up in the nozzle at speed changes. Without it, corners blob and line starts/stops are sloppy. It\'s highly recommended once your baseline settings are dialed. Klipper: Pressure Advance. Marlin: Linear Advance (must be compiled in).',
+            links: [{ label: 'Pressure Advance Tool', href: 'pressure-advance.html' }]
+          },
+        ]
+      },
+      {
+        category: 'Tools & Slicers',
+        items: [
+          {
+            q: 'Which slicer should I use?',
+            a: 'OrcaSlicer is the current community favorite — it\'s a fork of Bambu Studio with excellent calibration tools and broad printer support. PrusaSlicer is solid and well-documented. Cura has the largest plugin ecosystem. Bambu Studio if you own a Bambu printer.',
+            links: [{ label: 'Slicer Profile Generator', href: 'slicer-profile.html' }]
+          },
+          {
+            q: 'My slicer says the model has errors. How do I fix STL problems?',
+            a: 'Run the STL through Meshmixer → Analysis → Inspector → Auto Repair All. PrusaSlicer and OrcaSlicer also have built-in repair. For complex issues, use Netfabb (free online version) or Blender\'s 3D Print Toolbox add-on.',
+            links: [{ label: 'STL Analyzer', href: 'stl-analyzer.html' }]
+          },
+          {
+            q: 'How do I estimate print cost and time accurately?',
+            a: 'Upload your G-code to the Print Time Estimator for a more accurate time estimate. For cost, use the Filament Cost Calculator with your spool price and the estimated filament weight from your slicer.',
+            links: [{ label: 'Print Time Estimator', href: 'print-time.html' }, { label: 'Filament Cost Calculator', href: 'filament-cost.html' }]
+          },
+        ]
+      },
+    ];
+
+    function render(query) {
+      const container = document.getElementById('faqContainer');
+      const noResults = document.getElementById('noResults');
+      const q = (query || '').toLowerCase();
+
+      let totalVisible = 0;
+      container.innerHTML = FAQ.map(section => {
+        const filtered = section.items.filter(item => {
+          if (!q) return true;
+          return item.q.toLowerCase().includes(q) || item.a.toLowerCase().includes(q);
+        });
+        if (filtered.length === 0) return '';
+        totalVisible += filtered.length;
+
+        return `<div class="faq-category-label">${section.category}</div>
+          <div class="faq-list">
+            ${filtered.map((item, i) => `
+              <div class="faq-item" data-open="false">
+                <button class="faq-q" aria-expanded="false">
+                  ${item.q}
+                  <span class="faq-chevron">▾</span>
+                </button>
+                <div class="faq-a">
+                  <p>${item.a}</p>
+                  ${item.links && item.links.length ? `<div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-top: 0.75rem;">
+                    ${item.links.map(l => `<a href="${l.href}" class="btn btn-outline" style="font-size:0.82rem; padding:0.3rem 0.75rem;">${l.label} →</a>`).join('')}
+                  </div>` : ''}
+                </div>
+              </div>
+            `).join('')}
+          </div>`;
+      }).join('');
+
+      noResults.style.display = totalVisible === 0 ? 'block' : 'none';
+
+      // If searching, open all items
+      if (q) {
+        container.querySelectorAll('.faq-item').forEach(item => {
+          item.dataset.open = 'true';
+          item.querySelector('.faq-q').setAttribute('aria-expanded', 'true');
+          item.querySelector('.faq-a').style.display = 'block';
+        });
+      }
+
+      // Click handlers
+      container.querySelectorAll('.faq-q').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const item = btn.closest('.faq-item');
+          const isOpen = item.dataset.open === 'true';
+          item.dataset.open = isOpen ? 'false' : 'true';
+          btn.setAttribute('aria-expanded', !isOpen);
+          item.querySelector('.faq-a').style.display = isOpen ? 'none' : 'block';
+        });
+      });
+    }
+
+    render();
+
+    document.getElementById('searchInput').addEventListener('input', function () {
+      render(this.value);
+    });
+  </script>
+
+</body>
+</html>

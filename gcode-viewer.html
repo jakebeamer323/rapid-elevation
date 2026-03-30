@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>G-code Viewer — Rapid Elevation</title>
+  <meta name="description" content="Upload a G-code file and visualize print layers on a 2D canvas. Scrub through layers to inspect your toolpath.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">Rapid <span class="logo-accent">Elevation</span></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="diagnosis.html">Print Diagnosis</a>
+      <a href="models.html">Models</a>
+    </div>
+  </nav>
+
+  <main>
+
+    <div class="page-header">
+      <h1>G-code Viewer</h1>
+      <p>Upload a sliced G-code file and visualize each layer as a 2D toolpath. Scrub through layers to inspect moves, spot gaps, or check support placement before printing.</p>
+    </div>
+
+    <div class="ad-placeholder" style="margin-bottom: 2rem;">
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-size">728 × 90 — Leaderboard</div>
+    </div>
+
+    <div class="diag-form">
+      <div class="form-section-label">Upload G-code</div>
+      <div class="drop-zone" id="dropZone">
+        <div class="drop-icon">&#128196;</div>
+        <div class="drop-label">Drop your <strong>.gcode</strong> or <strong>.gc</strong> file here</div>
+        <div class="drop-sub">Processed locally in your browser — file is never uploaded</div>
+        <input type="file" id="fileInput" accept=".gcode,.gc,.gco,.g" style="display:none;">
+      </div>
+    </div>
+
+    <div id="viewerWrap" style="display:none;">
+      <div class="canvas-wrap">
+        <canvas id="gcCanvas"></canvas>
+      </div>
+      <div class="canvas-controls">
+        <div class="canvas-layer-label">
+          Layer <span id="layerNum">1</span> / <span id="layerTotal">—</span>
+        </div>
+        <input type="range" id="layerSlider" min="0" value="0" style="flex:1; min-width: 0;">
+        <div style="display:flex; gap:0.5rem;">
+          <button class="mat-tab" id="prevBtn">&#8592;</button>
+          <button class="mat-tab" id="nextBtn">&#8594;</button>
+        </div>
+      </div>
+      <div class="canvas-legend">
+        <div class="canvas-legend-item"><div class="canvas-legend-line" style="background: var(--accent);"></div> Print move</div>
+        <div class="canvas-legend-item"><div class="canvas-legend-line" style="background: rgba(255,255,255,0.15);"></div> Travel move</div>
+      </div>
+      <div class="result-stats-grid" id="layerStats" style="margin-top: 1rem;"></div>
+    </div>
+
+    <div class="ad-placeholder" style="margin: 2rem 0 3rem;">
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-size">300 × 250 — Medium Rectangle</div>
+    </div>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Rapid Elevation &mdash; Built by <a href="https://jakebeamer323.github.io/my-site" target="_blank">Jake Lewien</a></p>
+  </footer>
+
+  <script>
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+
+    dropZone.addEventListener('click', () => fileInput.click());
+    dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+    dropZone.addEventListener('drop', e => {
+      e.preventDefault();
+      dropZone.classList.remove('drag-over');
+      if (e.dataTransfer.files[0]) processFile(e.dataTransfer.files[0]);
+    });
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files[0]) processFile(fileInput.files[0]);
+    });
+
+    let layers = [];
+
+    function processFile(file) {
+      const reader = new FileReader();
+      reader.onload = e => parseGcode(e.target.result);
+      reader.readAsText(file);
+    }
+
+    function parseGcode(text) {
+      const lines = text.split('\n');
+      layers = [];
+      let currentLayer = [];
+      let x = 0, y = 0, z = 0, e = 0;
+      let lastZ = -999;
+
+      for (const rawLine of lines) {
+        const line = rawLine.split(';')[0].trim().toUpperCase();
+        if (!line) continue;
+
+        if (line.startsWith('G0') || line.startsWith('G1')) {
+          const params = {};
+          for (const part of line.split(' ').slice(1)) {
+            if (part) params[part[0]] = parseFloat(part.slice(1));
+          }
+
+          const nx = params.X !== undefined ? params.X : x;
+          const ny = params.Y !== undefined ? params.Y : y;
+          const nz = params.Z !== undefined ? params.Z : z;
+          const ne = params.E !== undefined ? params.E : e;
+
+          const isExtrude = ne > e && line.startsWith('G1');
+
+          if (nz > lastZ + 0.001) {
+            if (currentLayer.length > 0) layers.push(currentLayer);
+            currentLayer = [];
+            lastZ = nz;
+          }
+
+          currentLayer.push({ x: nx, y: ny, fromX: x, fromY: y, extrude: isExtrude });
+          x = nx; y = ny; z = nz; e = ne;
+        }
+      }
+      if (currentLayer.length > 0) layers.push(currentLayer);
+
+      if (layers.length === 0) {
+        alert('No layers found. Check that this is a valid G-code file.');
+        return;
+      }
+
+      const slider = document.getElementById('layerSlider');
+      slider.max = layers.length - 1;
+      slider.value = 0;
+      document.getElementById('layerTotal').textContent = layers.length;
+      document.getElementById('viewerWrap').style.display = 'block';
+      drawLayer(0);
+    }
+
+    function drawLayer(idx) {
+      const layer = layers[idx];
+      if (!layer) return;
+
+      document.getElementById('layerNum').textContent = idx + 1;
+
+      // Compute bounding box across ALL layers for stable scaling
+      let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+      for (const l of layers) {
+        for (const m of l) {
+          if (m.x < minX) minX = m.x; if (m.x > maxX) maxX = m.x;
+          if (m.y < minY) minY = m.y; if (m.y > maxY) maxY = m.y;
+        }
+      }
+      const rangeX = maxX - minX || 1;
+      const rangeY = maxY - minY || 1;
+
+      const canvas = document.getElementById('gcCanvas');
+      const size = Math.min(window.innerWidth - 80, 640);
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#111';
+      ctx.fillRect(0, 0, size, size);
+
+      const pad = 24;
+      const scale = Math.min((size - pad*2) / rangeX, (size - pad*2) / rangeY);
+
+      const toCanX = wx => pad + (wx - minX) * scale;
+      const toCanY = wy => size - pad - (wy - minY) * scale;
+
+      let printMoves = 0, travelMoves = 0;
+
+      for (const move of layer) {
+        ctx.beginPath();
+        ctx.moveTo(toCanX(move.fromX), toCanY(move.fromY));
+        ctx.lineTo(toCanX(move.x), toCanY(move.y));
+        if (move.extrude) {
+          ctx.strokeStyle = 'rgba(255, 165, 0, 0.85)';
+          ctx.lineWidth = 1.5;
+          printMoves++;
+        } else {
+          ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+          ctx.lineWidth = 0.5;
+          travelMoves++;
+        }
+        ctx.stroke();
+      }
+
+      document.getElementById('layerStats').innerHTML = `
+        <div class="result-stat"><span class="result-stat-label">Layer</span><span class="result-stat-value">${idx + 1} / ${layers.length}</span></div>
+        <div class="result-stat"><span class="result-stat-label">Print moves</span><span class="result-stat-value">${printMoves}</span></div>
+        <div class="result-stat"><span class="result-stat-label">Travel moves</span><span class="result-stat-value">${travelMoves}</span></div>
+        <div class="result-stat"><span class="result-stat-label">Total layers</span><span class="result-stat-value">${layers.length}</span></div>`;
+    }
+
+    document.getElementById('layerSlider').addEventListener('input', function () {
+      drawLayer(parseInt(this.value));
+    });
+    document.getElementById('prevBtn').addEventListener('click', () => {
+      const s = document.getElementById('layerSlider');
+      if (parseInt(s.value) > 0) { s.value = parseInt(s.value) - 1; drawLayer(parseInt(s.value)); }
+    });
+    document.getElementById('nextBtn').addEventListener('click', () => {
+      const s = document.getElementById('layerSlider');
+      if (parseInt(s.value) < layers.length - 1) { s.value = parseInt(s.value) + 1; drawLayer(parseInt(s.value)); }
+    });
+
+    // Keyboard support
+    document.addEventListener('keydown', e => {
+      if (!layers.length) return;
+      const s = document.getElementById('layerSlider');
+      if (e.key === 'ArrowLeft' && parseInt(s.value) > 0) {
+        s.value = parseInt(s.value) - 1; drawLayer(parseInt(s.value));
+      } else if (e.key === 'ArrowRight' && parseInt(s.value) < layers.length - 1) {
+        s.value = parseInt(s.value) + 1; drawLayer(parseInt(s.value));
+      }
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Custom Test Print Generator — Rapid Elevation</title>
+  <meta name="description" content="Select your calibration goal and get recommended test prints with download links.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">Rapid <span class="logo-accent">Elevation</span></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="diagnosis.html">Print Diagnosis</a>
+      <a href="models.html">Models</a>
+    </div>
+  </nav>
+
+  <main>
+
+    <div class="page-header">
+      <h1>Custom Test Print Generator</h1>
+      <p>Tell us what you're trying to dial in and get a curated set of test prints to use — no guessing which calibration model you actually need.</p>
+    </div>
+
+    <div class="ad-placeholder" style="margin-bottom: 2rem;">
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-size">728 × 90 — Leaderboard</div>
+    </div>
+
+    <div class="diag-form">
+
+      <div class="form-section-label">What are you calibrating?</div>
+      <div class="issue-grid" id="goalGrid" style="margin-bottom: 1.5rem;">
+        <label class="issue-pill"><input type="checkbox" name="goal" value="flow"> Flow / extrusion rate</label>
+        <label class="issue-pill"><input type="checkbox" name="goal" value="temp"> Temperature</label>
+        <label class="issue-pill"><input type="checkbox" name="goal" value="retraction"> Retraction / stringing</label>
+        <label class="issue-pill"><input type="checkbox" name="goal" value="esteps"> E-steps</label>
+        <label class="issue-pill"><input type="checkbox" name="goal" value="bridging"> Bridging &amp; overhangs</label>
+        <label class="issue-pill"><input type="checkbox" name="goal" value="tolerance"> Dimensional tolerance / fit</label>
+        <label class="issue-pill"><input type="checkbox" name="goal" value="surface"> Surface quality / bed adhesion</label>
+        <label class="issue-pill"><input type="checkbox" name="goal" value="speed"> Max speed test</label>
+        <label class="issue-pill"><input type="checkbox" name="goal" value="firstlayer"> First layer leveling</label>
+      </div>
+
+      <hr class="form-divider">
+      <button class="btn" id="genBtn">Get Test Print Recommendations</button>
+
+    </div>
+
+    <div id="resultSection" style="display:none;">
+      <div class="tool-category-label" style="margin-top: 2rem;">Recommended Test Prints</div>
+      <div class="rec-grid" id="recGrid"></div>
+    </div>
+
+    <div class="section" style="padding-top: 2rem;">
+      <div class="tool-category-label" style="margin-top: 0;">Calibration Sequence</div>
+      <div style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.8;">
+        <p style="margin-bottom: 0.5rem;">Calibration is most effective when done in order. Each step affects the next:</p>
+        <ol style="padding-left: 1.25rem; margin: 0;">
+          <li style="margin-bottom: 0.4rem;"><strong style="color: var(--text);">Bed leveling / first layer</strong> — everything else depends on good bed adhesion</li>
+          <li style="margin-bottom: 0.4rem;"><strong style="color: var(--text);">E-steps</strong> — correct extrusion amount before tuning flow or temperature</li>
+          <li style="margin-bottom: 0.4rem;"><strong style="color: var(--text);">Temperature tower</strong> — optimal temp for the rest of calibration</li>
+          <li style="margin-bottom: 0.4rem;"><strong style="color: var(--text);">Flow rate / extrusion multiplier</strong> — fine-tune after E-steps</li>
+          <li style="margin-bottom: 0.4rem;"><strong style="color: var(--text);">Retraction</strong> — tune after flow so stringing isn't confused with under-extrusion</li>
+          <li style="margin-bottom: 0.4rem;"><strong style="color: var(--text);">Pressure Advance / Linear Advance</strong> — final fine-tuning</li>
+          <li style="margin-bottom: 0.4rem;"><strong style="color: var(--text);">Speed / max flow</strong> — push limits only after baseline is solid</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="ad-placeholder" style="margin: 2rem 0 3rem;">
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-size">300 × 250 — Medium Rectangle</div>
+    </div>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Rapid Elevation &mdash; Built by <a href="https://jakebeamer323.github.io/my-site" target="_blank">Jake Lewien</a></p>
+  </footer>
+
+  <script>
+    const TEST_PRINTS = {
+      flow: [
+        {
+          name: 'Single-Wall Flow Cube',
+          desc: 'A 20mm cube with a single perimeter wall. Measure wall thickness with calipers to calculate your extrusion multiplier.',
+          tool: 'flow-rate.html',
+          toolLabel: 'Use Flow Rate Calculator',
+          steps: ['Slice as single perimeter, no infill, no top/bottom layers', 'Print at your normal temperature and speed', 'Measure wall thickness at 4–5 points and average', 'Enter value into the Flow Rate Calculator'],
+        }
+      ],
+      temp: [
+        {
+          name: 'Temperature Tower',
+          desc: 'A tall tower print that steps through temperature zones, letting you compare overhang quality, bridging, layer adhesion, and stringing at each temperature.',
+          tool: 'temp-tower.html',
+          toolLabel: 'Use Temp Tower Analyzer',
+          model: 'models.html#temp-tower',
+          steps: ['Set up the temp tower with the appropriate material presets', 'Print and visually compare each zone', 'Look for the lowest temp with clean bridging, no stringing, good layer bonding', 'Enter results into the Temp Tower Analyzer'],
+        }
+      ],
+      retraction: [
+        {
+          name: 'Stringing Tower / Retraction Tower',
+          desc: 'A multi-post tower print to test retraction distance and speed settings. Each tier uses different retraction values.',
+          tool: 'retraction-tool.html',
+          toolLabel: 'Use Retraction Test Tool',
+          model: 'models.html#retraction-tower',
+          steps: ['Choose extruder type (direct / Bowden)', 'Configure tier settings in retraction tool', 'Print and identify cleanest tier', 'Enter results to get recommended settings'],
+        }
+      ],
+      esteps: [
+        {
+          name: 'E-Steps Calibration (no print needed)',
+          desc: 'Mark 100mm and 120mm on your filament above the extruder. Command the printer to extrude 100mm and measure the actual amount extruded.',
+          tool: 'esteps.html',
+          toolLabel: 'Use E-Steps Calculator',
+          steps: ['Mark filament at 100mm and 120mm above extruder entry', 'Heat nozzle, command extrude 100mm (Pronterface, Octoprint, or LCD menu)', 'Measure actual distance extruded to nearest 0.5mm', 'Enter current steps and measurements into E-Steps Calculator'],
+        }
+      ],
+      bridging: [
+        {
+          name: 'Bridging / Overhang Test',
+          desc: 'A test piece with multiple overhang angles (30°, 45°, 60°, 70°, 80°, 90°) and bridging spans to identify your printer\'s limits.',
+          steps: ['Print the overhang test at your current settings', 'Identify the angle where quality degrades', 'Improve bridging: increase cooling, slow down bridging speed, or enable bridging settings in slicer'],
+        }
+      ],
+      tolerance: [
+        {
+          name: 'Tolerance / Calibration Cube',
+          desc: 'A 20mm XYZ cube. Measure all three dimensions with calipers to check dimensional accuracy.',
+          steps: ['Print the 20mm cube at normal settings', 'Measure X, Y, Z dimensions with calipers', 'Compute deviation: error% = (measured - 20) / 20 × 100', 'Adjust steps/mm for X, Y, or Z axis if deviation > ±0.3mm'],
+        },
+        {
+          name: 'Tolerance Fit Test',
+          desc: 'A male/female fit test in 0.1mm increments. Find the clearance needed for press fits and slip fits.',
+          steps: ['Print the tolerance test set', 'Identify which clearance value gives the desired fit type', 'Add this clearance to future hole/peg designs in your CAD software'],
+        }
+      ],
+      surface: [
+        {
+          name: 'First Layer Calibration Square',
+          desc: 'A single-layer calibration square to tune Z-offset. Look at the width and adhesion of the lines.',
+          steps: ['Print at your current Z-offset setting', 'Lines should be slightly squished, edges touching, no gaps or ridging', 'Adjust Z-offset in 0.02mm increments until first layer looks correct', 'Too close: lines merge and ridge. Too far: lines round up and don\'t stick.'],
+        }
+      ],
+      speed: [
+        {
+          name: 'Speed Benchmark (Benchy)',
+          desc: 'The classic 3D Benchy boat is a comprehensive speed benchmark — it tests overhangs, bridging, text, and curved surfaces all in one.',
+          steps: ['Print at your target fast speed', 'Inspect hull for ghosting/ringing', 'Check chimney top for drooping (cooling)', 'Check cabin windows for bridging quality', 'Note any layer shifts or vibration artifacts'],
+        },
+        {
+          name: 'Vibration Test Cube',
+          desc: 'A simple cube printed at increasing speeds per section to find your resonance threshold.',
+          steps: ['Print at speeds from 60 to 200mm/s in 20mm/s increments', 'Look for ghosting pattern to appear on cube walls', 'Set max print speed just below where ghosting appears'],
+        }
+      ],
+      firstlayer: [
+        {
+          name: 'Bed Level Calibration Print',
+          desc: 'A series of squares or lines at each corner and center of the build plate to verify bed leveling.',
+          steps: ['Manually level the bed or run ABL probe', 'Print the bed-level calibration pattern', 'Check each square for consistent first layer quality', 'Adjust bed knobs or Z-offset offsets for each position until consistent'],
+        }
+      ],
+    };
+
+    document.getElementById('genBtn').addEventListener('click', () => {
+      const selected = [...document.querySelectorAll('input[name="goal"]:checked')].map(c => c.value);
+      if (selected.length === 0) { alert('Select at least one calibration goal.'); return; }
+
+      const recs = [];
+      for (const goal of selected) {
+        const prints = TEST_PRINTS[goal] || [];
+        recs.push(...prints);
+      }
+
+      if (recs.length === 0) {
+        alert('No test prints found for the selected goals.');
+        return;
+      }
+
+      document.getElementById('recGrid').innerHTML = recs.map(r => `
+        <div class="rec-card">
+          <div class="rec-card-label">${r.name}</div>
+          <div class="rec-card-why">${r.desc}</div>
+          ${r.steps ? `<ol style="margin: 0.75rem 0 0; padding-left: 1.25rem; font-size: 0.85rem; color: var(--text-muted); line-height: 1.7;">${r.steps.map(s => `<li>${s}</li>`).join('')}</ol>` : ''}
+          ${r.tool || r.model ? `<div style="display:flex; gap:0.5rem; flex-wrap:wrap; margin-top: 1rem;">
+            ${r.tool ? `<a href="${r.tool}" class="btn btn-outline" style="font-size:0.82rem; padding: 0.35rem 0.8rem;">${r.toolLabel}</a>` : ''}
+            ${r.model ? `<a href="${r.model}" class="btn btn-outline" style="font-size:0.82rem; padding: 0.35rem 0.8rem;">↗ Get STL</a>` : ''}
+          </div>` : ''}
+        </div>
+      `).join('');
+
+      document.getElementById('resultSection').style.display = 'block';
+      document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+  </script>
+
+</body>
+</html>

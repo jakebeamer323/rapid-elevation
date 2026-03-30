@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pressure Advance / K-factor — Rapid Elevation</title>
+  <meta name="description" content="Tune Pressure Advance (Klipper) or Linear Advance (Marlin) for sharper corners and cleaner line starts.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">Rapid <span class="logo-accent">Elevation</span></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="diagnosis.html">Print Diagnosis</a>
+      <a href="models.html">Models</a>
+    </div>
+  </nav>
+
+  <main>
+
+    <div class="page-header">
+      <h1>Pressure Advance / K-factor</h1>
+      <p>Pressure Advance (Klipper) and Linear Advance (Marlin) compensate for pressure buildup in the hotend to produce sharper corners, cleaner line starts, and less blobbing at direction changes.</p>
+    </div>
+
+    <div class="ad-placeholder" style="margin-bottom: 2rem;">
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-size">728 × 90 — Leaderboard</div>
+    </div>
+
+    <!-- Firmware selector -->
+    <div class="diag-form" style="margin-bottom: 2rem;">
+      <div class="form-section-label">Firmware</div>
+      <div style="display: flex; gap: 0.5rem; margin-bottom: 1.5rem;" id="fwTabs">
+        <button class="mat-tab active" data-fw="klipper">Klipper (Pressure Advance)</button>
+        <button class="mat-tab" data-fw="marlin">Marlin (Linear Advance)</button>
+      </div>
+
+      <div id="klipperPanel">
+        <div class="form-section-label">Pressure Advance Tuning (Klipper)</div>
+        <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 1rem;">
+          The recommended method is to print the Klipper PA tower using the built-in
+          <code style="background: var(--surface-2); padding: 0.1em 0.35em; border-radius: 4px; font-size: 0.9em;">TUNING_TOWER</code>
+          macro, then visually identify the layer with the cleanest corners and least blobbing.
+        </p>
+        <div class="settings-grid" style="margin-bottom: 1.5rem;">
+          <div class="field">
+            <label for="paStart">PA Start Value</label>
+            <input type="number" id="paStart" value="0" step="0.005" min="0" max="2">
+            <span class="field-hint">Usually 0 — PA tower starts here</span>
+          </div>
+          <div class="field">
+            <label for="paFactor">Factor (increment per mm)</label>
+            <input type="number" id="paFactor" value="0.005" step="0.001" min="0.001" max="0.1">
+            <span class="field-hint">Default 0.005 for standard PA towers</span>
+          </div>
+          <div class="field">
+            <label for="paBestLayer">Best Layer Height (mm from base)</label>
+            <input type="number" id="paBestLayer" placeholder="e.g. 30" step="1" min="0" max="300">
+            <span class="field-hint">Height of the cleanest-looking layer on your test print</span>
+          </div>
+        </div>
+        <button class="btn" id="paCalcBtn">Calculate PA Value</button>
+        <div class="result-wrap" id="paResult" style="margin-top: 1.5rem;">
+          <div class="result-sublabel">Recommended PA Value</div>
+          <div class="result-value-row">
+            <span class="result-big-value" id="paVal">—</span>
+          </div>
+          <div class="result-secondary" id="paSec"></div>
+        </div>
+      </div>
+
+      <div id="marlinPanel" style="display:none;">
+        <div class="form-section-label">Linear Advance Tuning (Marlin)</div>
+        <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 1rem;">
+          Use the Marlin K-factor calibration pattern (generated at <strong>marlinfw.org/tools/lin_advance/k-factor.html</strong>).
+          Print the pattern, identify the line with the most consistent width from start to end, and note its K value.
+        </p>
+        <div class="settings-grid" style="margin-bottom: 1.5rem;">
+          <div class="field">
+            <label for="kValue">Best K Value from Pattern</label>
+            <input type="number" id="kValue" placeholder="e.g. 0.08" step="0.01" min="0" max="5">
+            <span class="field-hint">Read directly from the test print label</span>
+          </div>
+        </div>
+        <button class="btn" id="kCalcBtn">Generate M900 Command</button>
+        <div class="result-wrap" id="kResult" style="margin-top: 1.5rem;">
+          <div class="result-sublabel">Marlin Command</div>
+          <div class="result-value-row">
+            <span class="result-big-value" id="kVal" style="font-size: 1.4rem; font-family: monospace;">—</span>
+          </div>
+          <div class="result-secondary" id="kSec"></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Reference section -->
+    <div class="section" style="padding-top: 2rem;">
+      <div class="tool-category-label" style="margin-top: 0;">Typical Value Ranges</div>
+      <div class="calc-table-wrap">
+        <table class="calc-table">
+          <thead>
+            <tr>
+              <th>Setup</th>
+              <th>Typical PA / K Range</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="layer-val">Direct drive (Klipper)</td>
+              <td>0.02 – 0.08</td>
+              <td>Lower values typical for direct drive</td>
+            </tr>
+            <tr>
+              <td class="layer-val">Bowden (Klipper)</td>
+              <td>0.4 – 1.5</td>
+              <td>Much higher due to tube compliance</td>
+            </tr>
+            <tr>
+              <td class="layer-val">Direct drive (Marlin K)</td>
+              <td>0.05 – 0.2</td>
+              <td>Depends heavily on extruder and hotend</td>
+            </tr>
+            <tr>
+              <td class="layer-val">Bowden (Marlin K)</td>
+              <td>0.5 – 2.0</td>
+              <td>Enable LA in Marlin config first</td>
+            </tr>
+            <tr>
+              <td class="layer-val">PLA</td>
+              <td>Lower end</td>
+              <td>Less viscous at print temps</td>
+            </tr>
+            <tr>
+              <td class="layer-val">PETG / ABS / Nylon</td>
+              <td>Higher end</td>
+              <td>More pressure buildup at higher temps</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="tool-category-label">Tips</div>
+      <div style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.8;">
+        <p style="margin-bottom: 0.75rem;"><strong style="color: var(--text);">Tune per filament, not per printer.</strong> Different materials have different viscosities — you'll likely need different values for PLA vs PETG vs Nylon even on the same machine.</p>
+        <p style="margin-bottom: 0.75rem;"><strong style="color: var(--text);">Pressure Advance interacts with print speed.</strong> If you change your print speed significantly, re-tune PA. Higher speeds need higher values.</p>
+        <p><strong style="color: var(--text);">Set in your printer config / start G-code.</strong> For Klipper, set <code style="background: var(--surface-2); padding: 0.1em 0.3em; border-radius: 4px;">pressure_advance</code> in printer.cfg. For Marlin, add <code style="background: var(--surface-2); padding: 0.1em 0.3em; border-radius: 4px;">M900 K[value]</code> to your start G-code.</p>
+      </div>
+    </div>
+
+    <div class="ad-placeholder" style="margin: 2rem 0 3rem;">
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-size">300 × 250 — Medium Rectangle</div>
+    </div>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Rapid Elevation &mdash; Built by <a href="https://jakebeamer323.github.io/my-site" target="_blank">Jake Lewien</a></p>
+  </footer>
+
+  <script>
+    // Tab switching
+    document.getElementById('fwTabs').addEventListener('click', e => {
+      const btn = e.target.closest('[data-fw]');
+      if (!btn) return;
+      document.querySelectorAll('#fwTabs .mat-tab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const fw = btn.dataset.fw;
+      document.getElementById('klipperPanel').style.display = fw === 'klipper' ? '' : 'none';
+      document.getElementById('marlinPanel').style.display = fw === 'marlin' ? '' : 'none';
+    });
+
+    document.getElementById('paCalcBtn').addEventListener('click', () => {
+      const start = parseFloat(document.getElementById('paStart').value);
+      const factor = parseFloat(document.getElementById('paFactor').value);
+      const height = parseFloat(document.getElementById('paBestLayer').value);
+      if (isNaN(height) || height < 0) { alert('Enter the best layer height.'); return; }
+      const pa = start + factor * height;
+      document.getElementById('paVal').textContent = pa.toFixed(4);
+      document.getElementById('paSec').innerHTML =
+        `<strong>Set in printer.cfg:</strong> <code style="background: var(--surface-2); padding: 0.1em 0.35em; border-radius:4px;">pressure_advance: ${pa.toFixed(4)}</code><br><br>` +
+        `Or apply live: <code style="background: var(--surface-2); padding: 0.1em 0.35em; border-radius:4px;">SET_PRESSURE_ADVANCE ADVANCE=${pa.toFixed(4)}</code>`;
+      document.getElementById('paResult').style.display = 'block';
+    });
+
+    document.getElementById('kCalcBtn').addEventListener('click', () => {
+      const k = parseFloat(document.getElementById('kValue').value);
+      if (isNaN(k) || k < 0) { alert('Enter the K value from your test print.'); return; }
+      document.getElementById('kVal').textContent = `M900 K${k.toFixed(2)}`;
+      document.getElementById('kSec').innerHTML =
+        `Add <code style="background: var(--surface-2); padding: 0.1em 0.35em; border-radius:4px;">M900 K${k.toFixed(2)}</code> to your printer start G-code, after the temperature wait commands.<br><br>` +
+        `Verify Linear Advance is compiled into your Marlin firmware — it is disabled by default and must be enabled in <code style="background: var(--surface-2); padding: 0.1em 0.35em; border-radius:4px;">Configuration_adv.h</code>.`;
+      document.getElementById('kResult').style.display = 'block';
+    });
+  </script>
+
+</body>
+</html>

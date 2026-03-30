@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Model Orientation Calculator — Rapid Elevation</title>
+  <meta name="description" content="Answer a few questions about your part to get the optimal print orientation for strength, surface quality, or support minimization.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">Rapid <span class="logo-accent">Elevation</span></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="diagnosis.html">Print Diagnosis</a>
+      <a href="models.html">Models</a>
+    </div>
+  </nav>
+
+  <main>
+
+    <div class="page-header">
+      <h1>Model Orientation Calculator</h1>
+      <p>Print orientation affects strength, surface quality, support requirements, and print time more than almost any other decision. Answer a few questions about your part and get a concrete recommendation.</p>
+    </div>
+
+    <div class="ad-placeholder" style="margin-bottom: 2rem;">
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-size">728 × 90 — Leaderboard</div>
+    </div>
+
+    <div class="diag-form">
+
+      <div class="form-section-label">Part type</div>
+      <div class="issue-grid" id="partType" style="margin-bottom: 1.5rem;">
+        <label class="issue-pill"><input type="radio" name="partType" value="structural"> Structural / load-bearing</label>
+        <label class="issue-pill"><input type="radio" name="partType" value="cosmetic"> Cosmetic / display piece</label>
+        <label class="issue-pill"><input type="radio" name="partType" value="functional"> Functional mechanism / snap fit</label>
+        <label class="issue-pill"><input type="radio" name="partType" value="prototype"> Prototype / test fit</label>
+        <label class="issue-pill"><input type="radio" name="partType" value="flexible"> Flexible / living hinge</label>
+      </div>
+
+      <div class="form-section-label">Primary goal</div>
+      <div class="issue-grid" id="primaryGoal" style="margin-bottom: 1.5rem;">
+        <label class="issue-pill"><input type="radio" name="primaryGoal" value="strength"> Maximum strength</label>
+        <label class="issue-pill"><input type="radio" name="primaryGoal" value="surface"> Best surface quality</label>
+        <label class="issue-pill"><input type="radio" name="primaryGoal" value="supports"> Minimize supports</label>
+        <label class="issue-pill"><input type="radio" name="primaryGoal" value="speed"> Fastest print</label>
+        <label class="issue-pill"><input type="radio" name="primaryGoal" value="accuracy"> Dimensional accuracy</label>
+      </div>
+
+      <div class="form-section-label">Part geometry</div>
+      <div class="settings-grid" style="margin-bottom: 1.5rem;">
+        <div class="field">
+          <label>Does the part have overhangs over 45°?</label>
+          <div class="issue-grid" style="margin-top: 0.5rem;">
+            <label class="issue-pill"><input type="radio" name="overhangs" value="yes"> Yes</label>
+            <label class="issue-pill"><input type="radio" name="overhangs" value="no"> No</label>
+            <label class="issue-pill"><input type="radio" name="overhangs" value="unsure"> Not sure</label>
+          </div>
+        </div>
+        <div class="field">
+          <label>Is there a critical surface that must look perfect?</label>
+          <div class="issue-grid" style="margin-top: 0.5rem;">
+            <label class="issue-pill"><input type="radio" name="critSurface" value="yes"> Yes</label>
+            <label class="issue-pill"><input type="radio" name="critSurface" value="no"> No</label>
+          </div>
+        </div>
+        <div class="field">
+          <label>Is the part tall and narrow (likely to wobble)?</label>
+          <div class="issue-grid" style="margin-top: 0.5rem;">
+            <label class="issue-pill"><input type="radio" name="tallNarrow" value="yes"> Yes</label>
+            <label class="issue-pill"><input type="radio" name="tallNarrow" value="no"> No</label>
+          </div>
+        </div>
+        <div class="field">
+          <label>Where is the main load / stress direction?</label>
+          <div class="issue-grid" style="margin-top: 0.5rem;">
+            <label class="issue-pill"><input type="radio" name="loadDir" value="vertical"> Vertical (pulling apart layers)</label>
+            <label class="issue-pill"><input type="radio" name="loadDir" value="horizontal"> Horizontal (along layers)</label>
+            <label class="issue-pill"><input type="radio" name="loadDir" value="mixed"> Mixed / unsure</label>
+          </div>
+        </div>
+      </div>
+
+      <hr class="form-divider">
+      <button class="btn" id="calcBtn">Get Orientation Recommendation</button>
+
+    </div>
+
+    <div class="result-wrap" id="resultWrap">
+      <div class="result-sublabel">Recommended Orientation</div>
+      <div class="result-value-row">
+        <span class="result-big-value" id="orientVal" style="font-size: 1.6rem;"></span>
+      </div>
+      <div class="result-delta" id="resultDelta"></div>
+      <div class="result-secondary" id="resultSecondary"></div>
+    </div>
+
+    <!-- FDM orientation principles -->
+    <div class="section" style="padding-top: 2rem;">
+      <div class="tool-category-label" style="margin-top: 0;">FDM Orientation Principles</div>
+      <div style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.8;">
+        <p style="margin-bottom: 0.75rem;"><strong style="color: var(--text);">Layer lines are the weakest point.</strong> FDM parts are anisotropic — they're strongest along layer lines (XY) and weakest across them (Z). Orient parts so the primary load direction is along layers, not pulling layers apart.</p>
+        <p style="margin-bottom: 0.75rem;"><strong style="color: var(--text);">Top and bottom surfaces look best.</strong> The first and last layers print flat against a surface, so they look much smoother than vertical (side) walls. Put the most visible face flat against the bed or as the top surface.</p>
+        <p style="margin-bottom: 0.75rem;"><strong style="color: var(--text);">45° is the support cutoff.</strong> Most slicers add supports for overhangs steeper than 45°. Rotating the part to reduce overhang angles can eliminate support structures entirely.</p>
+        <p><strong style="color: var(--text);">Tall and narrow = more resonance.</strong> Tall prints experience more vibration and can wobble at the top, blurring layer boundaries. If your part is tall, consider splitting it or slowing down the upper layers.</p>
+      </div>
+    </div>
+
+    <div class="ad-placeholder" style="margin: 2rem 0 3rem;">
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-size">300 × 250 — Medium Rectangle</div>
+    </div>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Rapid Elevation &mdash; Built by <a href="https://jakebeamer323.github.io/my-site" target="_blank">Jake Lewien</a></p>
+  </footer>
+
+  <script>
+    document.getElementById('calcBtn').addEventListener('click', () => {
+      const partType    = document.querySelector('input[name="partType"]:checked')?.value;
+      const goal        = document.querySelector('input[name="primaryGoal"]:checked')?.value;
+      const overhangs   = document.querySelector('input[name="overhangs"]:checked')?.value;
+      const critSurface = document.querySelector('input[name="critSurface"]:checked')?.value;
+      const tallNarrow  = document.querySelector('input[name="tallNarrow"]:checked')?.value;
+      const loadDir     = document.querySelector('input[name="loadDir"]:checked')?.value;
+
+      if (!partType || !goal) { alert('Please select a part type and primary goal.'); return; }
+
+      let orientation = '';
+      let reasoning = [];
+      let tips = [];
+
+      // Core recommendation logic
+      if (goal === 'strength' || partType === 'structural') {
+        if (loadDir === 'vertical') {
+          orientation = 'Orient so load runs along layer lines (flat / horizontal print)';
+          reasoning.push('Load direction is vertical — print the part so stress runs along layers, not between them.');
+        } else if (loadDir === 'horizontal') {
+          orientation = 'Orient tall — layers will align with load direction';
+          reasoning.push('Horizontal load runs along layers in a tall-oriented print, maximizing layer bond strength along the stress path.');
+        } else {
+          orientation = 'Largest flat face on the bed (maximize layer count and contact)';
+          reasoning.push('For mixed or unknown loads, maximizing the number of layers and bed contact surface gives the best all-around strength.');
+        }
+        tips.push('Use 40–60% infill and increase perimeter count to 3–4 walls for structural parts.');
+        tips.push('PETG and ASA have better layer adhesion than PLA — consider material choice for critical parts.');
+      } else if (goal === 'surface') {
+        if (critSurface === 'yes') {
+          orientation = 'Put critical surface face-down on the bed (or as top surface)';
+          reasoning.push('The bottom and top layers are the smoothest — placing the critical surface there gives the best appearance.');
+        } else {
+          orientation = 'Largest flat face on the bed, visible side up';
+          reasoning.push('Lay the largest flat face on the bed to minimize visible layer lines on the main body of the part.');
+        }
+        tips.push('Enable "ironing" on top surfaces in PrusaSlicer / OrcaSlicer for an ultra-smooth finish.');
+        tips.push('Use a finer layer height (0.1–0.15mm) for smoother visible surfaces.');
+      } else if (goal === 'supports') {
+        if (overhangs === 'yes') {
+          orientation = 'Rotate to place overhangs closest to 45° or flat against the build plate';
+          reasoning.push('Rotating the part to reduce overhang angles below 45° can eliminate support structures entirely, saving filament and post-processing time.');
+        } else {
+          orientation = 'Any orientation works — no significant overhangs detected';
+          reasoning.push('Without steep overhangs, support requirements are minimal. Choose orientation based on strength or surface quality instead.');
+        }
+        tips.push('Try rotating in 5–10° increments and preview in your slicer to find the support-free sweet spot.');
+        tips.push('Bridging (horizontal spans with no support) works up to ~60mm for most materials — use this to bridge short gaps instead of adding supports.');
+      } else if (goal === 'speed') {
+        orientation = 'Shortest Z height on the bed (minimize layer count)';
+        reasoning.push('Print time is roughly proportional to layer count. Orient the part so its smallest dimension is the Z height to minimize layers.');
+        tips.push('Use 0.3mm layer height for draft prints to cut time by ~33% vs 0.2mm.');
+        tips.push('Wide, flat parts print faster than tall, narrow ones.');
+      } else if (goal === 'accuracy') {
+        orientation = 'Critical dimensions in XY plane (not Z)';
+        reasoning.push('XY accuracy is typically ±0.1–0.2mm; Z accuracy is ±layer height. Place the most dimensionally critical features in XY for tightest tolerances.');
+        tips.push('Holes print slightly undersized in FDM — add 0.1–0.2mm to holes that need to accept hardware.');
+        tips.push('Horizontal holes (parallel to build plate) are more accurate than vertical ones (which are limited by layer stacking).');
+      }
+
+      if (tallNarrow === 'yes') {
+        tips.push('Tall, narrow parts: add a wide brim for adhesion and consider splitting into separate parts that bolt together to reduce height and wobble.');
+      }
+
+      if (partType === 'flexible') {
+        tips.push('Flexible parts (TPU/TPE): orient so flex direction is across layers, not along them — TPU is weakest in layer separation.');
+      }
+
+      if (partType === 'functional') {
+        tips.push('Snap fits and press-fit features: orient so the snap arm flexes along the layer direction (XY) for maximum flex fatigue life.');
+      }
+
+      document.getElementById('orientVal').textContent = orientation;
+
+      const delta = document.getElementById('resultDelta');
+      delta.className = 'result-delta neutral';
+      delta.textContent = reasoning[0] || '';
+
+      let secondary = '';
+      if (reasoning.length > 1) {
+        secondary += '<strong>Reasoning:</strong><ul style="margin: 0.5rem 0 1rem; padding-left: 1.25rem;">' +
+          reasoning.map(r => `<li style="margin-bottom: 0.25rem;">${r}</li>`).join('') + '</ul>';
+      }
+      if (tips.length > 0) {
+        secondary += '<strong>Additional tips:</strong><ul style="margin: 0.5rem 0 0; padding-left: 1.25rem;">' +
+          tips.map(t => `<li style="margin-bottom: 0.25rem;">${t}</li>`).join('') + '</ul>';
+      }
+      document.getElementById('resultSecondary').innerHTML = secondary;
+
+      const rw = document.getElementById('resultWrap');
+      rw.style.display = 'block';
+      rw.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+  </script>
+
+</body>
+</html>
