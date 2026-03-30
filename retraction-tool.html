@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Retraction Test Tool — Rapid Elevation</title>
+  <meta name="description" content="Find your optimal retraction distance and speed. Select your extruder type, print a retraction tower, and describe each tier to get a tuned recommendation.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">Rapid <span class="logo-accent">Elevation</span></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="diagnosis.html">Print Diagnosis</a>
+      <a href="models.html">Models</a>
+    </div>
+  </nav>
+
+  <main>
+
+    <div class="page-header">
+      <h1>Retraction Test Tool</h1>
+      <p>Print a retraction tower, describe what each tier looks like, and get a tuned retraction distance recommendation — matched to your extruder type.</p>
+    </div>
+
+    <!-- Ad placeholder -->
+    <div class="ad-placeholder" style="margin-bottom: 2rem;">
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-size">728 × 90 — Leaderboard</div>
+    </div>
+
+    <!-- Link to model -->
+    <a href="models.html#retraction-tower" class="model-link-hint">↗ Download the Retraction Tower STL from our Models page</a>
+
+    <!-- Analyzer Form -->
+    <div class="diag-form">
+
+      <div class="form-section-label">Step 1 — Select your extruder type</div>
+      <div class="settings-grid" style="margin-bottom: 1.5rem;">
+        <div class="field">
+          <label for="extruderType">Extruder Type</label>
+          <select id="extruderType">
+            <option value="">— Select extruder type —</option>
+            <option value="direct">Direct Drive</option>
+            <option value="bowden">Bowden</option>
+          </select>
+          <span class="field-hint">Tiers auto-populate with the correct range for your setup</span>
+        </div>
+        <div class="field">
+          <label for="material">Material</label>
+          <select id="material">
+            <option value="">— Optional —</option>
+            <option value="PLA">PLA</option>
+            <option value="PETG">PETG</option>
+            <option value="ABS">ABS</option>
+            <option value="ASA">ASA</option>
+            <option value="TPU">TPU</option>
+          </select>
+          <span class="field-hint">Used to add material-specific tips to your result</span>
+        </div>
+      </div>
+
+      <div class="form-section-label">Step 2 — Describe each tier</div>
+      <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1.25rem; line-height: 1.7;">
+        Starting from the <strong>bottom</strong> tier (lowest retraction distance) to the top (highest), describe what you see around the pegs and travel moves.
+        Look for strings, wisps, gaps, or popping sounds during the print.
+      </p>
+
+      <div class="zones-wrap" id="tiersWrap">
+        <p style="font-size: 0.88rem; color: var(--text-dim); padding: 1rem 0;">Select an extruder type above to load the tiers.</p>
+      </div>
+
+      <hr class="form-divider">
+
+      <button class="btn" id="analyzeBtn">Find My Optimal Retraction</button>
+
+    </div>
+
+    <!-- Result -->
+    <div class="result-wrap" id="resultWrap">
+      <div class="result-sublabel">Recommended Retraction Distance</div>
+      <div class="result-value-row">
+        <span class="result-big-value" id="retractionVal">—</span>
+        <span class="result-big-unit">mm</span>
+      </div>
+      <div class="result-delta" id="resultDelta"></div>
+      <div class="result-explanation" id="resultExplanation"></div>
+      <div class="result-secondary" id="resultSecondary"></div>
+      <div class="result-warning" id="resultWarning" style="display:none;"></div>
+    </div>
+
+    <!-- Ad placeholder -->
+    <div class="ad-placeholder" style="margin-bottom: 3rem;">
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-size">300 × 250 — Medium Rectangle</div>
+    </div>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Rapid Elevation &mdash; Built by <a href="https://jakebeamer323.github.io/my-site" target="_blank">Jake Lewien</a></p>
+  </footer>
+
+  <script>
+    const EXTRUDER_TIERS = {
+      direct: [0.5, 1.0, 1.5, 2.0, 2.5, 3.0],
+      bowden: [2.0, 3.0, 4.0, 5.0, 6.0, 7.0],
+    };
+
+    const SPEED_TIPS = {
+      direct: '35–45 mm/s is a good starting retraction speed for direct drive. Higher speeds can cause filament grinding.',
+      bowden: '40–60 mm/s works well for Bowden setups. Test a few speeds — too slow and you lose the retraction benefit.',
+    };
+
+    const MATERIAL_NOTES = {
+      PLA:  'PLA strings easily at high temps. Keep retraction at the minimum clean value and pair with a lower nozzle temp.',
+      PETG: 'PETG is stringy by nature. Avoid over-retraction — it causes popping and gaps. Wet filament worsens stringing significantly.',
+      ABS:  'ABS is less prone to stringing than PETG. Focus on layer adhesion; excessive retraction can cause clogs.',
+      ASA:  'ASA behaves similarly to ABS. Lower retraction speeds help avoid grinding on this stiffer material.',
+      TPU:  'TPU (flexible) should use minimal or zero retraction — the material stretches instead of retracting cleanly. Over-retraction causes jams.',
+    };
+
+    const extruderSelect = document.getElementById('extruderType');
+    const materialSelect = document.getElementById('material');
+    const tiersWrap = document.getElementById('tiersWrap');
+    const analyzeBtn = document.getElementById('analyzeBtn');
+    const resultWrap = document.getElementById('resultWrap');
+    const retractionVal = document.getElementById('retractionVal');
+    const resultDelta = document.getElementById('resultDelta');
+    const resultExplanation = document.getElementById('resultExplanation');
+    const resultSecondary = document.getElementById('resultSecondary');
+    const resultWarning = document.getElementById('resultWarning');
+
+    extruderSelect.addEventListener('change', buildTiers);
+
+    function buildTiers() {
+      const type = extruderSelect.value;
+      if (!type) {
+        tiersWrap.innerHTML = '<p style="font-size: 0.88rem; color: var(--text-dim); padding: 1rem 0;">Select an extruder type above to load the tiers.</p>';
+        return;
+      }
+      const distances = EXTRUDER_TIERS[type];
+      let html = '';
+      distances.forEach((dist, i) => {
+        const isBottom = i === 0;
+        const isTop = i === distances.length - 1;
+        html += `
+          <div class="zone-row">
+            <div class="zone-info">
+              <span class="zone-num">Tier ${i + 1}</span>
+              <span class="zone-val">${dist}mm</span>
+              ${isBottom ? '<span class="zone-tag bottom">Lowest</span>' : ''}
+              ${isTop ? '<span class="zone-tag">Highest</span>' : ''}
+            </div>
+            <select class="zone-select" id="tier-${i}">
+              <option value="">— Describe this tier —</option>
+              <option value="clean">Clean — no strings, clean travel moves, sharp features</option>
+              <option value="minor">Minor stringing — thin wisps or a few short hairs</option>
+              <option value="heavy">Heavy stringing — long strings, messy between features</option>
+              <option value="over">Over-retraction — gaps at start of lines, popping, grinding sounds</option>
+            </select>
+          </div>`;
+      });
+      tiersWrap.innerHTML = html;
+      resultWrap.style.display = 'none';
+    }
+
+    analyzeBtn.addEventListener('click', () => {
+      const type = extruderSelect.value;
+      if (!type) { alert('Please select your extruder type first.'); return; }
+
+      const distances = EXTRUDER_TIERS[type];
+      const tiers = [];
+      let allFilled = true;
+
+      distances.forEach((dist, i) => {
+        const sel = document.getElementById(`tier-${i}`);
+        if (!sel || !sel.value) { allFilled = false; }
+        else { tiers.push({ dist, descriptor: sel.value, index: i }); }
+      });
+
+      if (!allFilled) { alert('Please describe all tiers before analyzing.'); return; }
+
+      const mat = materialSelect.value;
+
+      const cleanTiers = tiers.filter(t => t.descriptor === 'clean');
+      const minorTiers = tiers.filter(t => t.descriptor === 'minor');
+      const overTiers = tiers.filter(t => t.descriptor === 'over');
+
+      let recommended = null;
+      let rationale = '';
+      let warning = '';
+
+      if (cleanTiers.length > 0) {
+        // Lowest clean distance = least retraction needed = least risk of grinding/gaps
+        recommended = cleanTiers.reduce((best, t) => t.dist < best.dist ? t : best);
+        rationale = `Tier ${recommended.index + 1} (${recommended.dist}mm) is the lowest retraction distance that produces clean results with no stringing. Using the minimum effective retraction reduces the risk of grinding, gaps, and hotend jams.`;
+      } else if (minorTiers.length > 0) {
+        recommended = minorTiers.reduce((best, t) => t.dist < best.dist ? t : best);
+        rationale = `No perfectly clean tier found. Tier ${recommended.index + 1} (${recommended.dist}mm) had minimal stringing and is the best available result. Pair this with a slightly lower nozzle temperature to reduce oozing further.`;
+        warning = 'No tier printed completely clean. Try lowering your nozzle temperature by 5°C and re-running the test — temperature has a bigger impact on stringing than retraction distance.';
+      } else if (overTiers.length > 0 && !cleanTiers.length && !minorTiers.length) {
+        // All tiers either heavy string or over-retraction — something else is wrong
+        const heavyTiers = tiers.filter(t => t.descriptor === 'heavy');
+        recommended = heavyTiers.length > 0
+          ? heavyTiers.reduce((best, t) => t.dist < best.dist ? t : best)
+          : tiers[0];
+        rationale = `Results across all tiers were poor — either heavy stringing or over-retraction. This usually indicates a temperature issue rather than a retraction issue.`;
+        warning = 'Your stringing likely has a temperature root cause. Lower your nozzle temp by 5–10°C and re-run this test. Also check for wet filament, which dramatically worsens stringing.';
+      } else {
+        const heavyTiers = tiers.filter(t => t.descriptor === 'heavy');
+        recommended = heavyTiers.reduce((best, t) => t.dist < best.dist ? t : best);
+        rationale = `Only heavy-stringing tiers found. Tier ${recommended.index + 1} (${recommended.dist}mm) is recommended as a starting point. Consider lowering nozzle temperature and re-running.`;
+        warning = 'Heavy stringing across all tiers. Check nozzle temperature — it may be too high for your filament. Also try printing faster to reduce ooze during travel.';
+      }
+
+      retractionVal.textContent = recommended.dist;
+
+      const typeLabel = type === 'direct' ? 'Direct Drive' : 'Bowden';
+      const range = type === 'direct' ? '0.5–3mm' : '2–7mm';
+      resultDelta.className = 'result-delta neutral';
+      resultDelta.textContent = `${typeLabel} setup — typical range is ${range}.`;
+
+      resultExplanation.textContent = rationale;
+
+      let secondary = `<strong>Retraction speed:</strong> ${SPEED_TIPS[type]}<br><br>`;
+      secondary += `<strong>Applying your setting:</strong> In your slicer, set retraction distance to <strong>${recommended.dist}mm</strong>. Apply to both the print profile and any material-specific overrides. `;
+      if (mat && MATERIAL_NOTES[mat]) {
+        secondary += `<br><br><strong>${mat} note:</strong> ${MATERIAL_NOTES[mat]}`;
+      }
+      if (overTiers.length > 0) {
+        secondary += `<br><br><strong>Over-retraction tiers detected:</strong> Avoid distances at or above ${overTiers.map(t => t.dist + 'mm').join(', ')} — those caused gaps and grinding.`;
+      }
+      resultSecondary.innerHTML = secondary;
+
+      if (warning) {
+        resultWarning.textContent = warning;
+        resultWarning.style.display = 'block';
+      } else {
+        resultWarning.style.display = 'none';
+      }
+
+      resultWrap.style.display = 'block';
+      resultWrap.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+  </script>
+
+</body>
+</html>

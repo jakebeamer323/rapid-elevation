@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Temperature Tower Analyzer — Rapid Elevation</title>
+  <meta name="description" content="Analyze your temperature tower results and find the optimal nozzle temperature for your filament. Select your material and describe each zone to get a recommendation.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">Rapid <span class="logo-accent">Elevation</span></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="diagnosis.html">Print Diagnosis</a>
+      <a href="models.html">Models</a>
+    </div>
+  </nav>
+
+  <main>
+
+    <div class="page-header">
+      <h1>Temperature Tower Analyzer</h1>
+      <p>Print a temperature tower, then describe what each zone looks like. The tool finds your optimal nozzle temperature — balancing surface quality, bridging, and stringing.</p>
+    </div>
+
+    <!-- Ad placeholder -->
+    <div class="ad-placeholder" style="margin-bottom: 2rem;">
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-size">728 × 90 — Leaderboard</div>
+    </div>
+
+    <!-- Link to model -->
+    <a href="models.html#temp-tower" class="model-link-hint">↗ Download the Temperature Tower STL from our Models page</a>
+
+    <!-- Analyzer Form -->
+    <div class="diag-form">
+
+      <div class="form-section-label">Step 1 — Select your material</div>
+      <div class="settings-grid" style="margin-bottom: 1.5rem;">
+        <div class="field">
+          <label for="material">Material</label>
+          <select id="material">
+            <option value="">— Select material —</option>
+            <option value="PLA">PLA</option>
+            <option value="PETG">PETG</option>
+            <option value="ABS">ABS</option>
+            <option value="ASA">ASA</option>
+            <option value="TPU">TPU</option>
+          </select>
+          <span class="field-hint">Zones will auto-populate with typical temperatures for your material</span>
+        </div>
+      </div>
+
+      <div class="form-section-label">Step 2 — Describe each zone</div>
+      <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1.25rem; line-height: 1.7;">
+        Starting from the <strong>top</strong> of your tower (highest temp) down to the bottom (lowest temp), select the closest description for each zone.
+        Focus on stringing, surface texture, bridge quality, and overall appearance.
+      </p>
+
+      <div class="zones-wrap" id="zonesWrap">
+        <p style="font-size: 0.88rem; color: var(--text-dim); padding: 1rem 0;">Select a material above to load the zones.</p>
+      </div>
+
+      <hr class="form-divider">
+
+      <button class="btn" id="analyzeBtn">Find My Optimal Temperature</button>
+
+    </div>
+
+    <!-- Result -->
+    <div class="result-wrap" id="resultWrap">
+      <div class="result-sublabel">Recommended Nozzle Temperature</div>
+      <div class="result-value-row">
+        <span class="result-big-value" id="tempVal">—</span>
+        <span class="result-big-unit">°C</span>
+      </div>
+      <div class="result-delta" id="resultDelta"></div>
+      <div class="result-explanation" id="resultExplanation"></div>
+      <div class="result-secondary" id="resultSecondary"></div>
+      <div class="result-warning" id="resultWarning" style="display:none;"></div>
+    </div>
+
+    <!-- Ad placeholder -->
+    <div class="ad-placeholder" style="margin-bottom: 3rem;">
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-size">300 × 250 — Medium Rectangle</div>
+    </div>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Rapid Elevation &mdash; Built by <a href="https://jakebeamer323.github.io/my-site" target="_blank">Jake Lewien</a></p>
+  </footer>
+
+  <script>
+    const MATERIAL_ZONES = {
+      PLA:  [220, 215, 210, 205, 200, 195],
+      PETG: [250, 245, 240, 235, 230, 225],
+      ABS:  [255, 250, 245, 240, 235, 230],
+      ASA:  [265, 260, 255, 250, 245, 240],
+      TPU:  [240, 235, 230, 225, 220, 215],
+    };
+
+    // Score per descriptor — higher = better quality
+    const DESCRIPTOR_SCORE = {
+      'clean':        5,
+      'minor_bridge': 4,
+      'minor_string': 3,
+      'heavy_string': 1,
+      'blobby':       1,
+      'under':        2,
+    };
+
+    const DESCRIPTOR_LABELS = {
+      'clean':        'Clean — smooth surface, good bridges, minimal stringing',
+      'minor_bridge': 'Minor bridging sag — surface OK, slight bridge droop',
+      'minor_string': 'Minor stringing — thin wisps or fine hairs between features',
+      'heavy_string': 'Heavy stringing — long strings, messy travel areas',
+      'blobby':       'Blobby / oozy — surface lumps, excess material, blobs',
+      'under':        'Under-extrusion — gaps, rough surface, weak layers',
+    };
+
+    const materialSelect = document.getElementById('material');
+    const zonesWrap = document.getElementById('zonesWrap');
+    const analyzeBtn = document.getElementById('analyzeBtn');
+    const resultWrap = document.getElementById('resultWrap');
+    const tempVal = document.getElementById('tempVal');
+    const resultDelta = document.getElementById('resultDelta');
+    const resultExplanation = document.getElementById('resultExplanation');
+    const resultSecondary = document.getElementById('resultSecondary');
+    const resultWarning = document.getElementById('resultWarning');
+
+    materialSelect.addEventListener('change', () => {
+      const mat = materialSelect.value;
+      if (!mat) {
+        zonesWrap.innerHTML = '<p style="font-size: 0.88rem; color: var(--text-dim); padding: 1rem 0;">Select a material above to load the zones.</p>';
+        return;
+      }
+      const temps = MATERIAL_ZONES[mat];
+      let html = '';
+      temps.forEach((temp, i) => {
+        const isTop = i === 0;
+        const isBottom = i === temps.length - 1;
+        html += `
+          <div class="zone-row">
+            <div class="zone-info">
+              <span class="zone-num">Zone ${i + 1}</span>
+              <span class="zone-val">${temp}°C</span>
+              ${isTop ? '<span class="zone-tag">Top</span>' : ''}
+              ${isBottom ? '<span class="zone-tag bottom">Bottom</span>' : ''}
+            </div>
+            <select class="zone-select" id="zone-${i}">
+              <option value="">— Describe this zone —</option>
+              <option value="clean">Clean — smooth surface, good bridges, minimal stringing</option>
+              <option value="minor_bridge">Minor bridging sag — surface OK, slight bridge droop</option>
+              <option value="minor_string">Minor stringing — thin wisps or fine hairs between features</option>
+              <option value="heavy_string">Heavy stringing — long strings, messy travel areas</option>
+              <option value="blobby">Blobby / oozy — surface lumps, excess material, blobs</option>
+              <option value="under">Under-extrusion — gaps, rough surface, weak layers</option>
+            </select>
+          </div>`;
+      });
+      zonesWrap.innerHTML = html;
+      resultWrap.style.display = 'none';
+    });
+
+    analyzeBtn.addEventListener('click', () => {
+      const mat = materialSelect.value;
+      if (!mat) { alert('Please select a material first.'); return; }
+
+      const temps = MATERIAL_ZONES[mat];
+      const results = [];
+      let allFilled = true;
+
+      temps.forEach((temp, i) => {
+        const sel = document.getElementById(`zone-${i}`);
+        if (!sel || !sel.value) { allFilled = false; }
+        else { results.push({ temp, descriptor: sel.value, score: DESCRIPTOR_SCORE[sel.value] || 0, index: i }); }
+      });
+
+      if (!allFilled) { alert('Please describe all zones before analyzing.'); return; }
+
+      // Strategy: prefer lowest temp with "clean" (best quality at lowest possible temp)
+      const cleanZones = results.filter(r => r.descriptor === 'clean');
+      const minorStringZones = results.filter(r => r.descriptor === 'minor_string');
+      const minorBridgeZones = results.filter(r => r.descriptor === 'minor_bridge');
+      const underZones = results.filter(r => r.descriptor === 'under');
+      const blobbyZones = results.filter(r => r.descriptor === 'blobby');
+      const heavyZones = results.filter(r => r.descriptor === 'heavy_string');
+
+      let recommended = null;
+      let rationale = '';
+      let warning = '';
+
+      if (cleanZones.length > 0) {
+        // Pick lowest-temp clean zone (most conservative = least stringing, least warping risk)
+        recommended = cleanZones.reduce((best, z) => z.temp < best.temp ? z : best);
+        rationale = `Zone ${recommended.index + 1} (${recommended.temp}°C) is the lowest temperature that produces a clean result — good surface quality, bridges, and minimal stringing. Printing cooler reduces stringing and warping risk without sacrificing quality.`;
+      } else if (minorBridgeZones.length > 0 && minorStringZones.length > 0) {
+        // Pick the zone with minor issues that's at an intermediate temp
+        const combined = [...minorBridgeZones, ...minorStringZones];
+        recommended = combined.reduce((best, z) => z.score > best.score ? z : best);
+        rationale = `No fully clean zone was found. Zone ${recommended.index + 1} (${recommended.temp}°C) showed minor issues but was the best available result. Try adjusting print speed or cooling fan to improve quality at this temperature.`;
+        warning = 'No zone printed perfectly clean. Consider re-running the test with a wider temperature range, or check your cooling fan settings.';
+      } else if (minorStringZones.length > 0) {
+        recommended = minorStringZones.reduce((best, z) => z.temp < best.temp ? z : best);
+        rationale = `No clean zone found. Zone ${recommended.index + 1} (${recommended.temp}°C) had the least stringing. Try increasing retraction distance or reducing print speed to improve results.`;
+        warning = 'Only minor stringing zones were found. Consider running a retraction test alongside this to eliminate remaining strings.';
+      } else if (minorBridgeZones.length > 0) {
+        recommended = minorBridgeZones.reduce((best, z) => z.temp < best.temp ? z : best);
+        rationale = `Zone ${recommended.index + 1} (${recommended.temp}°C) showed minor bridging issues but was otherwise acceptable. Try increasing fan speed for better bridge performance.`;
+      } else {
+        // Fall back to highest-scoring zone
+        const best = results.reduce((a, b) => b.score > a.score ? b : a);
+        recommended = best;
+        rationale = `No ideal zone found. Zone ${best.index + 1} (${best.temp}°C) scored best among poor options. Check your temperature range — your ideal temp may be outside the tower's range.`;
+        warning = 'Results across all zones were poor. Consider re-printing the tower with a different temperature range, or investigate cooling, flow rate, and retraction settings.';
+      }
+
+      tempVal.textContent = recommended.temp;
+
+      const matRanges = { PLA: [190,220], PETG: [225,250], ABS: [230,255], ASA: [240,265], TPU: [215,240] };
+      const range = matRanges[mat];
+      const inRange = recommended.temp >= range[0] && recommended.temp <= range[1];
+      if (inRange) {
+        resultDelta.className = 'result-delta neutral';
+        resultDelta.textContent = `Within typical ${mat} range (${range[0]}–${range[1]}°C).`;
+      } else {
+        resultDelta.className = 'result-delta adjusted';
+        resultDelta.textContent = `Outside typical ${mat} range (${range[0]}–${range[1]}°C) — verify your filament brand's datasheet.`;
+      }
+
+      resultExplanation.textContent = rationale;
+
+      // Build secondary tips
+      let secondary = `<strong>Next steps:</strong> Update your slicer profile for ${mat} to ${recommended.temp}°C. `;
+      if (underZones.length > 0) secondary += `Under-extrusion was observed — consider checking your flow rate and nozzle for partial clogs. `;
+      if (blobbyZones.length > 0) secondary += `Blobbing/oozing zones suggest those temperatures are too hot for this filament — avoid them. `;
+      if (heavyZones.length > 0) secondary += `Heavy stringing zones detected — those temperatures are too high and increase ooze. `;
+      secondary += `Run a retraction test at your new temperature to fine-tune stringing further.`;
+      resultSecondary.innerHTML = secondary;
+
+      if (warning) {
+        resultWarning.textContent = warning;
+        resultWarning.style.display = 'block';
+      } else {
+        resultWarning.style.display = 'none';
+      }
+
+      resultWrap.style.display = 'block';
+      resultWrap.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+  </script>
+
+</body>
+</html>

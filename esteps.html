@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E-Steps Calculator — Rapid Elevation</title>
+  <meta name="description" content="Calculate the correct E-steps/mm for your 3D printer extruder. Enter your current steps and measured extrusion length to get the calibrated value.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">Rapid <span class="logo-accent">Elevation</span></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="diagnosis.html">Print Diagnosis</a>
+      <a href="models.html">Models</a>
+    </div>
+  </nav>
+
+  <main>
+
+    <div class="page-header">
+      <h1>E-Steps Calculator</h1>
+      <p>Calibrate your extruder motor by measuring how much filament is actually fed versus requested. Enter your current steps/mm, the target length, and the length you actually got — the tool does the rest.</p>
+    </div>
+
+    <!-- Ad placeholder -->
+    <div class="ad-placeholder" style="margin-bottom: 2rem;">
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-size">728 × 90 — Leaderboard</div>
+    </div>
+
+    <!-- Calculator Form -->
+    <div class="diag-form">
+
+      <div class="form-section-label">Step 1 — Mark your filament</div>
+      <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1.25rem; line-height: 1.7;">
+        Heat your hotend to printing temp. With no print running, use your slicer or printer menu to extrude exactly your target length (default 100mm).
+        Before extruding, mark the filament at a reference point on the extruder entry. After extruding, measure the distance from your mark to the entry point —
+        that gap is your actual extruded length.
+      </p>
+
+      <div class="form-section-label">Step 2 — Enter your values</div>
+
+      <div class="settings-grid" style="margin-bottom: 1.5rem;">
+        <div class="field">
+          <label for="currentSteps">Current E-Steps (steps/mm)</label>
+          <input type="number" id="currentSteps" placeholder="e.g. 93" step="0.1" min="1" max="10000">
+          <span class="field-hint">Found in printer firmware or EEPROM (M503 in Marlin)</span>
+        </div>
+        <div class="field">
+          <label for="targetLength">Target Length (mm)</label>
+          <input type="number" id="targetLength" placeholder="100" value="100" step="1" min="10" max="500">
+          <span class="field-hint">How much filament you commanded the extruder to feed</span>
+        </div>
+        <div class="field">
+          <label for="actualLength">Actual Extruded Length (mm)</label>
+          <input type="number" id="actualLength" placeholder="e.g. 97.4" step="0.1" min="1" max="500">
+          <span class="field-hint">How much filament was actually fed — measure with calipers</span>
+        </div>
+      </div>
+
+      <hr class="form-divider">
+
+      <button class="btn" id="calcBtn">Calculate New E-Steps</button>
+
+    </div>
+
+    <!-- Result -->
+    <div class="result-wrap" id="resultWrap">
+      <div class="result-sublabel">Calibrated E-Steps</div>
+      <div class="result-value-row">
+        <span class="result-big-value" id="newStepsVal">—</span>
+        <span class="result-big-unit">steps/mm</span>
+      </div>
+      <div class="result-delta" id="resultDelta"></div>
+      <div class="result-explanation" id="resultExplanation"></div>
+      <div class="result-secondary" id="resultSecondary"></div>
+    </div>
+
+    <!-- Ad placeholder -->
+    <div class="ad-placeholder" style="margin-bottom: 3rem;">
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-size">300 × 250 — Medium Rectangle</div>
+    </div>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Rapid Elevation &mdash; Built by <a href="https://jakebeamer323.github.io/my-site" target="_blank">Jake Lewien</a></p>
+  </footer>
+
+  <script>
+    const calcBtn = document.getElementById('calcBtn');
+    const resultWrap = document.getElementById('resultWrap');
+    const newStepsVal = document.getElementById('newStepsVal');
+    const resultDelta = document.getElementById('resultDelta');
+    const resultExplanation = document.getElementById('resultExplanation');
+    const resultSecondary = document.getElementById('resultSecondary');
+
+    calcBtn.addEventListener('click', () => {
+      const current = parseFloat(document.getElementById('currentSteps').value);
+      const target = parseFloat(document.getElementById('targetLength').value);
+      const actual = parseFloat(document.getElementById('actualLength').value);
+
+      if (isNaN(current) || current <= 0) { alert('Please enter your current E-steps value.'); return; }
+      if (isNaN(target) || target <= 0)   { alert('Please enter the target length.'); return; }
+      if (isNaN(actual) || actual <= 0)   { alert('Please enter the actual extruded length.'); return; }
+
+      const newSteps = (current * target) / actual;
+      const errorPct = ((actual - target) / target) * 100;
+      const diff = newSteps - current;
+
+      newStepsVal.textContent = newSteps.toFixed(2);
+
+      const absPct = Math.abs(errorPct).toFixed(1);
+      if (Math.abs(errorPct) < 0.5) {
+        resultDelta.className = 'result-delta neutral';
+        resultDelta.textContent = `Your extruder is within 0.5% — no change needed (error: ${errorPct > 0 ? '+' : ''}${errorPct.toFixed(1)}%).`;
+      } else {
+        resultDelta.className = 'result-delta adjusted';
+        const direction = errorPct < 0 ? 'under-extruding' : 'over-extruding';
+        resultDelta.textContent = `Your extruder is ${direction} by ${absPct}%. Change from ${current.toFixed(2)} → ${newSteps.toFixed(2)} steps/mm (${diff > 0 ? '+' : ''}${diff.toFixed(2)}).`;
+      }
+
+      let explanation = `Formula: <strong>new steps = (${current} × ${target}) ÷ ${actual} = ${newSteps.toFixed(2)} steps/mm</strong>.<br><br>`;
+      if (actual < target) {
+        explanation += `Your extruder fed <strong>${(target - actual).toFixed(1)}mm less</strong> than requested. Increasing steps/mm tells the motor to spin more per mm of filament, correcting the shortfall.`;
+      } else if (actual > target) {
+        explanation += `Your extruder fed <strong>${(actual - target).toFixed(1)}mm more</strong> than requested. Decreasing steps/mm tells the motor to spin less per mm of filament, correcting the overshoot.`;
+      } else {
+        explanation += `Your extruder is perfectly calibrated.`;
+      }
+      resultExplanation.innerHTML = explanation;
+
+      let secondary = `<strong>How to apply:</strong> In Marlin, send <code>M92 E${newSteps.toFixed(2)}</code> then <code>M500</code> to save. In Klipper, update <code>rotation_distance</code> in your printer.cfg instead — E-steps don't apply directly. `;
+      secondary += `Run the test 2–3 times after applying to confirm consistency before printing.`;
+      resultSecondary.innerHTML = secondary;
+
+      resultWrap.style.display = 'block';
+      resultWrap.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+  </script>
+
+</body>
+</html>
