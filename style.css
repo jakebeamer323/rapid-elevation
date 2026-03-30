@@ -538,6 +538,59 @@ a.tool-card:hover {
   text-align: center;
 }
 
+/* ── LIKELIHOOD BAR ── */
+.results-layout {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 0.85rem;
+  align-items: stretch;
+}
+
+.likelihood-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.25rem 0 1.25rem;
+}
+
+.lb-top-label,
+.lb-bottom-label {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1.35;
+}
+
+.lb-top-label    { color: var(--accent-bright); }
+.lb-bottom-label { color: var(--text-dim); }
+
+.lb-track {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.4rem 0;
+}
+
+.lb-line {
+  flex: 1;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--accent-bright) 0%, var(--text-dim) 100%);
+  border-radius: 1px;
+  min-height: 24px;
+}
+
+.lb-arrowhead {
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 7px solid var(--text-dim);
+  margin-top: 1px;
+}
+
 /* ── FOOTER ── */
 footer {
   border-top: 1px solid var(--border);
@@ -670,4 +723,6 @@ footer a:hover { color: var(--accent); }
   .settings-grid { grid-template-columns: 1fr 1fr; }
   .issue-grid { grid-template-columns: 1fr 1fr; }
   .sev-legend { gap: 0.75rem; }
+  .likelihood-bar { display: none; }
+  .results-layout { grid-template-columns: 1fr; }
 }

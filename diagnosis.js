@@ -1,44 +1,39 @@
 // ── PRINTER LIST ───────────────────────────────────────────────────────────
 const PRINTERS = [
-  // Bambu Lab
-  { group: 'Bambu Lab', name: 'Bambu Lab A1' },
-  { group: 'Bambu Lab', name: 'Bambu Lab A1 Mini' },
-  { group: 'Bambu Lab', name: 'Bambu Lab P1P' },
-  { group: 'Bambu Lab', name: 'Bambu Lab P1S' },
-  { group: 'Bambu Lab', name: 'Bambu Lab X1C' },
-  { group: 'Bambu Lab', name: 'Bambu Lab X1E' },
-  // Creality — Ender series
-  { group: 'Creality', name: 'Creality Ender 3' },
-  { group: 'Creality', name: 'Creality Ender 3 Pro' },
-  { group: 'Creality', name: 'Creality Ender 3 V2' },
-  { group: 'Creality', name: 'Creality Ender 3 V2 Neo' },
-  { group: 'Creality', name: 'Creality Ender 3 V3' },
-  { group: 'Creality', name: 'Creality Ender 3 V3 KE' },
-  { group: 'Creality', name: 'Creality Ender 3 V3 SE' },
-  { group: 'Creality', name: 'Creality Ender 3 S1' },
-  { group: 'Creality', name: 'Creality Ender 3 S1 Pro' },
-  { group: 'Creality', name: 'Creality Ender 3 S1 Plus' },
-  { group: 'Creality', name: 'Creality Ender 5' },
-  { group: 'Creality', name: 'Creality Ender 5 Pro' },
-  { group: 'Creality', name: 'Creality Ender 5 Plus' },
-  { group: 'Creality', name: 'Creality Ender 5 S1' },
-  { group: 'Creality', name: 'Creality Ender 6' },
-  { group: 'Creality', name: 'Creality Ender 7' },
-  // Creality — CR series
-  { group: 'Creality', name: 'Creality CR-6 SE' },
-  { group: 'Creality', name: 'Creality CR-6 Max' },
-  { group: 'Creality', name: 'Creality CR-10' },
-  { group: 'Creality', name: 'Creality CR-10 V3' },
-  { group: 'Creality', name: 'Creality CR-10 S5' },
-  { group: 'Creality', name: 'Creality CR-10 Smart' },
-  { group: 'Creality', name: 'Creality CR-10 Smart Pro' },
-  { group: 'Creality', name: 'Creality CR-10 Max' },
-  // Creality — K series
-  { group: 'Creality', name: 'Creality K1' },
-  { group: 'Creality', name: 'Creality K1C' },
-  { group: 'Creality', name: 'Creality K1 Max' },
-  { group: 'Creality', name: 'Creality K1 SE' },
-  // Prusa Research
+  { group: 'Bambu Lab',      name: 'Bambu Lab A1' },
+  { group: 'Bambu Lab',      name: 'Bambu Lab A1 Mini' },
+  { group: 'Bambu Lab',      name: 'Bambu Lab P1P' },
+  { group: 'Bambu Lab',      name: 'Bambu Lab P1S' },
+  { group: 'Bambu Lab',      name: 'Bambu Lab X1C' },
+  { group: 'Bambu Lab',      name: 'Bambu Lab X1E' },
+  { group: 'Creality',       name: 'Creality Ender 3' },
+  { group: 'Creality',       name: 'Creality Ender 3 Pro' },
+  { group: 'Creality',       name: 'Creality Ender 3 V2' },
+  { group: 'Creality',       name: 'Creality Ender 3 V2 Neo' },
+  { group: 'Creality',       name: 'Creality Ender 3 V3' },
+  { group: 'Creality',       name: 'Creality Ender 3 V3 KE' },
+  { group: 'Creality',       name: 'Creality Ender 3 V3 SE' },
+  { group: 'Creality',       name: 'Creality Ender 3 S1' },
+  { group: 'Creality',       name: 'Creality Ender 3 S1 Pro' },
+  { group: 'Creality',       name: 'Creality Ender 3 S1 Plus' },
+  { group: 'Creality',       name: 'Creality Ender 5' },
+  { group: 'Creality',       name: 'Creality Ender 5 Pro' },
+  { group: 'Creality',       name: 'Creality Ender 5 Plus' },
+  { group: 'Creality',       name: 'Creality Ender 5 S1' },
+  { group: 'Creality',       name: 'Creality Ender 6' },
+  { group: 'Creality',       name: 'Creality Ender 7' },
+  { group: 'Creality',       name: 'Creality CR-6 SE' },
+  { group: 'Creality',       name: 'Creality CR-6 Max' },
+  { group: 'Creality',       name: 'Creality CR-10' },
+  { group: 'Creality',       name: 'Creality CR-10 V3' },
+  { group: 'Creality',       name: 'Creality CR-10 S5' },
+  { group: 'Creality',       name: 'Creality CR-10 Smart' },
+  { group: 'Creality',       name: 'Creality CR-10 Smart Pro' },
+  { group: 'Creality',       name: 'Creality CR-10 Max' },
+  { group: 'Creality',       name: 'Creality K1' },
+  { group: 'Creality',       name: 'Creality K1C' },
+  { group: 'Creality',       name: 'Creality K1 Max' },
+  { group: 'Creality',       name: 'Creality K1 SE' },
   { group: 'Prusa Research', name: 'Prusa i3 MK3S+' },
   { group: 'Prusa Research', name: 'Prusa i3 MK4' },
   { group: 'Prusa Research', name: 'Prusa i3 MK4S' },
@@ -46,100 +41,80 @@ const PRINTERS = [
   { group: 'Prusa Research', name: 'Prusa Mini+' },
   { group: 'Prusa Research', name: 'Prusa XL' },
   { group: 'Prusa Research', name: 'Prusa Core One' },
-  // AnkerMake
-  { group: 'AnkerMake', name: 'AnkerMake M5' },
-  { group: 'AnkerMake', name: 'AnkerMake M5C' },
-  { group: 'AnkerMake', name: 'AnkerMake M7' },
-  // Elegoo
-  { group: 'Elegoo', name: 'Elegoo Neptune 2' },
-  { group: 'Elegoo', name: 'Elegoo Neptune 2S' },
-  { group: 'Elegoo', name: 'Elegoo Neptune 3' },
-  { group: 'Elegoo', name: 'Elegoo Neptune 3 Pro' },
-  { group: 'Elegoo', name: 'Elegoo Neptune 3 Plus' },
-  { group: 'Elegoo', name: 'Elegoo Neptune 3 Max' },
-  { group: 'Elegoo', name: 'Elegoo Neptune 4' },
-  { group: 'Elegoo', name: 'Elegoo Neptune 4 Pro' },
-  { group: 'Elegoo', name: 'Elegoo Neptune 4 Plus' },
-  { group: 'Elegoo', name: 'Elegoo Neptune 4 Max' },
-  { group: 'Elegoo', name: 'Elegoo Neptune 4 X' },
-  // Voron
-  { group: 'Voron', name: 'Voron 0.2' },
-  { group: 'Voron', name: 'Voron Trident' },
-  { group: 'Voron', name: 'Voron 2.4' },
-  { group: 'Voron', name: 'Voron Switchwire' },
-  // Artillery
-  { group: 'Artillery', name: 'Artillery Sidewinder X1' },
-  { group: 'Artillery', name: 'Artillery Sidewinder X2' },
-  { group: 'Artillery', name: 'Artillery Genius' },
-  { group: 'Artillery', name: 'Artillery Genius Pro' },
-  { group: 'Artillery', name: 'Artillery Hornet' },
-  // Sovol
-  { group: 'Sovol', name: 'Sovol SV06' },
-  { group: 'Sovol', name: 'Sovol SV06 Plus' },
-  { group: 'Sovol', name: 'Sovol SV07' },
-  { group: 'Sovol', name: 'Sovol SV07 Plus' },
-  { group: 'Sovol', name: 'Sovol SV08' },
-  // FlashForge
-  { group: 'FlashForge', name: 'FlashForge Adventurer 3' },
-  { group: 'FlashForge', name: 'FlashForge Adventurer 4' },
-  { group: 'FlashForge', name: 'FlashForge Adventurer 5M' },
-  { group: 'FlashForge', name: 'FlashForge Adventurer 5M Pro' },
-  { group: 'FlashForge', name: 'FlashForge Creator Pro 2' },
-  { group: 'FlashForge', name: 'FlashForge Guider 3' },
-  // Qidi Tech
-  { group: 'Qidi Tech', name: 'Qidi X-Plus 3' },
-  { group: 'Qidi Tech', name: 'Qidi X-Max 3' },
-  { group: 'Qidi Tech', name: 'Qidi X-Smart 3' },
-  { group: 'Qidi Tech', name: 'Qidi Q1 Pro' },
-  // UltiMaker
-  { group: 'UltiMaker', name: 'UltiMaker S3' },
-  { group: 'UltiMaker', name: 'UltiMaker S5' },
-  { group: 'UltiMaker', name: 'UltiMaker S7' },
-  { group: 'UltiMaker', name: 'UltiMaker 2+ Connect' },
-  // Raise3D
-  { group: 'Raise3D', name: 'Raise3D E2' },
-  { group: 'Raise3D', name: 'Raise3D Pro3' },
-  { group: 'Raise3D', name: 'Raise3D Pro3 Plus' },
-  // Snapmaker
-  { group: 'Snapmaker', name: 'Snapmaker 2.0 A150' },
-  { group: 'Snapmaker', name: 'Snapmaker 2.0 A250' },
-  { group: 'Snapmaker', name: 'Snapmaker 2.0 A350' },
-  { group: 'Snapmaker', name: 'Snapmaker Artisan' },
-  { group: 'Snapmaker', name: 'Snapmaker J1' },
-  // Voxelab
-  { group: 'Voxelab', name: 'Voxelab Aquila' },
-  { group: 'Voxelab', name: 'Voxelab Aquila S2' },
-  { group: 'Voxelab', name: 'Voxelab Aquila X2' },
-  // Two Trees
-  { group: 'Two Trees', name: 'Two Trees Bluer' },
-  { group: 'Two Trees', name: 'Two Trees Sapphire Pro' },
-  { group: 'Two Trees', name: 'Two Trees SK1' },
-  // Kingroon
-  { group: 'Kingroon', name: 'Kingroon KP3S' },
-  { group: 'Kingroon', name: 'Kingroon KP3S Pro' },
-  { group: 'Kingroon', name: 'Kingroon KP5L' },
-  // Biqu
-  { group: 'Biqu', name: 'Biqu B1' },
-  { group: 'Biqu', name: 'Biqu Hurakan' },
-  // LulzBot
-  { group: 'LulzBot', name: 'LulzBot TAZ Pro' },
-  { group: 'LulzBot', name: 'LulzBot Mini 2' },
-  // Dremel
-  { group: 'Dremel', name: 'Dremel 3D40 Flex' },
-  { group: 'Dremel', name: 'Dremel 3D45' },
-  // Monoprice
-  { group: 'Monoprice', name: 'Monoprice MP Mini Delta' },
-  { group: 'Monoprice', name: 'Monoprice Maker Select Plus' },
-  { group: 'Monoprice', name: 'Monoprice MP Voxel' },
-  // Longer
-  { group: 'Longer', name: 'Longer LK4 Pro' },
-  { group: 'Longer', name: 'Longer LK5 Pro' },
-  // Geeetech
-  { group: 'Geeetech', name: 'Geeetech A10' },
-  { group: 'Geeetech', name: 'Geeetech A20' },
-  // Other
-  { group: 'Other', name: 'Custom / DIY Build' },
-  { group: 'Other', name: 'Not Listed' },
+  { group: 'AnkerMake',      name: 'AnkerMake M5' },
+  { group: 'AnkerMake',      name: 'AnkerMake M5C' },
+  { group: 'AnkerMake',      name: 'AnkerMake M7' },
+  { group: 'Elegoo',         name: 'Elegoo Neptune 2' },
+  { group: 'Elegoo',         name: 'Elegoo Neptune 2S' },
+  { group: 'Elegoo',         name: 'Elegoo Neptune 3' },
+  { group: 'Elegoo',         name: 'Elegoo Neptune 3 Pro' },
+  { group: 'Elegoo',         name: 'Elegoo Neptune 3 Plus' },
+  { group: 'Elegoo',         name: 'Elegoo Neptune 3 Max' },
+  { group: 'Elegoo',         name: 'Elegoo Neptune 4' },
+  { group: 'Elegoo',         name: 'Elegoo Neptune 4 Pro' },
+  { group: 'Elegoo',         name: 'Elegoo Neptune 4 Plus' },
+  { group: 'Elegoo',         name: 'Elegoo Neptune 4 Max' },
+  { group: 'Elegoo',         name: 'Elegoo Neptune 4 X' },
+  { group: 'Voron',          name: 'Voron 0.2' },
+  { group: 'Voron',          name: 'Voron Trident' },
+  { group: 'Voron',          name: 'Voron 2.4' },
+  { group: 'Voron',          name: 'Voron Switchwire' },
+  { group: 'Artillery',      name: 'Artillery Sidewinder X1' },
+  { group: 'Artillery',      name: 'Artillery Sidewinder X2' },
+  { group: 'Artillery',      name: 'Artillery Genius' },
+  { group: 'Artillery',      name: 'Artillery Genius Pro' },
+  { group: 'Artillery',      name: 'Artillery Hornet' },
+  { group: 'Sovol',          name: 'Sovol SV06' },
+  { group: 'Sovol',          name: 'Sovol SV06 Plus' },
+  { group: 'Sovol',          name: 'Sovol SV07' },
+  { group: 'Sovol',          name: 'Sovol SV07 Plus' },
+  { group: 'Sovol',          name: 'Sovol SV08' },
+  { group: 'FlashForge',     name: 'FlashForge Adventurer 3' },
+  { group: 'FlashForge',     name: 'FlashForge Adventurer 4' },
+  { group: 'FlashForge',     name: 'FlashForge Adventurer 5M' },
+  { group: 'FlashForge',     name: 'FlashForge Adventurer 5M Pro' },
+  { group: 'FlashForge',     name: 'FlashForge Creator Pro 2' },
+  { group: 'FlashForge',     name: 'FlashForge Guider 3' },
+  { group: 'Qidi Tech',      name: 'Qidi X-Plus 3' },
+  { group: 'Qidi Tech',      name: 'Qidi X-Max 3' },
+  { group: 'Qidi Tech',      name: 'Qidi X-Smart 3' },
+  { group: 'Qidi Tech',      name: 'Qidi Q1 Pro' },
+  { group: 'UltiMaker',      name: 'UltiMaker S3' },
+  { group: 'UltiMaker',      name: 'UltiMaker S5' },
+  { group: 'UltiMaker',      name: 'UltiMaker S7' },
+  { group: 'UltiMaker',      name: 'UltiMaker 2+ Connect' },
+  { group: 'Raise3D',        name: 'Raise3D E2' },
+  { group: 'Raise3D',        name: 'Raise3D Pro3' },
+  { group: 'Raise3D',        name: 'Raise3D Pro3 Plus' },
+  { group: 'Snapmaker',      name: 'Snapmaker 2.0 A150' },
+  { group: 'Snapmaker',      name: 'Snapmaker 2.0 A250' },
+  { group: 'Snapmaker',      name: 'Snapmaker 2.0 A350' },
+  { group: 'Snapmaker',      name: 'Snapmaker Artisan' },
+  { group: 'Snapmaker',      name: 'Snapmaker J1' },
+  { group: 'Voxelab',        name: 'Voxelab Aquila' },
+  { group: 'Voxelab',        name: 'Voxelab Aquila S2' },
+  { group: 'Voxelab',        name: 'Voxelab Aquila X2' },
+  { group: 'Two Trees',      name: 'Two Trees Bluer' },
+  { group: 'Two Trees',      name: 'Two Trees Sapphire Pro' },
+  { group: 'Two Trees',      name: 'Two Trees SK1' },
+  { group: 'Kingroon',       name: 'Kingroon KP3S' },
+  { group: 'Kingroon',       name: 'Kingroon KP3S Pro' },
+  { group: 'Kingroon',       name: 'Kingroon KP5L' },
+  { group: 'Biqu',           name: 'Biqu B1' },
+  { group: 'Biqu',           name: 'Biqu Hurakan' },
+  { group: 'LulzBot',        name: 'LulzBot TAZ Pro' },
+  { group: 'LulzBot',        name: 'LulzBot Mini 2' },
+  { group: 'Dremel',         name: 'Dremel 3D40 Flex' },
+  { group: 'Dremel',         name: 'Dremel 3D45' },
+  { group: 'Monoprice',      name: 'Monoprice MP Mini Delta' },
+  { group: 'Monoprice',      name: 'Monoprice Maker Select Plus' },
+  { group: 'Monoprice',      name: 'Monoprice MP Voxel' },
+  { group: 'Longer',         name: 'Longer LK4 Pro' },
+  { group: 'Longer',         name: 'Longer LK5 Pro' },
+  { group: 'Geeetech',       name: 'Geeetech A10' },
+  { group: 'Geeetech',       name: 'Geeetech A20' },
+  { group: 'Other',          name: 'Custom / DIY Build' },
+  { group: 'Other',          name: 'Not Listed' },
 ];
 
 // ── SEARCHABLE PRINTER DROPDOWN ────────────────────────────────────────────
@@ -156,12 +131,8 @@ function initPrinterSelect() {
     let html = '';
     let lastGroup = '';
     let count = 0;
-
     for (const p of PRINTERS) {
-      const matchName  = p.name.toLowerCase().includes(q);
-      const matchGroup = p.group.toLowerCase().includes(q);
-      if (q && !matchName && !matchGroup) continue;
-
+      if (q && !p.name.toLowerCase().includes(q) && !p.group.toLowerCase().includes(q)) continue;
       if (p.group !== lastGroup) {
         html += `<div class="ss-group-label">${p.group}</div>`;
         lastGroup = p.group;
@@ -169,18 +140,13 @@ function initPrinterSelect() {
       html += `<div class="ss-option" data-value="${p.name}">${p.name}</div>`;
       count++;
     }
-
     list.innerHTML = count ? html : '<div class="ss-no-results">No printers found</div>';
-
     list.querySelectorAll('.ss-option').forEach(opt => {
-      opt.addEventListener('mousedown', e => {
-        e.preventDefault();
-        select(opt.dataset.value);
-      });
+      opt.addEventListener('mousedown', e => { e.preventDefault(); selectPrinter(opt.dataset.value); });
     });
   }
 
-  function select(name) {
+  function selectPrinter(name) {
     hidden.value = name;
     valueEl.className = 'ss-selected-value';
     valueEl.textContent = name;
@@ -211,6 +177,7 @@ function initPrinterSelect() {
 
 document.addEventListener('DOMContentLoaded', initPrinterSelect);
 
+// ── MATERIAL RANGES ────────────────────────────────────────────────────────
 const MATERIAL_RANGES = {
   PLA:  { nozzle: [190, 220], bed: [50,  65]  },
   PETG: { nozzle: [230, 250], bed: [70,  90]  },
@@ -219,8 +186,7 @@ const MATERIAL_RANGES = {
   TPU:  { nozzle: [220, 240], bed: [30,  60]  },
 };
 
-const SEVERITY_ORDER = { red: 4, orange: 3, yellow: 2, green: 1 };
-
+// ── SETTINGS HELPER ────────────────────────────────────────────────────────
 function parseNum(id) {
   const val = document.getElementById(id).value.trim();
   if (val === '') return null;
@@ -245,345 +211,918 @@ function getSettings() {
 }
 
 // ── ISSUE DEFINITIONS ──────────────────────────────────────────────────────
-// Each cause: { title, description, fix, severity(settings) → 'red'|'orange'|'yellow'|'green'|null }
-// null = not applicable, skip rendering
+// Each cause:
+//   severity  — static dot color: how serious/impactful this cause is
+//               'red'=critical, 'orange'=major, 'yellow'=minor, 'green'=edge case
+//   rank(s)   — dynamic likelihood from settings: 4=most likely … 1=less likely, null=hide
 
 const ISSUES = {
 
+  // ── BED ADHESION ──────────────────────────────────────────────────────────
   bed_adhesion: {
     label: 'Bed Adhesion Problems',
     causes: [
       {
+        title: 'Z offset too high — nozzle too far from bed',
+        description: 'If the nozzle is too far from the bed surface, the filament won\'t squish in and bond. This is the single most common cause of adhesion failure.',
+        fix: 'Re-level your bed and lower your Z offset in small increments until the first layer has a slight squish with no visible gaps between lines.',
+        severity: 'red',
+        rank: (s) => 3,
+      },
+      {
         title: 'Bed temperature too low',
-        description: 'A cold bed prevents the filament from bonding to the print surface during the first layer.',
-        fix: 'Increase bed temperature to the recommended range for your material: PLA 50–65°C, PETG 70–90°C, ABS/ASA 95–115°C, TPU 30–60°C.',
-        severity(s) {
-          if (s.bedTemp === null || !s.material) return 'yellow';
+        description: 'A cold bed prevents the filament from bonding to the print surface, especially on the first layer.',
+        fix: 'Increase bed temperature: PLA 50–65°C, PETG 70–90°C, ABS/ASA 95–115°C, TPU 30–60°C. Make sure it fully reaches temp before printing.',
+        severity: 'red',
+        rank(s) {
+          if (!s.material || s.bedTemp === null) return 2;
           const [min] = MATERIAL_RANGES[s.material].bed;
-          if (s.bedTemp < min - 10) return 'red';
-          if (s.bedTemp < min) return 'orange';
+          if (s.bedTemp < min - 10) return 4;
+          if (s.bedTemp < min) return 3;
           return null;
         }
       },
       {
         title: 'Nozzle temperature too low',
-        description: 'Filament that isn\'t fully melted won\'t flow or adhere properly, resulting in poor first layer bonding.',
-        fix: 'Increase nozzle temperature to the recommended range for your material. Try increasing in 5°C increments.',
-        severity(s) {
-          if (s.nozzleTemp === null || !s.material) return null;
+        description: 'Filament that isn\'t fully melted won\'t flow or adhere correctly on the first layer.',
+        fix: 'Increase nozzle temperature to the recommended range for your material. Try going up 5°C at a time.',
+        severity: 'orange',
+        rank(s) {
+          if (!s.material || s.nozzleTemp === null) return null;
           const [min] = MATERIAL_RANGES[s.material].nozzle;
-          if (s.nozzleTemp < min - 10) return 'red';
-          if (s.nozzleTemp < min) return 'orange';
+          if (s.nozzleTemp < min - 10) return 4;
+          if (s.nozzleTemp < min) return 3;
           return null;
         }
       },
       {
         title: 'First layer speed too high',
-        description: 'A fast first layer doesn\'t give the filament enough time to bond to the bed surface.',
-        fix: 'Reduce first layer speed to 15–25 mm/s in your slicer. Most slicers let you set this as a % of normal speed.',
-        severity(s) {
-          if (s.firstLayerSpeed === null) return 'yellow';
-          if (s.firstLayerSpeed > 50) return 'red';
-          if (s.firstLayerSpeed > 30) return 'orange';
-          if (s.firstLayerSpeed > 20) return 'yellow';
+        description: 'Printing too fast on the first layer doesn\'t allow the filament enough time to bond to the bed.',
+        fix: 'Reduce first layer speed to 15–25 mm/s in your slicer. Most slicers have a dedicated first layer speed setting.',
+        severity: 'orange',
+        rank(s) {
+          if (s.firstLayerSpeed === null) return 2;
+          if (s.firstLayerSpeed > 50) return 4;
+          if (s.firstLayerSpeed > 30) return 3;
+          if (s.firstLayerSpeed > 20) return 2;
           return null;
         }
       },
       {
-        title: 'Z offset too high (nozzle too far from bed)',
-        description: 'If the nozzle is too far from the bed, the filament won\'t squish into the surface properly and won\'t stick.',
-        fix: 'Re-level your bed and lower your Z offset until the first layer has a slight squish — no gaps, not paper-thin.',
-        severity(s) {
-          return 'yellow';
-        }
-      },
-      {
         title: 'Cooling fan on during first layers',
-        description: 'Having the part cooling fan active on the first layer rapidly cools the filament before it can bond to the bed.',
-        fix: 'Disable the cooling fan for the first 2–3 layers in your slicer settings.',
-        severity(s) {
+        description: 'Active cooling on the first layer rapidly cools filament before it can bond to the bed surface.',
+        fix: 'Disable the part cooling fan for the first 2–3 layers in your slicer settings.',
+        severity: 'yellow',
+        rank(s) {
           if (s.coolingFan === null) return null;
-          if (s.material && ['ABS', 'ASA'].includes(s.material) && s.coolingFan > 0) return 'orange';
-          if (s.coolingFan > 30) return 'yellow';
+          if (s.material && ['ABS', 'ASA'].includes(s.material) && s.coolingFan > 0) return 3;
+          if (s.coolingFan > 30) return 2;
           return null;
         }
       },
       {
         title: 'Dirty or contaminated bed surface',
-        description: 'Oils from your hands, dust, or residue from previous prints prevent the filament from gripping the surface.',
-        fix: 'Clean the bed thoroughly with isopropyl alcohol (90%+) before every print. Avoid touching the print surface.',
-        severity(s) {
-          return 'yellow';
-        }
+        description: 'Oils from your hands, dust, or leftover residue from previous prints prevent proper adhesion.',
+        fix: 'Clean the bed with isopropyl alcohol (90%+) before every print. Never touch the print surface with bare hands.',
+        severity: 'orange',
+        rank: (s) => 2,
       },
     ]
   },
 
+  // ── CURLING / WARPING ─────────────────────────────────────────────────────
   curling_edges: {
     label: 'Curling / Warping Edges',
     causes: [
       {
-        title: 'Bed temperature too low',
-        description: 'An insufficiently heated bed causes the printed material to cool too fast, creating thermal stress that pulls the edges upward.',
-        fix: 'Increase bed temperature to the correct range for your material and ensure it fully reaches temperature before printing.',
-        severity(s) {
-          if (s.bedTemp === null || !s.material) return 'orange';
-          const [min] = MATERIAL_RANGES[s.material].bed;
-          if (s.bedTemp < min - 10) return 'red';
-          if (s.bedTemp < min) return 'orange';
+        title: 'No enclosure — ABS or ASA specific',
+        description: 'ABS and ASA require a stable, warm ambient temperature. Open-air printing causes uneven, rapid cooling which almost always causes severe warping.',
+        fix: 'Use an enclosure to trap heat. Even a simple cardboard box helps. Keep ambient temp above 40°C for best results with ABS/ASA.',
+        severity: 'red',
+        rank(s) {
+          if (s.material && ['ABS', 'ASA'].includes(s.material)) return 4;
           return null;
         }
       },
       {
-        title: 'No enclosure (ABS / ASA)',
-        description: 'ABS and ASA require a stable, warm ambient temperature. Open-air printing causes rapid, uneven cooling and severe warping.',
-        fix: 'Use a proper enclosure to trap heat. Even a cardboard box helps significantly. ABS/ASA really need this.',
-        severity(s) {
-          if (s.material && ['ABS', 'ASA'].includes(s.material)) return 'red';
+        title: 'Bed temperature too low',
+        description: 'Insufficient bed heat causes rapid cooling at the base of the print, pulling the edges upward.',
+        fix: 'Increase bed temperature to the recommended range and ensure it fully reaches temp before starting.',
+        severity: 'red',
+        rank(s) {
+          if (!s.material || s.bedTemp === null) return 3;
+          const [min] = MATERIAL_RANGES[s.material].bed;
+          if (s.bedTemp < min - 10) return 4;
+          if (s.bedTemp < min) return 3;
           return null;
         }
       },
       {
         title: 'Cooling fan too aggressive',
-        description: 'High cooling forces rapid thermal contraction in the print, which causes the corners and edges to pull away from the bed.',
-        fix: 'Reduce cooling fan speed. ABS/ASA: 0–10%. PETG: 30–50%. PLA is generally fine at 80–100%.',
-        severity(s) {
+        description: 'High cooling causes rapid thermal contraction, pulling corners away from the bed.',
+        fix: 'Reduce cooling: ABS/ASA 0–10%, PETG 20–50%, PLA 80–100% is generally fine.',
+        severity: 'red',
+        rank(s) {
           if (s.coolingFan === null) return null;
-          if (s.material && ['ABS', 'ASA'].includes(s.material) && s.coolingFan > 20) return 'red';
-          if (s.material && ['ABS', 'ASA'].includes(s.material) && s.coolingFan > 0) return 'orange';
-          if (s.material === 'PETG' && s.coolingFan > 60) return 'orange';
+          if (s.material && ['ABS', 'ASA'].includes(s.material) && s.coolingFan > 20) return 4;
+          if (s.material && ['ABS', 'ASA'].includes(s.material) && s.coolingFan > 0) return 3;
+          if (s.material === 'PETG' && s.coolingFan > 60) return 2;
           return null;
         }
       },
       {
-        title: 'Drafts or airflow near the printer',
-        description: 'Cold air from vents, windows, or nearby fans causes uneven, rapid cooling on the print surface.',
-        fix: 'Move the printer away from drafts or use an enclosure to shield it from ambient airflow.',
-        severity(s) {
-          return 'yellow';
-        }
+        title: 'Drafts or airflow hitting the print',
+        description: 'Cold air from vents, windows, or nearby fans creates uneven cooling and warping.',
+        fix: 'Move the printer away from drafts or shield it with an enclosure.',
+        severity: 'orange',
+        rank: (s) => 2,
       },
       {
         title: 'First layer speed too high',
-        description: 'A fast first layer reduces adhesion strength, making it easier for thermal stress to lift the edges.',
+        description: 'A weak first layer bond gives thermal stress an easier time lifting the corners.',
         fix: 'Reduce first layer speed to 15–25 mm/s.',
-        severity(s) {
+        severity: 'yellow',
+        rank(s) {
           if (s.firstLayerSpeed === null) return null;
-          if (s.firstLayerSpeed > 40) return 'orange';
-          if (s.firstLayerSpeed > 25) return 'yellow';
+          if (s.firstLayerSpeed > 40) return 2;
+          if (s.firstLayerSpeed > 25) return 1;
           return null;
         }
       },
       {
         title: 'Nozzle temperature too low',
-        description: 'Under-temperature filament produces weaker layer bonds, making the print more susceptible to warping stress.',
-        fix: 'Increase nozzle temperature to the recommended range for your material.',
-        severity(s) {
-          if (s.nozzleTemp === null || !s.material) return null;
+        description: 'Under-temperature filament produces weaker layer bonding, making the print more susceptible to warping stress.',
+        fix: 'Increase nozzle temperature to the correct range for your material.',
+        severity: 'yellow',
+        rank(s) {
+          if (!s.material || s.nozzleTemp === null) return null;
           const [min] = MATERIAL_RANGES[s.material].nozzle;
-          if (s.nozzleTemp < min - 5) return 'orange';
-          if (s.nozzleTemp < min) return 'yellow';
+          if (s.nozzleTemp < min - 5) return 2;
+          if (s.nozzleTemp < min) return 1;
           return null;
         }
       },
     ]
   },
 
+  // ── ROUGH / WARPED TOP ────────────────────────────────────────────────────
   warped_top: {
     label: 'Rough / Warped Top Layer',
     causes: [
       {
         title: 'Infill percentage too low',
-        description: 'The top surface needs adequate infill underneath it for support. Too little infill leaves large gaps that the top layers sag or bow into.',
-        fix: 'Increase infill to at least 15–20%. For large flat top surfaces, consider going to 25%. Gyroid and honeycomb infill patterns provide better top layer support.',
-        severity(s) {
-          if (s.infill === null) return 'orange';
-          if (s.infill < 10) return 'red';
-          if (s.infill < 15) return 'orange';
-          if (s.infill < 20) return 'yellow';
+        description: 'The top surface needs adequate infill below it. Too little infill leaves large gaps that the top layers sag into.',
+        fix: 'Increase infill to 15–20% minimum. For large flat surfaces go to 25%. Gyroid and honeycomb patterns provide better top support.',
+        severity: 'red',
+        rank(s) {
+          if (s.infill === null) return 3;
+          if (s.infill < 10) return 4;
+          if (s.infill < 15) return 3;
+          if (s.infill < 20) return 2;
           return null;
         }
       },
       {
         title: 'Not enough top solid layers',
-        description: 'Too few top layers means the surface doesn\'t have enough material to properly bridge the infill gaps and produce a smooth finish.',
-        fix: 'Increase top layers to at least 4–6, or set your top thickness to around 0.6–1.0mm in your slicer.',
-        severity(s) {
-          return 'yellow';
-        }
+        description: 'Too few top layers means the surface doesn\'t have enough material to bridge infill gaps smoothly.',
+        fix: 'Increase top layers to 4–6, or set top thickness to 0.6–1.0mm in your slicer.',
+        severity: 'orange',
+        rank: (s) => 2,
       },
       {
         title: 'Print speed too fast for top layer',
-        description: 'High print speeds on top solid layers don\'t give the filament time to lay flat and fill properly.',
-        fix: 'Set your top/solid layer speed to 30–50% of your normal print speed. Most slicers have a separate "top surface speed" setting.',
-        severity(s) {
+        description: 'High speeds on top solid layers don\'t allow filament to lay flat and fill properly.',
+        fix: 'Set top/solid layer speed to 30–50% of your normal print speed in slicer settings.',
+        severity: 'orange',
+        rank(s) {
           if (s.printSpeed === null) return null;
-          if (s.printSpeed > 100) return 'orange';
-          if (s.printSpeed > 80) return 'yellow';
+          if (s.printSpeed > 100) return 3;
+          if (s.printSpeed > 80) return 2;
           return null;
         }
       },
       {
         title: 'Layer height too thick',
-        description: 'Thicker layers are harder to bridge cleanly over infill gaps and tend to produce a rougher top surface.',
-        fix: 'Try reducing layer height to 0.15–0.2mm for a smoother top surface, especially on visible parts.',
-        severity(s) {
+        description: 'Thick layers are harder to bridge cleanly over infill gaps, producing a rougher finish.',
+        fix: 'Reduce layer height to 0.15–0.2mm for a smoother top surface on visible parts.',
+        severity: 'yellow',
+        rank(s) {
           if (s.layerHeight === null) return null;
-          if (s.layerHeight > 0.3) return 'orange';
-          if (s.layerHeight > 0.25) return 'yellow';
+          if (s.layerHeight > 0.3) return 3;
+          if (s.layerHeight > 0.25) return 2;
           return null;
         }
       },
       {
         title: 'Nozzle temperature too high (overextrusion)',
-        description: 'An excessively hot nozzle produces very runny filament that overextrudes, leaving a blobby or uneven top surface.',
-        fix: 'Lower nozzle temperature by 5–10°C and verify your flow rate / extrusion multiplier is correctly calibrated.',
-        severity(s) {
-          if (s.nozzleTemp === null || !s.material) return null;
+        description: 'An overly hot nozzle produces very runny filament that overextrudes, leaving a blobby top surface.',
+        fix: 'Lower nozzle temperature by 5–10°C and verify your flow rate / extrusion multiplier.',
+        severity: 'yellow',
+        rank(s) {
+          if (!s.material || s.nozzleTemp === null) return null;
           const [, max] = MATERIAL_RANGES[s.material].nozzle;
-          if (s.nozzleTemp > max + 10) return 'orange';
-          if (s.nozzleTemp > max) return 'yellow';
+          if (s.nozzleTemp > max + 10) return 3;
+          if (s.nozzleTemp > max) return 2;
           return null;
         }
       },
       {
         title: 'Insufficient cooling on top layer (PLA)',
-        description: 'Without enough cooling, the top layer stays soft and gets dragged by the nozzle, leaving a rough or uneven finish.',
-        fix: 'Make sure your part cooling fan is at 100% for top layers. Check your fan is functioning correctly.',
-        severity(s) {
+        description: 'Without enough cooling, the top layer stays soft and gets dragged by the nozzle.',
+        fix: 'Ensure part cooling fan is at 100% for top layers with PLA.',
+        severity: 'yellow',
+        rank(s) {
           if (s.coolingFan === null || s.material !== 'PLA') return null;
-          if (s.coolingFan < 50) return 'orange';
-          if (s.coolingFan < 80) return 'yellow';
+          if (s.coolingFan < 50) return 3;
+          if (s.coolingFan < 80) return 2;
           return null;
         }
       },
     ]
   },
 
+  // ── SPAGHETTI ─────────────────────────────────────────────────────────────
   spaghetti: {
     label: 'Spaghetti (Collapsed Print)',
     causes: [
       {
         title: 'Print detached from the bed',
-        description: 'The most common root cause of spaghetti — the print lifted or peeled off the bed mid-print, and the nozzle kept printing into air.',
-        fix: 'Focus on improving bed adhesion: clean the bed with IPA, check your Z offset, increase bed temperature, and slow down the first layer.',
-        severity(s) {
-          return 'red';
+        description: 'The most common root cause — the print lifted mid-print and the nozzle kept extruding into air.',
+        fix: 'Improve bed adhesion: clean with IPA, check Z offset, raise bed temp, slow down first layer. Enable a spaghetti detection camera if available.',
+        severity: 'red',
+        rank: (s) => 4,
+      },
+      {
+        title: 'Nozzle snagging on the print (overhang curl)',
+        description: 'Overhangs that curl upward catch the nozzle on subsequent passes, eventually knocking the print loose.',
+        fix: 'Increase cooling fan speed for better overhang performance. Add supports or reduce overhang angle.',
+        severity: 'red',
+        rank(s) {
+          if (s.coolingFan === null) return 2;
+          if (s.material === 'PLA' && s.coolingFan < 50) return 3;
+          return 2;
         }
       },
       {
         title: 'Print speed too high',
-        description: 'High speeds increase vibration and nozzle forces, which can knock a print off the bed or cause a layer shift that leads to spaghetti.',
-        fix: 'Reduce print speed to 40–60 mm/s. If you\'re using high-speed printing (100+ mm/s), ensure your printer is properly tuned for it.',
-        severity(s) {
+        description: 'High speeds increase nozzle forces and vibration, which can dislodge a print or cause a layer shift leading to spaghetti.',
+        fix: 'Reduce print speed to 40–60 mm/s. Tune acceleration and jerk settings if using high-speed printing.',
+        severity: 'orange',
+        rank(s) {
           if (s.printSpeed === null) return null;
-          if (s.printSpeed > 120) return 'orange';
-          if (s.printSpeed > 80) return 'yellow';
+          if (s.printSpeed > 120) return 3;
+          if (s.printSpeed > 80) return 2;
           return null;
         }
       },
       {
-        title: 'Nozzle temperature too high (drooping / stringing)',
-        description: 'An overly hot nozzle produces very runny filament that strings and droops, which can catch on the print and knock it off the bed.',
-        fix: 'Lower nozzle temperature by 5–10°C and increase retraction slightly to reduce stringing.',
-        severity(s) {
-          if (s.nozzleTemp === null || !s.material) return null;
+        title: 'Nozzle temperature too high (stringing/drooping)',
+        description: 'A very hot nozzle produces runny filament that strings and droops, which can catch on the print and knock it over.',
+        fix: 'Lower nozzle temperature by 5–10°C and increase retraction slightly.',
+        severity: 'orange',
+        rank(s) {
+          if (!s.material || s.nozzleTemp === null) return null;
           const [, max] = MATERIAL_RANGES[s.material].nozzle;
-          if (s.nozzleTemp > max + 10) return 'orange';
-          if (s.nozzleTemp > max + 5) return 'yellow';
-          return null;
-        }
-      },
-      {
-        title: 'Insufficient cooling on overhangs',
-        description: 'Without enough cooling, overhangs sag and curl upward, eventually catching the nozzle and dislodging the print.',
-        fix: 'Increase part cooling fan speed. For PLA, use 80–100%. Make sure your part cooling fan is aimed correctly at the print.',
-        severity(s) {
-          if (s.coolingFan === null || s.material !== 'PLA') return null;
-          if (s.coolingFan < 50) return 'orange';
-          if (s.coolingFan < 80) return 'yellow';
+          if (s.nozzleTemp > max + 10) return 3;
+          if (s.nozzleTemp > max + 5) return 2;
           return null;
         }
       },
       {
         title: 'First layer speed too high',
-        description: 'A poorly bonded first layer is easily knocked off during later layers, especially on tall or thin prints.',
-        fix: 'Reduce first layer speed to 15–25 mm/s for a stronger initial bond.',
-        severity(s) {
+        description: 'A poorly bonded first layer is easily knocked off during taller or top-heavy prints.',
+        fix: 'Reduce first layer speed to 15–25 mm/s.',
+        severity: 'orange',
+        rank(s) {
           if (s.firstLayerSpeed === null) return null;
-          if (s.firstLayerSpeed > 40) return 'orange';
-          if (s.firstLayerSpeed > 25) return 'yellow';
+          if (s.firstLayerSpeed > 40) return 2;
+          if (s.firstLayerSpeed > 25) return 1;
           return null;
         }
       },
     ]
   },
 
+  // ── CLOGGED NOZZLE ────────────────────────────────────────────────────────
   clogged_nozzle: {
     label: 'Clogged Nozzle',
     causes: [
       {
         title: 'Nozzle temperature too low for material',
-        description: 'Printing too cold causes semi-melted filament to solidify inside the nozzle, forming a clog.',
-        fix: 'Increase nozzle temperature to the correct range for your material. For an existing clog, try a cold pull: heat to printing temp, push filament through, cool to ~90°C, then pull firmly.',
-        severity(s) {
-          if (s.nozzleTemp === null || !s.material) return 'orange';
+        description: 'Printing too cold causes semi-melted filament to solidify inside the nozzle bore, forming a clog.',
+        fix: 'Increase nozzle temperature to the correct range for your material. For an existing clog, try a cold pull: heat to print temp, push filament, cool to ~90°C, pull firmly.',
+        severity: 'red',
+        rank(s) {
+          if (!s.material || s.nozzleTemp === null) return 3;
           const [min] = MATERIAL_RANGES[s.material].nozzle;
-          if (s.nozzleTemp < min - 10) return 'red';
-          if (s.nozzleTemp < min) return 'orange';
+          if (s.nozzleTemp < min - 10) return 4;
+          if (s.nozzleTemp < min) return 3;
           return null;
         }
       },
       {
         title: 'Retraction distance too high',
-        description: 'Excessive retraction pulls molten filament up into the cold zone of the hotend (heat creep zone), where it solidifies and causes a clog.',
-        fix: 'For direct drive extruders: keep retraction under 2mm. For Bowden setups: 4–6mm max. Start low and increase only if needed.',
-        severity(s) {
-          if (s.retractionDist === null) return 'yellow';
-          if (s.retractionDist > 8) return 'red';
-          if (s.retractionDist > 5) return 'orange';
-          if (s.retractionDist > 3) return 'yellow';
+        description: 'Excessive retraction pulls molten filament up into the cold zone of the hotend where it solidifies and causes a jam.',
+        fix: 'Direct drive: keep retraction under 2mm. Bowden: 4–6mm maximum. Start low and increase only if needed.',
+        severity: 'red',
+        rank(s) {
+          if (s.retractionDist === null) return 2;
+          if (s.retractionDist > 8) return 4;
+          if (s.retractionDist > 5) return 3;
+          if (s.retractionDist > 3) return 2;
           return null;
         }
       },
       {
         title: 'Heat creep',
-        description: 'Heat creep occurs when heat travels up the heatbreak into the cold zone, softening filament where it shouldn\'t be and causing a jam.',
-        fix: 'Ensure your hotend cooling fan runs at 100% at all times (not just during printing). Clean any dust from the heatsink fins.',
-        severity(s) {
-          return 'yellow';
-        }
+        description: 'Heat travels up the heatbreak into the cold zone, softening filament where it shouldn\'t be and causing a jam.',
+        fix: 'Ensure the hotend cooling fan runs at 100% at all times (not just during printing). Clean heatsink fins of dust.',
+        severity: 'orange',
+        rank: (s) => 2,
       },
       {
         title: 'Wet or contaminated filament',
-        description: 'Moisture in filament vaporizes during printing, creating bubbles and inconsistent flow that contributes to partial clogs over time.',
-        fix: 'Dry your filament before use: 45°C for PLA (4–6 hrs), 65°C for PETG/ABS/ASA (4–6 hrs). Use a food dehydrator or dedicated filament dryer.',
-        severity(s) {
-          return 'yellow';
-        }
+        description: 'Moisture in filament creates steam bubbles during printing, which can contribute to partial clogs over time.',
+        fix: 'Dry filament before use: PLA at 45°C (4–6 hrs), PETG/ABS/ASA at 65°C (4–6 hrs). Use a dedicated filament dryer.',
+        severity: 'orange',
+        rank: (s) => 2,
       },
       {
         title: 'Retraction speed too high',
-        description: 'Very high retraction speeds can cause the filament to strip, grind, or bind inside the hotend, contributing to clogs.',
-        fix: 'Reduce retraction speed to 25–45 mm/s and test in small increments.',
-        severity(s) {
+        description: 'Very fast retractions can cause filament to strip or bind inside the hotend.',
+        fix: 'Reduce retraction speed to 25–45 mm/s and test incrementally.',
+        severity: 'yellow',
+        rank(s) {
           if (s.retractionSpeed === null) return null;
-          if (s.retractionSpeed > 70) return 'orange';
-          if (s.retractionSpeed > 50) return 'yellow';
+          if (s.retractionSpeed > 70) return 3;
+          if (s.retractionSpeed > 50) return 2;
           return null;
         }
       },
       {
         title: 'Print speed too high for nozzle temperature',
-        description: 'Printing faster than your hotend can melt filament starves the nozzle and leaves semi-molten material behind that can cause a clog.',
-        fix: 'Reduce print speed or raise nozzle temperature by 5°C at a time. Your hotend has a maximum volumetric flow rate.',
-        severity(s) {
+        description: 'Printing faster than your hotend can melt filament leaves semi-molten material that can clog.',
+        fix: 'Reduce print speed or raise nozzle temp by 5°C at a time. Your hotend has a maximum volumetric flow rate.',
+        severity: 'orange',
+        rank(s) {
           if (s.printSpeed === null || s.nozzleTemp === null || !s.material) return null;
           const [min] = MATERIAL_RANGES[s.material].nozzle;
-          if (s.printSpeed > 80 && s.nozzleTemp < min + 10) return 'orange';
-          if (s.printSpeed > 60 && s.nozzleTemp < min + 5) return 'yellow';
+          if (s.printSpeed > 80 && s.nozzleTemp < min + 10) return 3;
+          if (s.printSpeed > 60 && s.nozzleTemp < min + 5) return 2;
           return null;
         }
+      },
+    ]
+  },
+
+  // ── LAYER SHIFT ───────────────────────────────────────────────────────────
+  layer_shift: {
+    label: 'Layer Shift',
+    causes: [
+      {
+        title: 'Print speed or acceleration too high',
+        description: 'Demanding too much speed from the stepper motors causes them to skip steps, shifting all subsequent layers.',
+        fix: 'Reduce print speed to 40–60 mm/s and lower acceleration in slicer/firmware settings. Tune with a speed tower test.',
+        severity: 'red',
+        rank(s) {
+          if (s.printSpeed === null) return 2;
+          if (s.printSpeed > 120) return 4;
+          if (s.printSpeed > 80) return 3;
+          if (s.printSpeed > 60) return 2;
+          return null;
+        }
+      },
+      {
+        title: 'Loose or slipping GT2 belt',
+        description: 'A loose belt allows the print head or gantry to slip under rapid direction changes, causing a shift.',
+        fix: 'Check and tighten the X and Y axis belts. They should feel firm like a guitar string, not floppy.',
+        severity: 'red',
+        rank: (s) => 3,
+      },
+      {
+        title: 'Mechanical obstruction',
+        description: 'A cable, Bowden tube, or foreign object caught during a fast move can force a missed step.',
+        fix: 'Inspect the printer\'s full range of motion. Ensure cables are routed cleanly and nothing can snag during movement.',
+        severity: 'red',
+        rank: (s) => 2,
+      },
+      {
+        title: 'Stepper motor current too low',
+        description: 'Insufficient motor current means the steppers can\'t push through resistance and skip steps under load.',
+        fix: 'Increase stepper driver current (Vref) slightly in firmware or via the driver potentiometer. Refer to your printer\'s docs.',
+        severity: 'orange',
+        rank: (s) => 2,
+      },
+      {
+        title: 'Nozzle snagging on the print',
+        description: 'If the nozzle catches on a raised section of the print (e.g. curled corner), it can force a missed step.',
+        fix: 'Improve cooling to reduce layer curl. Lower Z seam height. Enable Z-hop in your slicer.',
+        severity: 'orange',
+        rank: (s) => 2,
+      },
+      {
+        title: 'Overheating stepper driver',
+        description: 'A hot stepper driver will throttle or shut down to protect itself, causing missed steps.',
+        fix: 'Ensure electronics bay has adequate airflow. Check that driver cooling fans are running. Add a heatsink if needed.',
+        severity: 'yellow',
+        rank: (s) => 1,
+      },
+    ]
+  },
+
+  // ── STRINGING ─────────────────────────────────────────────────────────────
+  stringing: {
+    label: 'Stringing / Hairing',
+    causes: [
+      {
+        title: 'Nozzle temperature too high',
+        description: 'An overly hot nozzle produces very runny, low-viscosity filament that oozes out freely during travel moves.',
+        fix: 'Lower nozzle temperature by 5–10°C at a time. Run a temperature tower to find the sweet spot for your specific filament brand.',
+        severity: 'red',
+        rank(s) {
+          if (!s.material || s.nozzleTemp === null) return 2;
+          const [, max] = MATERIAL_RANGES[s.material].nozzle;
+          if (s.nozzleTemp > max + 10) return 4;
+          if (s.nozzleTemp > max + 5) return 3;
+          if (s.nozzleTemp > max) return 2;
+          return null;
+        }
+      },
+      {
+        title: 'Retraction distance too low',
+        description: 'Insufficient retraction doesn\'t pull the filament back far enough, leaving the nozzle tip oozing during travel.',
+        fix: 'Increase retraction distance: 0.5–2mm for direct drive, 4–6mm for Bowden. Run a retraction test tower.',
+        severity: 'red',
+        rank(s) {
+          if (s.retractionDist === null) return 3;
+          if (s.retractionDist < 0.5) return 4;
+          if (s.retractionDist < 1.5) return 3;
+          if (s.retractionDist < 2.5) return 2;
+          return null;
+        }
+      },
+      {
+        title: 'PETG naturally strings more',
+        description: 'PETG is notoriously stringy due to its high tack and wide melt range. It requires more tuning than PLA.',
+        fix: 'For PETG: use lower temps (230–235°C if possible), increase retraction, enable combing, and try wiping on retraction.',
+        severity: 'orange',
+        rank(s) {
+          if (s.material === 'PETG') return 3;
+          return null;
+        }
+      },
+      {
+        title: 'Travel speed too slow',
+        description: 'Slow travel moves give the nozzle more time to ooze filament between parts.',
+        fix: 'Increase travel speed to 150–200 mm/s if your printer can handle it. Enable combing to avoid crossing open air.',
+        severity: 'orange',
+        rank: (s) => 2,
+      },
+      {
+        title: 'Wet filament',
+        description: 'Moisture in filament makes it more fluid and prone to oozing, producing thin strings even with good retraction settings.',
+        fix: 'Dry your filament: PLA at 45°C, PETG/ABS at 65°C for 4–6 hours. Store in sealed bags with desiccant.',
+        severity: 'orange',
+        rank: (s) => 2,
+      },
+      {
+        title: 'Retraction speed too low',
+        description: 'Slow retraction doesn\'t pull the filament back fast enough to stop ooze before the travel move begins.',
+        fix: 'Increase retraction speed to 35–60 mm/s. Be careful not to go too high or you\'ll grind the filament.',
+        severity: 'yellow',
+        rank(s) {
+          if (s.retractionSpeed === null) return null;
+          if (s.retractionSpeed < 20) return 3;
+          if (s.retractionSpeed < 30) return 2;
+          return null;
+        }
+      },
+    ]
+  },
+
+  // ── UNDER-EXTRUSION ───────────────────────────────────────────────────────
+  under_extrusion: {
+    label: 'Under-Extrusion / Gaps',
+    causes: [
+      {
+        title: 'Partial nozzle clog',
+        description: 'A partial blockage restricts filament flow, causing inconsistent extrusion and visible gaps in layers.',
+        fix: 'Try a cold pull to clear debris. Push filament manually at temperature to check resistance. Replace nozzle if needed.',
+        severity: 'red',
+        rank: (s) => 3,
+      },
+      {
+        title: 'Nozzle temperature too low',
+        description: 'Filament that isn\'t fully melted can\'t flow at the required rate, causing under-extrusion especially at higher speeds.',
+        fix: 'Increase nozzle temperature to the correct range. Try going 5–10°C higher if you\'re at the low end.',
+        severity: 'red',
+        rank(s) {
+          if (!s.material || s.nozzleTemp === null) return 3;
+          const [min] = MATERIAL_RANGES[s.material].nozzle;
+          if (s.nozzleTemp < min - 10) return 4;
+          if (s.nozzleTemp < min) return 3;
+          return null;
+        }
+      },
+      {
+        title: 'Print speed too high for hotend temperature',
+        description: 'Printing faster than your hotend can melt filament starves the nozzle — the extruder demands more than it can provide.',
+        fix: 'Reduce print speed, or raise temperature by 5°C at a time. Your hotend has a maximum volumetric flow rate limit.',
+        severity: 'red',
+        rank(s) {
+          if (s.printSpeed === null) return null;
+          if (!s.material || s.nozzleTemp === null) return null;
+          const [min] = MATERIAL_RANGES[s.material].nozzle;
+          if (s.printSpeed > 80 && s.nozzleTemp < min + 10) return 4;
+          if (s.printSpeed > 60 && s.nozzleTemp < min + 5) return 3;
+          if (s.printSpeed > 80) return 2;
+          return null;
+        }
+      },
+      {
+        title: 'Incorrect flow rate / extrusion multiplier',
+        description: 'A flow rate set too low will consistently under-extrude across the entire print.',
+        fix: 'Calibrate your E-steps and extrusion multiplier. Print a single-wall cube and measure wall thickness to dial it in.',
+        severity: 'orange',
+        rank: (s) => 2,
+      },
+      {
+        title: 'Extruder not gripping filament properly',
+        description: 'A worn extruder gear, slipping idler, or improperly tensioned extruder causes inconsistent filament feed.',
+        fix: 'Check the extruder idler tension. Inspect the drive gear for wear or clogging with ground filament. Clean with a brush.',
+        severity: 'orange',
+        rank: (s) => 2,
+      },
+      {
+        title: 'Wet or brittle filament',
+        description: 'Moisture-absorbed filament loses diameter consistency and becomes brittle, causing feed irregularities.',
+        fix: 'Dry filament at 45–65°C depending on material (4–6 hours). Discard filament that is visibly brittle or snapping easily.',
+        severity: 'yellow',
+        rank: (s) => 1,
+      },
+    ]
+  },
+
+  // ── LAYER SEPARATION ──────────────────────────────────────────────────────
+  layer_separation: {
+    label: 'Layer Separation / Splitting',
+    causes: [
+      {
+        title: 'Nozzle temperature too low',
+        description: 'Cold filament doesn\'t bond well to the previous layer. Inadequate layer adhesion is the primary cause of splitting.',
+        fix: 'Increase nozzle temperature to the recommended range. For large/tall prints, try the higher end of the range.',
+        severity: 'red',
+        rank(s) {
+          if (!s.material || s.nozzleTemp === null) return 3;
+          const [min] = MATERIAL_RANGES[s.material].nozzle;
+          if (s.nozzleTemp < min - 10) return 4;
+          if (s.nozzleTemp < min) return 3;
+          return null;
+        }
+      },
+      {
+        title: 'Cooling too aggressive — ABS / ASA',
+        description: 'ABS and ASA require minimal cooling to maintain layer-to-layer bond strength. High fan speeds cause thermal stress that splits layers.',
+        fix: 'Reduce or completely disable the cooling fan for ABS/ASA. Use an enclosure to maintain ambient temperature.',
+        severity: 'red',
+        rank(s) {
+          if (!s.material) return null;
+          if (['ABS', 'ASA'].includes(s.material)) {
+            if (s.coolingFan === null) return 3;
+            if (s.coolingFan > 30) return 4;
+            if (s.coolingFan > 10) return 3;
+          }
+          return null;
+        }
+      },
+      {
+        title: 'Layer height too thick for nozzle diameter',
+        description: 'Layer height greater than ~75% of nozzle diameter results in insufficient overlap between layers, causing poor bonding.',
+        fix: 'Keep layer height at or below 75% of nozzle diameter. For a 0.4mm nozzle, max practical layer height is 0.3mm.',
+        severity: 'orange',
+        rank(s) {
+          if (s.layerHeight === null) return null;
+          if (s.layerHeight > 0.35) return 3;
+          if (s.layerHeight > 0.28) return 2;
+          return null;
+        }
+      },
+      {
+        title: 'Print speed too high',
+        description: 'Excessive print speed reduces the time filament has to bond to the previous layer, resulting in weak layer adhesion.',
+        fix: 'Reduce print speed to 40–60 mm/s. Slower speeds significantly improve layer bonding.',
+        severity: 'orange',
+        rank(s) {
+          if (s.printSpeed === null) return null;
+          if (s.printSpeed > 100) return 3;
+          if (s.printSpeed > 80) return 2;
+          return null;
+        }
+      },
+      {
+        title: 'Under-extrusion causing thin layers',
+        description: 'If filament isn\'t being deposited consistently, some layers will be too thin to bond properly.',
+        fix: 'Check for a partial clog, calibrate E-steps, and verify flow rate. Look for inconsistent line widths in the print.',
+        severity: 'orange',
+        rank: (s) => 2,
+      },
+      {
+        title: 'Wet filament',
+        description: 'Moisture weakens interlayer bonding and can create micro-voids between layers that cause splitting under stress.',
+        fix: 'Dry filament before use at the appropriate temperature for your material.',
+        severity: 'yellow',
+        rank: (s) => 1,
+      },
+    ]
+  },
+
+  // ── SURFACE IMPERFECTIONS ─────────────────────────────────────────────────
+  surface_imperfections: {
+    label: 'Zits, Blobs & Surface Pitting',
+    causes: [
+      {
+        title: 'Wet filament — popping and pitting',
+        description: 'Moisture in filament vaporizes at printing temperature, creating steam pops that leave pits, craters, and rough texture on the surface.',
+        fix: 'Dry your filament before printing: PLA 45°C, PETG/ABS/ASA 65°C, for 4–6 hours. If you hear crackling or popping during printing, the filament is wet.',
+        severity: 'red',
+        rank: (s) => 3,
+      },
+      {
+        title: 'Insufficient retraction — zits and blobs from ooze',
+        description: 'When retraction doesn\'t fully stop ooze between travel moves, the nozzle deposits small blobs as it re-enters the perimeter.',
+        fix: 'Increase retraction distance slightly. Enable "wipe before retract" and "retract on layer change" in your slicer.',
+        severity: 'orange',
+        rank(s) {
+          if (s.retractionDist === null) return 2;
+          if (s.retractionDist < 0.5) return 4;
+          if (s.retractionDist < 1.5) return 3;
+          return null;
+        }
+      },
+      {
+        title: 'Nozzle temperature too high — oozing',
+        description: 'A very hot nozzle produces runny filament that oozes freely, leaving excess material that shows as blobs or zits.',
+        fix: 'Lower nozzle temperature by 5–10°C. Run a temperature tower to find the best balance between flow and ooze.',
+        severity: 'orange',
+        rank(s) {
+          if (!s.material || s.nozzleTemp === null) return null;
+          const [, max] = MATERIAL_RANGES[s.material].nozzle;
+          if (s.nozzleTemp > max + 10) return 3;
+          if (s.nozzleTemp > max + 5) return 2;
+          return null;
+        }
+      },
+      {
+        title: 'Seam / Z-scar placement',
+        description: 'The point where each layer starts and ends creates a small seam. Poorly placed seams show as vertical lines or blobs.',
+        fix: 'In your slicer, set seam placement to "Aligned" or "Rear" to hide it, or "Random" to spread it out. Use "Smart" seam if available.',
+        severity: 'yellow',
+        rank: (s) => 2,
+      },
+      {
+        title: 'Combing / avoid crossing perimeters disabled',
+        description: 'Without combing, the nozzle travels over the surface of the print and can leave marks or blobs as it crosses perimeters.',
+        fix: 'Enable "Combing" or "Avoid crossing perimeters" in your slicer. This keeps travel moves inside the print.',
+        severity: 'yellow',
+        rank: (s) => 2,
+      },
+      {
+        title: 'Inconsistent extrusion / pressure advance not tuned',
+        description: 'Pressure fluctuations at the start and end of lines cause small over- or under-extrusion marks on the surface.',
+        fix: 'Calibrate Pressure Advance (Klipper) or Linear Advance (Marlin) for cleaner line starts and ends.',
+        severity: 'yellow',
+        rank: (s) => 1,
+      },
+    ]
+  },
+
+  // ── FILAMENT GRINDING ─────────────────────────────────────────────────────
+  filament_grinding: {
+    label: 'Filament Grinding / Clicking',
+    causes: [
+      {
+        title: 'Partial or full nozzle clog',
+        description: 'A blocked nozzle creates back-pressure that the extruder motor can\'t overcome, causing it to grind or strip the filament.',
+        fix: 'Heat to printing temperature and try a cold pull. Push filament manually — if resistance is very high, you have a clog. Clear or replace the nozzle.',
+        severity: 'red',
+        rank: (s) => 4,
+      },
+      {
+        title: 'Nozzle temperature too low',
+        description: 'Printing too cold makes the filament stiff and difficult to extrude, overloading the extruder motor.',
+        fix: 'Increase nozzle temperature to the correct range. Try going 5–10°C higher than your current setting.',
+        severity: 'red',
+        rank(s) {
+          if (!s.material || s.nozzleTemp === null) return 3;
+          const [min] = MATERIAL_RANGES[s.material].nozzle;
+          if (s.nozzleTemp < min - 10) return 4;
+          if (s.nozzleTemp < min) return 3;
+          return null;
+        }
+      },
+      {
+        title: 'Print speed too high for hotend',
+        description: 'Demanding more filament than your hotend can melt causes back-pressure that makes the extruder skip and grind.',
+        fix: 'Reduce print speed or increase temperature. Your hotend has a volumetric flow limit — don\'t exceed it.',
+        severity: 'orange',
+        rank(s) {
+          if (s.printSpeed === null) return null;
+          if (s.printSpeed > 100) return 3;
+          if (s.printSpeed > 80) return 2;
+          return null;
+        }
+      },
+      {
+        title: 'Retraction distance too high',
+        description: 'Excessive retraction strains the extruder on every move, causing it to grind the filament over time.',
+        fix: 'Direct drive: reduce to under 2mm. Bowden: 4–6mm maximum. Run a retraction test to find the minimum effective distance.',
+        severity: 'orange',
+        rank(s) {
+          if (s.retractionDist === null) return null;
+          if (s.retractionDist > 8) return 3;
+          if (s.retractionDist > 5) return 2;
+          return null;
+        }
+      },
+      {
+        title: 'Extruder idler tension incorrect',
+        description: 'Too tight and the extruder crushes/grinds the filament. Too loose and it slips without feeding properly.',
+        fix: 'Adjust the extruder idler spring tension. It should grip firmly but not crush the filament. Check your printer\'s specific guidance.',
+        severity: 'yellow',
+        rank: (s) => 2,
+      },
+      {
+        title: 'Worn or clogged extruder drive gear',
+        description: 'A worn gear or one packed with ground filament debris loses grip and skips, especially under load.',
+        fix: 'Inspect and clean the extruder drive gear with a stiff brush. Replace if teeth are visibly worn.',
+        severity: 'yellow',
+        rank: (s) => 1,
+      },
+    ]
+  },
+
+  // ── MID-PRINT STOPPAGE ────────────────────────────────────────────────────
+  mid_print_stoppage: {
+    label: 'Mid-Print Stoppage',
+    causes: [
+      {
+        title: 'Thermal runaway protection triggered',
+        description: 'The printer detected an unexpected temperature drop and shut down to prevent a fire. This is a safety feature, not a bug.',
+        fix: 'Check the heater cartridge and thermistor connections — loose wires are the #1 cause. Check the hot end wiring harness for damage. Re-seat connectors.',
+        severity: 'red',
+        rank: (s) => 4,
+      },
+      {
+        title: 'Nozzle clog causing extruder failure',
+        description: 'A severe clog can stall filament movement, causing the extruder to grind to a halt and stopping the print.',
+        fix: 'Perform a cold pull to clear the clog. Check for heat creep or wet filament contributing to the blockage.',
+        severity: 'red',
+        rank: (s) => 3,
+      },
+      {
+        title: 'Electrical issue — loose connector or wire',
+        description: 'Loose wiring on the hotend, heated bed, or control board can cause intermittent failures that halt the print.',
+        fix: 'Inspect all wiring harnesses and connectors. Gently tug each connection. Look for worn or pinched wires from repeated movement.',
+        severity: 'red',
+        rank: (s) => 2,
+      },
+      {
+        title: 'Print detached and caused a crash',
+        description: 'If the print detaches and spaghetti builds up, the nozzle can jam against the pile of material and stall.',
+        fix: 'Improve bed adhesion to prevent the root cause. Consider a spaghetti detection / filament jam sensor if available.',
+        severity: 'orange',
+        rank(s) {
+          if (s.printSpeed === null) return 2;
+          if (s.printSpeed > 80) return 3;
+          return 2;
+        }
+      },
+      {
+        title: 'Filament runout',
+        description: 'The filament ran out mid-print. Without a runout sensor, the printer continues to move with no material.',
+        fix: 'Install a filament runout sensor if your printer supports one. Always check remaining spool quantity before long prints.',
+        severity: 'orange',
+        rank: (s) => 2,
+      },
+      {
+        title: 'Bad G-code or corrupted file',
+        description: 'A corrupted slice, bad SD card, or software error can produce malformed G-code that causes the printer to freeze.',
+        fix: 'Re-slice the model, re-export the file, and try from a fresh SD card or direct USB connection.',
+        severity: 'yellow',
+        rank: (s) => 1,
+      },
+    ]
+  },
+
+  // ── ELEPHANT FOOT ─────────────────────────────────────────────────────────
+  elephant_foot: {
+    label: 'Elephant Foot (First Layer Flare)',
+    causes: [
+      {
+        title: 'Z offset too low — nozzle too close to bed',
+        description: 'The most common cause. When the nozzle is too close, the first layer gets over-squished and spreads outward beyond the model\'s intended footprint.',
+        fix: 'Raise your Z offset slightly in small increments (0.02–0.05mm at a time) until the first layer is flat and even without spreading.',
+        severity: 'red',
+        rank: (s) => 4,
+      },
+      {
+        title: 'Bed temperature too high',
+        description: 'An excessively hot bed keeps the first layer soft and molten for too long, allowing it to spread under its own weight.',
+        fix: 'Reduce bed temperature by 5–10°C. Keep it within the recommended range for your material.',
+        severity: 'orange',
+        rank(s) {
+          if (!s.material || s.bedTemp === null) return null;
+          const [, max] = MATERIAL_RANGES[s.material].bed;
+          if (s.bedTemp > max + 15) return 3;
+          if (s.bedTemp > max + 5) return 2;
+          return null;
+        }
+      },
+      {
+        title: 'Nozzle temperature too high on first layer',
+        description: 'A very hot nozzle over-melts the first layer, making it too fluid and prone to spreading.',
+        fix: 'Lower nozzle temperature or set a slightly lower first-layer temperature in your slicer (5°C lower than print temp).',
+        severity: 'yellow',
+        rank(s) {
+          if (!s.material || s.nozzleTemp === null) return null;
+          const [, max] = MATERIAL_RANGES[s.material].nozzle;
+          if (s.nozzleTemp > max + 10) return 2;
+          return null;
+        }
+      },
+      {
+        title: 'No elephant foot compensation in slicer',
+        description: 'Most slicers have a dedicated "Elephant Foot Compensation" setting that insets the first layer slightly to counteract natural spreading.',
+        fix: 'Enable elephant foot compensation in your slicer. Start at 0.1–0.2mm and adjust until the first layer matches the rest of the print.',
+        severity: 'yellow',
+        rank: (s) => 2,
+      },
+      {
+        title: 'First layer line width too high',
+        description: 'Printing the first layer at a very wide line width increases spreading on an already-squeezed layer.',
+        fix: 'Set first layer line width to 100–120% of nozzle diameter rather than larger values.',
+        severity: 'green',
+        rank: (s) => 1,
+      },
+    ]
+  },
+
+  // ── GHOSTING / RINGING ────────────────────────────────────────────────────
+  ghosting: {
+    label: 'Ghosting / Ringing Artifacts',
+    causes: [
+      {
+        title: 'Print speed too high',
+        description: 'High print speeds create inertia forces during direction changes that cause the frame or toolhead to vibrate, leaving "echo" patterns on walls.',
+        fix: 'Reduce print speed to 40–60 mm/s. Ghosting is very sensitive to speed — even a 20% reduction can make a big difference.',
+        severity: 'red',
+        rank(s) {
+          if (s.printSpeed === null) return 3;
+          if (s.printSpeed > 100) return 4;
+          if (s.printSpeed > 80) return 3;
+          if (s.printSpeed > 60) return 2;
+          return null;
+        }
+      },
+      {
+        title: 'Acceleration too high',
+        description: 'High acceleration settings cause aggressive direction changes that excite resonant frequencies in the printer frame.',
+        fix: 'Lower acceleration in firmware/slicer settings. Start at 500–1000 mm/s² and increase until ghosting returns, then back off.',
+        severity: 'red',
+        rank(s) {
+          if (s.printSpeed === null) return 2;
+          if (s.printSpeed > 80) return 3;
+          if (s.printSpeed > 60) return 2;
+          return null;
+        }
+      },
+      {
+        title: 'Loose GT2 belt',
+        description: 'A slack belt allows the toolhead to oscillate slightly after sharp direction changes, producing ringing patterns.',
+        fix: 'Tighten X and Y belts until firm. Check belt tension regularly as they stretch over time.',
+        severity: 'orange',
+        rank: (s) => 3,
+      },
+      {
+        title: 'Printer on an unstable or resonant surface',
+        description: 'A table, shelf, or surface that amplifies vibrations will worsen ghosting significantly.',
+        fix: 'Place the printer on a rigid, heavy surface. Anti-vibration feet or foam padding under the printer can help considerably.',
+        severity: 'orange',
+        rank: (s) => 2,
+      },
+      {
+        title: 'Input shaping not configured',
+        description: 'Modern firmware (Klipper, Marlin 2.x) supports Input Shaping / Resonance Compensation which can nearly eliminate ringing.',
+        fix: 'Enable and calibrate Input Shaping or Resonance Compensation in your firmware. This requires an accelerometer (ADXL345) for best results.',
+        severity: 'yellow',
+        rank: (s) => 2,
+      },
+      {
+        title: 'Heavy or unbalanced toolhead',
+        description: 'A heavy direct drive extruder, large cooling shroud, or poorly balanced toolhead increases the inertia that causes ringing.',
+        fix: 'Lower print speed and acceleration to compensate. Consider lighter components if upgrading.',
+        severity: 'yellow',
+        rank: (s) => 1,
       },
     ]
   },
@@ -591,28 +1130,28 @@ const ISSUES = {
 };
 
 // ── RENDER ─────────────────────────────────────────────────────────────────
-
 function renderResults(results, issueLabel) {
-  const wrap = document.getElementById('resultsWrap');
+  const wrap      = document.getElementById('resultsWrap');
   const container = document.getElementById('results');
   const issueName = document.getElementById('resultsIssueName');
 
   issueName.textContent = issueLabel;
 
+  const SEV_LABELS = { red: 'Critical', orange: 'Major', yellow: 'Minor', green: 'Edge Case' };
+
   if (results.length === 0) {
-    container.innerHTML = '<p class="no-results">No issues flagged based on your settings. Try filling in the advanced settings for a more detailed analysis, or double-check your input values.</p>';
+    container.innerHTML = '<p class="no-results">No issues flagged based on your settings. Try filling in the advanced settings for a more detailed analysis.</p>';
   } else {
-    const SEV_LABELS = { red: 'Very Likely', orange: 'Likely', yellow: 'Possible', green: 'Unlikely' };
     container.innerHTML = results.map((c, i) => `
       <div class="result-card">
         <div class="result-header">
           <div class="result-dot-wrap">
-            <div class="sev-dot sev-${c.sev}"></div>
+            <div class="sev-dot sev-${c.severity}"></div>
           </div>
           <div class="result-meta">
             <span class="result-rank">#${i + 1}</span>
             <span class="result-title">${c.title}</span>
-            <span class="sev-badge sev-${c.sev}">${SEV_LABELS[c.sev]}</span>
+            <span class="sev-badge sev-${c.severity}">${SEV_LABELS[c.severity]}</span>
           </div>
         </div>
         <p class="result-desc">${c.description}</p>
@@ -626,7 +1165,6 @@ function renderResults(results, issueLabel) {
 }
 
 // ── DIAGNOSE ───────────────────────────────────────────────────────────────
-
 document.getElementById('diagnoseBtn').addEventListener('click', () => {
   const issueKey = document.querySelector('input[name="issue"]:checked')?.value;
   if (!issueKey) {
@@ -635,21 +1173,20 @@ document.getElementById('diagnoseBtn').addEventListener('click', () => {
   }
 
   const settings = getSettings();
-  const issue = ISSUES[issueKey];
+  const issue    = ISSUES[issueKey];
 
   const results = issue.causes
-    .map(cause => ({ ...cause, sev: cause.severity(settings) }))
-    .filter(c => c.sev !== null)
-    .sort((a, b) => SEVERITY_ORDER[b.sev] - SEVERITY_ORDER[a.sev]);
+    .map(cause => ({ ...cause, r: cause.rank(settings) }))
+    .filter(c => c.r !== null)
+    .sort((a, b) => b.r - a.r);
 
   renderResults(results, issue.label);
 });
 
 // ── ADVANCED TOGGLE ────────────────────────────────────────────────────────
-
 document.getElementById('advancedToggle').addEventListener('click', () => {
   const panel = document.getElementById('advancedPanel');
-  const btn = document.getElementById('advancedToggle');
+  const btn   = document.getElementById('advancedToggle');
   const isOpen = panel.style.display === 'block';
   panel.style.display = isOpen ? 'none' : 'block';
   btn.textContent = isOpen ? '+ Show Advanced Settings' : '− Hide Advanced Settings';

@@ -38,23 +38,59 @@
       <div class="issue-grid">
         <div class="issue-option">
           <input type="radio" name="issue" id="issue-bed" value="bed_adhesion">
-          <label for="issue-bed">Bed Adhesion Problems</label>
+          <label for="issue-bed">Bed Adhesion</label>
         </div>
         <div class="issue-option">
           <input type="radio" name="issue" id="issue-curling" value="curling_edges">
-          <label for="issue-curling">Curling / Warping Edges</label>
+          <label for="issue-curling">Curling / Warping</label>
         </div>
         <div class="issue-option">
           <input type="radio" name="issue" id="issue-top" value="warped_top">
-          <label for="issue-top">Rough / Warped Top Layer</label>
+          <label for="issue-top">Rough Top Layer</label>
         </div>
         <div class="issue-option">
           <input type="radio" name="issue" id="issue-spaghetti" value="spaghetti">
-          <label for="issue-spaghetti">Spaghetti (Collapsed Print)</label>
+          <label for="issue-spaghetti">Spaghetti Print</label>
         </div>
         <div class="issue-option">
           <input type="radio" name="issue" id="issue-clog" value="clogged_nozzle">
           <label for="issue-clog">Clogged Nozzle</label>
+        </div>
+        <div class="issue-option">
+          <input type="radio" name="issue" id="issue-shift" value="layer_shift">
+          <label for="issue-shift">Layer Shift</label>
+        </div>
+        <div class="issue-option">
+          <input type="radio" name="issue" id="issue-stringing" value="stringing">
+          <label for="issue-stringing">Stringing / Hairing</label>
+        </div>
+        <div class="issue-option">
+          <input type="radio" name="issue" id="issue-underextrusion" value="under_extrusion">
+          <label for="issue-underextrusion">Under-Extrusion / Gaps</label>
+        </div>
+        <div class="issue-option">
+          <input type="radio" name="issue" id="issue-separation" value="layer_separation">
+          <label for="issue-separation">Layer Separation</label>
+        </div>
+        <div class="issue-option">
+          <input type="radio" name="issue" id="issue-surface" value="surface_imperfections">
+          <label for="issue-surface">Zits / Blobs / Pitting</label>
+        </div>
+        <div class="issue-option">
+          <input type="radio" name="issue" id="issue-grinding" value="filament_grinding">
+          <label for="issue-grinding">Filament Grinding</label>
+        </div>
+        <div class="issue-option">
+          <input type="radio" name="issue" id="issue-stoppage" value="mid_print_stoppage">
+          <label for="issue-stoppage">Mid-Print Stoppage</label>
+        </div>
+        <div class="issue-option">
+          <input type="radio" name="issue" id="issue-elephant" value="elephant_foot">
+          <label for="issue-elephant">Elephant Foot</label>
+        </div>
+        <div class="issue-option">
+          <input type="radio" name="issue" id="issue-ghosting" value="ghosting">
+          <label for="issue-ghosting">Ghosting / Ringing</label>
         </div>
       </div>
 
@@ -148,16 +184,26 @@
     <!-- Results -->
     <div id="resultsWrap">
       <h2 class="results-header">Results — <span class="results-issue-name" id="resultsIssueName"></span></h2>
-      <p class="results-sub">Causes are ranked from most to least likely based on your settings.</p>
+      <p class="results-sub">Cards are ordered most → least likely based on your settings. Dot color shows severity of the cause.</p>
 
       <div class="sev-legend">
-        <div class="legend-item"><div class="sev-dot sev-red"></div> Very Likely</div>
-        <div class="legend-item"><div class="sev-dot sev-orange"></div> Likely</div>
-        <div class="legend-item"><div class="sev-dot sev-yellow"></div> Possible</div>
-        <div class="legend-item"><div class="sev-dot sev-green"></div> Unlikely</div>
+        <div class="legend-item"><div class="sev-dot sev-red"></div> Critical</div>
+        <div class="legend-item"><div class="sev-dot sev-orange"></div> Major</div>
+        <div class="legend-item"><div class="sev-dot sev-yellow"></div> Minor</div>
+        <div class="legend-item"><div class="sev-dot sev-green"></div> Edge Case</div>
       </div>
 
-      <div id="results"></div>
+      <div class="results-layout">
+        <div class="likelihood-bar">
+          <span class="lb-top-label">Most<br>Likely</span>
+          <div class="lb-track">
+            <div class="lb-line"></div>
+            <div class="lb-arrowhead"></div>
+          </div>
+          <span class="lb-bottom-label">Least<br>Likely</span>
+        </div>
+        <div id="results"></div>
+      </div>
     </div>
 
     <!-- Ad placeholder below results -->
