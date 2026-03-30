@@ -1031,6 +1031,7 @@ footer a:hover { color: var(--accent); }
 }
 
 .ss-option:hover { background: rgba(91, 155, 213, 0.12); color: var(--accent-bright); }
+.ss-option-active { color: var(--accent-bright) !important; }
 
 .ss-no-results {
   padding: 1rem 0.85rem;
