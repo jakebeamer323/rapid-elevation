@@ -693,6 +693,12 @@ a.tool-card:hover {
 
 .model-card-settings strong { color: var(--text); }
 
+.model-card-actions {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
 .model-card-download {
   display: inline-flex;
   align-items: center;
@@ -706,10 +712,31 @@ a.tool-card:hover {
   border-radius: var(--radius-sm);
   text-decoration: none;
   transition: background 0.2s;
-  align-self: flex-start;
 }
 
 .model-card-download:hover { background: var(--accent-bright); }
+
+.model-card-printables {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: transparent;
+  color: var(--accent);
+  border: 1.5px solid var(--accent);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.55rem 1.1rem;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.model-card-printables:hover {
+  background: rgba(91, 155, 213, 0.1);
+  color: var(--accent-bright);
+  border-color: var(--accent-bright);
+}
 
 /* ── FOOTER ── */
 footer {
