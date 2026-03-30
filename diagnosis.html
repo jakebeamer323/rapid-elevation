@@ -62,6 +62,23 @@
 
       <!-- Step 2: Basic Settings -->
       <div class="form-section-label">Step 2 — Your current settings</div>
+
+      <!-- Printer model — full width searchable dropdown -->
+      <div class="field" style="margin-bottom: 1rem;">
+        <label>Printer Model</label>
+        <div class="ss-wrap" id="printerSelect">
+          <div class="ss-display" id="printerDisplay" tabindex="0">
+            <span id="printerValue" class="ss-placeholder">— Search or select your printer —</span>
+            <span class="ss-arrow">▾</span>
+          </div>
+          <div class="ss-dropdown" id="printerDropdown">
+            <input type="text" class="ss-search" id="printerSearch" placeholder="Search printers...">
+            <div class="ss-list" id="printerList"></div>
+          </div>
+        </div>
+        <input type="hidden" id="printer">
+      </div>
+
       <div class="settings-grid">
         <div class="field">
           <label for="material">Material</label>

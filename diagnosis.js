@@ -1,3 +1,216 @@
+// ── PRINTER LIST ───────────────────────────────────────────────────────────
+const PRINTERS = [
+  // Bambu Lab
+  { group: 'Bambu Lab', name: 'Bambu Lab A1' },
+  { group: 'Bambu Lab', name: 'Bambu Lab A1 Mini' },
+  { group: 'Bambu Lab', name: 'Bambu Lab P1P' },
+  { group: 'Bambu Lab', name: 'Bambu Lab P1S' },
+  { group: 'Bambu Lab', name: 'Bambu Lab X1C' },
+  { group: 'Bambu Lab', name: 'Bambu Lab X1E' },
+  // Creality — Ender series
+  { group: 'Creality', name: 'Creality Ender 3' },
+  { group: 'Creality', name: 'Creality Ender 3 Pro' },
+  { group: 'Creality', name: 'Creality Ender 3 V2' },
+  { group: 'Creality', name: 'Creality Ender 3 V2 Neo' },
+  { group: 'Creality', name: 'Creality Ender 3 V3' },
+  { group: 'Creality', name: 'Creality Ender 3 V3 KE' },
+  { group: 'Creality', name: 'Creality Ender 3 V3 SE' },
+  { group: 'Creality', name: 'Creality Ender 3 S1' },
+  { group: 'Creality', name: 'Creality Ender 3 S1 Pro' },
+  { group: 'Creality', name: 'Creality Ender 3 S1 Plus' },
+  { group: 'Creality', name: 'Creality Ender 5' },
+  { group: 'Creality', name: 'Creality Ender 5 Pro' },
+  { group: 'Creality', name: 'Creality Ender 5 Plus' },
+  { group: 'Creality', name: 'Creality Ender 5 S1' },
+  { group: 'Creality', name: 'Creality Ender 6' },
+  { group: 'Creality', name: 'Creality Ender 7' },
+  // Creality — CR series
+  { group: 'Creality', name: 'Creality CR-6 SE' },
+  { group: 'Creality', name: 'Creality CR-6 Max' },
+  { group: 'Creality', name: 'Creality CR-10' },
+  { group: 'Creality', name: 'Creality CR-10 V3' },
+  { group: 'Creality', name: 'Creality CR-10 S5' },
+  { group: 'Creality', name: 'Creality CR-10 Smart' },
+  { group: 'Creality', name: 'Creality CR-10 Smart Pro' },
+  { group: 'Creality', name: 'Creality CR-10 Max' },
+  // Creality — K series
+  { group: 'Creality', name: 'Creality K1' },
+  { group: 'Creality', name: 'Creality K1C' },
+  { group: 'Creality', name: 'Creality K1 Max' },
+  { group: 'Creality', name: 'Creality K1 SE' },
+  // Prusa Research
+  { group: 'Prusa Research', name: 'Prusa i3 MK3S+' },
+  { group: 'Prusa Research', name: 'Prusa i3 MK4' },
+  { group: 'Prusa Research', name: 'Prusa i3 MK4S' },
+  { group: 'Prusa Research', name: 'Prusa Mini' },
+  { group: 'Prusa Research', name: 'Prusa Mini+' },
+  { group: 'Prusa Research', name: 'Prusa XL' },
+  { group: 'Prusa Research', name: 'Prusa Core One' },
+  // AnkerMake
+  { group: 'AnkerMake', name: 'AnkerMake M5' },
+  { group: 'AnkerMake', name: 'AnkerMake M5C' },
+  { group: 'AnkerMake', name: 'AnkerMake M7' },
+  // Elegoo
+  { group: 'Elegoo', name: 'Elegoo Neptune 2' },
+  { group: 'Elegoo', name: 'Elegoo Neptune 2S' },
+  { group: 'Elegoo', name: 'Elegoo Neptune 3' },
+  { group: 'Elegoo', name: 'Elegoo Neptune 3 Pro' },
+  { group: 'Elegoo', name: 'Elegoo Neptune 3 Plus' },
+  { group: 'Elegoo', name: 'Elegoo Neptune 3 Max' },
+  { group: 'Elegoo', name: 'Elegoo Neptune 4' },
+  { group: 'Elegoo', name: 'Elegoo Neptune 4 Pro' },
+  { group: 'Elegoo', name: 'Elegoo Neptune 4 Plus' },
+  { group: 'Elegoo', name: 'Elegoo Neptune 4 Max' },
+  { group: 'Elegoo', name: 'Elegoo Neptune 4 X' },
+  // Voron
+  { group: 'Voron', name: 'Voron 0.2' },
+  { group: 'Voron', name: 'Voron Trident' },
+  { group: 'Voron', name: 'Voron 2.4' },
+  { group: 'Voron', name: 'Voron Switchwire' },
+  // Artillery
+  { group: 'Artillery', name: 'Artillery Sidewinder X1' },
+  { group: 'Artillery', name: 'Artillery Sidewinder X2' },
+  { group: 'Artillery', name: 'Artillery Genius' },
+  { group: 'Artillery', name: 'Artillery Genius Pro' },
+  { group: 'Artillery', name: 'Artillery Hornet' },
+  // Sovol
+  { group: 'Sovol', name: 'Sovol SV06' },
+  { group: 'Sovol', name: 'Sovol SV06 Plus' },
+  { group: 'Sovol', name: 'Sovol SV07' },
+  { group: 'Sovol', name: 'Sovol SV07 Plus' },
+  { group: 'Sovol', name: 'Sovol SV08' },
+  // FlashForge
+  { group: 'FlashForge', name: 'FlashForge Adventurer 3' },
+  { group: 'FlashForge', name: 'FlashForge Adventurer 4' },
+  { group: 'FlashForge', name: 'FlashForge Adventurer 5M' },
+  { group: 'FlashForge', name: 'FlashForge Adventurer 5M Pro' },
+  { group: 'FlashForge', name: 'FlashForge Creator Pro 2' },
+  { group: 'FlashForge', name: 'FlashForge Guider 3' },
+  // Qidi Tech
+  { group: 'Qidi Tech', name: 'Qidi X-Plus 3' },
+  { group: 'Qidi Tech', name: 'Qidi X-Max 3' },
+  { group: 'Qidi Tech', name: 'Qidi X-Smart 3' },
+  { group: 'Qidi Tech', name: 'Qidi Q1 Pro' },
+  // UltiMaker
+  { group: 'UltiMaker', name: 'UltiMaker S3' },
+  { group: 'UltiMaker', name: 'UltiMaker S5' },
+  { group: 'UltiMaker', name: 'UltiMaker S7' },
+  { group: 'UltiMaker', name: 'UltiMaker 2+ Connect' },
+  // Raise3D
+  { group: 'Raise3D', name: 'Raise3D E2' },
+  { group: 'Raise3D', name: 'Raise3D Pro3' },
+  { group: 'Raise3D', name: 'Raise3D Pro3 Plus' },
+  // Snapmaker
+  { group: 'Snapmaker', name: 'Snapmaker 2.0 A150' },
+  { group: 'Snapmaker', name: 'Snapmaker 2.0 A250' },
+  { group: 'Snapmaker', name: 'Snapmaker 2.0 A350' },
+  { group: 'Snapmaker', name: 'Snapmaker Artisan' },
+  { group: 'Snapmaker', name: 'Snapmaker J1' },
+  // Voxelab
+  { group: 'Voxelab', name: 'Voxelab Aquila' },
+  { group: 'Voxelab', name: 'Voxelab Aquila S2' },
+  { group: 'Voxelab', name: 'Voxelab Aquila X2' },
+  // Two Trees
+  { group: 'Two Trees', name: 'Two Trees Bluer' },
+  { group: 'Two Trees', name: 'Two Trees Sapphire Pro' },
+  { group: 'Two Trees', name: 'Two Trees SK1' },
+  // Kingroon
+  { group: 'Kingroon', name: 'Kingroon KP3S' },
+  { group: 'Kingroon', name: 'Kingroon KP3S Pro' },
+  { group: 'Kingroon', name: 'Kingroon KP5L' },
+  // Biqu
+  { group: 'Biqu', name: 'Biqu B1' },
+  { group: 'Biqu', name: 'Biqu Hurakan' },
+  // LulzBot
+  { group: 'LulzBot', name: 'LulzBot TAZ Pro' },
+  { group: 'LulzBot', name: 'LulzBot Mini 2' },
+  // Dremel
+  { group: 'Dremel', name: 'Dremel 3D40 Flex' },
+  { group: 'Dremel', name: 'Dremel 3D45' },
+  // Monoprice
+  { group: 'Monoprice', name: 'Monoprice MP Mini Delta' },
+  { group: 'Monoprice', name: 'Monoprice Maker Select Plus' },
+  { group: 'Monoprice', name: 'Monoprice MP Voxel' },
+  // Longer
+  { group: 'Longer', name: 'Longer LK4 Pro' },
+  { group: 'Longer', name: 'Longer LK5 Pro' },
+  // Geeetech
+  { group: 'Geeetech', name: 'Geeetech A10' },
+  { group: 'Geeetech', name: 'Geeetech A20' },
+  // Other
+  { group: 'Other', name: 'Custom / DIY Build' },
+  { group: 'Other', name: 'Not Listed' },
+];
+
+// ── SEARCHABLE PRINTER DROPDOWN ────────────────────────────────────────────
+function initPrinterSelect() {
+  const display  = document.getElementById('printerDisplay');
+  const dropdown = document.getElementById('printerDropdown');
+  const search   = document.getElementById('printerSearch');
+  const list     = document.getElementById('printerList');
+  const valueEl  = document.getElementById('printerValue');
+  const hidden   = document.getElementById('printer');
+
+  function renderList(filter) {
+    const q = (filter || '').toLowerCase().trim();
+    let html = '';
+    let lastGroup = '';
+    let count = 0;
+
+    for (const p of PRINTERS) {
+      const matchName  = p.name.toLowerCase().includes(q);
+      const matchGroup = p.group.toLowerCase().includes(q);
+      if (q && !matchName && !matchGroup) continue;
+
+      if (p.group !== lastGroup) {
+        html += `<div class="ss-group-label">${p.group}</div>`;
+        lastGroup = p.group;
+      }
+      html += `<div class="ss-option" data-value="${p.name}">${p.name}</div>`;
+      count++;
+    }
+
+    list.innerHTML = count ? html : '<div class="ss-no-results">No printers found</div>';
+
+    list.querySelectorAll('.ss-option').forEach(opt => {
+      opt.addEventListener('mousedown', e => {
+        e.preventDefault();
+        select(opt.dataset.value);
+      });
+    });
+  }
+
+  function select(name) {
+    hidden.value = name;
+    valueEl.className = 'ss-selected-value';
+    valueEl.textContent = name;
+    close();
+  }
+
+  function open() {
+    dropdown.classList.add('open');
+    display.classList.add('open');
+    search.value = '';
+    renderList('');
+    setTimeout(() => search.focus(), 10);
+  }
+
+  function close() {
+    dropdown.classList.remove('open');
+    display.classList.remove('open');
+  }
+
+  display.addEventListener('click', () => dropdown.classList.contains('open') ? close() : open());
+  display.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
+  search.addEventListener('input', () => renderList(search.value));
+  search.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+  document.addEventListener('click', e => { if (!e.target.closest('#printerSelect')) close(); });
+
+  renderList('');
+}
+
+document.addEventListener('DOMContentLoaded', initPrinterSelect);
+
 const MATERIAL_RANGES = {
   PLA:  { nozzle: [190, 220], bed: [50,  65]  },
   PETG: { nozzle: [230, 250], bed: [70,  90]  },
@@ -17,6 +230,7 @@ function parseNum(id) {
 
 function getSettings() {
   return {
+    printer:         document.getElementById('printer').value || null,
     material:        document.getElementById('material').value || null,
     nozzleTemp:      parseNum('nozzleTemp'),
     bedTemp:         parseNum('bedTemp'),

@@ -555,6 +555,111 @@ footer a {
 
 footer a:hover { color: var(--accent); }
 
+/* ── SEARCHABLE SELECT ── */
+.ss-wrap { position: relative; }
+
+.ss-display {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.55rem 0.75rem;
+  cursor: pointer;
+  user-select: none;
+  transition: border-color 0.2s;
+}
+
+.ss-display:focus,
+.ss-display.open { border-color: var(--accent); outline: none; }
+
+.ss-placeholder {
+  font-size: 0.9rem;
+  color: var(--text-dim);
+}
+
+.ss-selected-value {
+  font-size: 0.9rem;
+  color: var(--text);
+}
+
+.ss-arrow {
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  flex-shrink: 0;
+  margin-left: 0.5rem;
+  transition: transform 0.2s;
+}
+
+.ss-display.open .ss-arrow { transform: rotate(180deg); }
+
+.ss-dropdown {
+  display: none;
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: var(--card);
+  border: 1.5px solid var(--accent);
+  border-radius: var(--radius-sm);
+  z-index: 200;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+
+.ss-dropdown.open { display: block; }
+
+.ss-search {
+  width: 100%;
+  background: var(--surface);
+  border: none;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.88rem;
+  padding: 0.6rem 0.85rem;
+  outline: none;
+}
+
+.ss-search::placeholder { color: var(--text-dim); }
+
+.ss-list {
+  max-height: 240px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-light) transparent;
+}
+
+.ss-group-label {
+  padding: 0.45rem 0.85rem 0.2rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent-dim);
+  background: var(--surface);
+  position: sticky;
+  top: 0;
+}
+
+.ss-option {
+  padding: 0.45rem 0.85rem;
+  font-size: 0.88rem;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: background 0.12s, color 0.12s;
+}
+
+.ss-option:hover { background: rgba(91, 155, 213, 0.12); color: var(--accent-bright); }
+
+.ss-no-results {
+  padding: 1rem 0.85rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
 /* ── RESPONSIVE ── */
 @media (max-width: 640px) {
   nav { padding: 0 1rem; }
