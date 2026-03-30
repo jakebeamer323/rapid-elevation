@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Models — Rapid Elevation</title>
+  <meta name="description" content="Free 3D printing test models and print-in-place designs. Download calibration prints, test towers, and beginner-friendly articulated models.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">Rapid <span class="logo-accent">Elevation</span></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="diagnosis.html">Print Diagnosis</a>
+      <a href="models.html" class="active">Models</a>
+    </div>
+  </nav>
+
+  <main>
+
+    <div class="page-header">
+      <h1>Models</h1>
+      <p>Free STL downloads for calibration and fun. Each test print is paired with tips on what to look for and which settings to tune.</p>
+    </div>
+
+    <!-- Ad placeholder -->
+    <div class="ad-placeholder" style="margin-bottom: 2rem;">
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-size">728 × 90 — Leaderboard</div>
+    </div>
+
+    <!-- Test Prints -->
+    <section class="section" style="border-top: none; padding-top: 0;">
+      <div class="tool-category-label">Test Prints</div>
+      <div class="model-grid">
+
+        <div class="model-card" id="calibration-cube">
+          <div class="model-card-img-wrap">
+            <img src="models/img/calibration-cube.jpg" alt="Calibration Cube">
+          </div>
+          <div class="model-card-body">
+            <div class="model-card-tag">Dimensional Accuracy</div>
+            <h3>Calibration Cube (XYZ)</h3>
+            <p class="model-card-tests">Verifies dimensional accuracy on all three axes. Measure the X, Y, and Z faces with calipers and compare to the target dimensions to catch scaling issues and step miscalibration.</p>
+            <div class="model-card-settings"><strong>Tip:</strong> Print at your standard settings. A well-tuned printer should measure within 0.1–0.2mm of target on all sides.</div>
+            <a href="models/stl/calibration-cube.stl" download class="model-card-download">↓ Download STL</a>
+          </div>
+        </div>
+
+        <div class="model-card" id="temp-tower">
+          <div class="model-card-img-wrap">
+            <img src="models/img/temp-tower.jpg" alt="Temperature Tower">
+          </div>
+          <div class="model-card-body">
+            <div class="model-card-tag">Temperature Calibration</div>
+            <h3>Temperature Tower</h3>
+            <p class="model-card-tests">Identifies the optimal nozzle temperature for your specific filament brand. Each section prints at a different temperature so you can compare surface quality, stringing, bridging, and layer adhesion side by side.</p>
+            <div class="model-card-settings"><strong>Tip:</strong> Use a slicer temperature change script. Look for the zone with the cleanest surface, least stringing, and best bridge quality.</div>
+            <a href="models/stl/temp-tower.stl" download class="model-card-download">↓ Download STL</a>
+          </div>
+        </div>
+
+        <div class="model-card" id="retraction-tower">
+          <div class="model-card-img-wrap">
+            <img src="models/img/retraction-tower.jpg" alt="Retraction Tower">
+          </div>
+          <div class="model-card-body">
+            <div class="model-card-tag">Retraction / Stringing</div>
+            <h3>Retraction Tower</h3>
+            <p class="model-card-tests">Dials in retraction distance and speed to eliminate stringing and hairing between sections. Each tier tests a different retraction value so you can pinpoint the cleanest result.</p>
+            <div class="model-card-settings"><strong>Tip:</strong> Start with 0.5mm increments for direct drive, 0.5–1mm for Bowden. The cleanest tier with no strings is your sweet spot.</div>
+            <a href="models/stl/retraction-tower.stl" download class="model-card-download">↓ Download STL</a>
+          </div>
+        </div>
+
+        <div class="model-card" id="overhang-test">
+          <div class="model-card-img-wrap">
+            <img src="models/img/overhang-test.jpg" alt="Overhang Test">
+          </div>
+          <div class="model-card-body">
+            <div class="model-card-tag">Overhang Performance</div>
+            <h3>Overhang Test</h3>
+            <p class="model-card-tests">Tests how well your printer and cooling setup handles unsupported overhangs at increasing angles, typically from 10° up to 70° or beyond. Reveals the true limits of your cooling and speed settings.</p>
+            <div class="model-card-settings"><strong>Tip:</strong> Note the angle where quality starts to degrade — that's your support threshold. Vary fan speed to push your max overhang angle further.</div>
+            <a href="models/stl/overhang-test.stl" download class="model-card-download">↓ Download STL</a>
+          </div>
+        </div>
+
+        <div class="model-card" id="benchy">
+          <div class="model-card-img-wrap">
+            <img src="models/img/benchy.jpg" alt="3DBenchy">
+          </div>
+          <div class="model-card-body">
+            <div class="model-card-tag">All-Round Benchmark</div>
+            <h3>3DBenchy</h3>
+            <p class="model-card-tests">The industry-standard 3D printing benchmark. Tests overall printer performance including overhangs, bridging, stringing, surface quality, and dimensional accuracy — all in one iconic boat-shaped print.</p>
+            <div class="model-card-settings"><strong>Tip:</strong> Print at your standard profile. Focus on the hull overhang, cabin roof bridge, chimney, and stern text as your key quality indicators.</div>
+            <a href="models/stl/benchy.stl" download class="model-card-download">↓ Download STL</a>
+          </div>
+        </div>
+
+        <div class="model-card" id="flow-rate-cube">
+          <div class="model-card-img-wrap">
+            <img src="models/img/flow-rate-cube.jpg" alt="Flow Rate Cube">
+          </div>
+          <div class="model-card-body">
+            <div class="model-card-tag">Flow Rate / Extrusion</div>
+            <h3>Flow Rate Cube</h3>
+            <p class="model-card-tests">A single-wall hollow cube used to calibrate your extrusion multiplier. Measure the wall thickness with calipers and compare against your target line width to calculate the correct flow rate percentage.</p>
+            <div class="model-card-settings"><strong>Tip:</strong> Slice with one perimeter, no infill, no top/bottom layers. Measure all four walls and average them for accuracy.</div>
+            <a href="models/stl/flow-rate-cube.stl" download class="model-card-download">↓ Download STL</a>
+          </div>
+        </div>
+
+        <div class="model-card" id="bed-level-test">
+          <div class="model-card-img-wrap">
+            <img src="models/img/bed-level-test.jpg" alt="Bed Level Test">
+          </div>
+          <div class="model-card-body">
+            <div class="model-card-tag">Bed Leveling</div>
+            <h3>Bed Level Test</h3>
+            <p class="model-card-tests">Prints a thin layer pattern across the full build plate to reveal leveling inconsistencies. Spots high and low zones that cause adhesion failures or elephant foot in specific regions of your bed.</p>
+            <div class="model-card-settings"><strong>Tip:</strong> Print at a slow first layer speed. Look for gaps, inconsistent squish, or lifted corners across the full plate — not just the center.</div>
+            <a href="models/stl/bed-level-test.stl" download class="model-card-download">↓ Download STL</a>
+          </div>
+        </div>
+
+        <div class="model-card" id="phil-a-ment">
+          <div class="model-card-img-wrap">
+            <img src="models/img/phil-a-ment.jpg" alt="Phil-a-ment">
+          </div>
+          <div class="model-card-body">
+            <div class="model-card-tag">Filament Benchmark</div>
+            <h3>Phil-a-ment</h3>
+            <p class="model-card-tests">A comprehensive filament-testing model that evaluates bridging, overhangs, stringing, surface quality, and fine details in a single print. Great for comparing different filament brands head to head.</p>
+            <div class="model-card-settings"><strong>Tip:</strong> Print multiple copies in different filament brands at the same settings and compare them side by side for a direct quality comparison.</div>
+            <a href="models/stl/phil-a-ment.stl" download class="model-card-download">↓ Download STL</a>
+          </div>
+        </div>
+
+        <div class="model-card" id="all-in-one">
+          <div class="model-card-img-wrap">
+            <img src="models/img/all-in-one.jpg" alt="All in One Calibration">
+          </div>
+          <div class="model-card-body">
+            <div class="model-card-tag">Comprehensive Calibration</div>
+            <h3>All in One Calibration</h3>
+            <p class="model-card-tests">A single model covering multiple calibration checks — tolerance, overhang, bridging, retraction, Z-offset, and surface finish. Efficient when you want a full-system check without printing multiple separate models.</p>
+            <div class="model-card-settings"><strong>Tip:</strong> Examine each section individually after printing. This replaces what would normally take several separate test prints.</div>
+            <a href="models/stl/all-in-one.stl" download class="model-card-download">↓ Download STL</a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Print-in-Place -->
+    <section class="section">
+      <div class="tool-category-label">Print-in-Place</div>
+      <div class="model-grid">
+
+        <div class="model-card" id="tolerance-test">
+          <div class="model-card-img-wrap">
+            <img src="models/img/tolerance-test.jpg" alt="Print-in-Place Tolerance Test">
+          </div>
+          <div class="model-card-body">
+            <div class="model-card-tag">Tolerance / Print-in-Place</div>
+            <h3>Tolerance Test</h3>
+            <p class="model-card-tests">Tests the minimum clearance your printer needs between moving parts for successful print-in-place models. Each section has a progressively tighter gap so you can find the smallest reliable clearance for your setup.</p>
+            <div class="model-card-settings"><strong>Tip:</strong> Print at standard settings. The tightest gap where parts move freely after printing is your printer's print-in-place tolerance.</div>
+            <a href="models/stl/tolerance-test.stl" download class="model-card-download">↓ Download STL</a>
+          </div>
+        </div>
+
+      </div>
+      <p style="margin-top: 1.25rem; font-size: 0.88rem; color: var(--text-muted);">More print-in-place models coming soon.</p>
+    </section>
+
+    <!-- Ad placeholder -->
+    <div class="ad-placeholder" style="margin-bottom: 3rem;">
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-size">300 × 250 — Medium Rectangle</div>
+    </div>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Rapid Elevation &mdash; Built by <a href="https://jakebeamer323.github.io/my-site" target="_blank">Jake Lewien</a></p>
+  </footer>
+
+</body>
+</html>
