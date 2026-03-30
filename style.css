@@ -76,6 +76,101 @@ nav {
 .nav-links a:hover,
 .nav-links a.active { color: var(--accent-bright); }
 
+/* ── NAV DROPDOWNS ── */
+.nav-dropdown { position: relative; display: flex; align-items: center; }
+
+.nav-dropdown-trigger {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: color 0.2s;
+  white-space: nowrap;
+}
+
+.nav-dropdown-trigger:hover,
+.nav-dropdown.open .nav-dropdown-trigger { color: var(--accent-bright); }
+
+.nav-dd-arrow {
+  font-size: 0.6rem;
+  display: inline-block;
+  transition: transform 0.2s;
+  margin-top: 1px;
+}
+
+.nav-dropdown.open .nav-dd-arrow { transform: rotate(180deg); }
+
+.nav-dropdown-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 14px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6);
+  z-index: 300;
+  min-width: 200px;
+  padding: 0.4rem 0;
+}
+
+.nav-dropdown.open .nav-dropdown-menu { display: block; }
+
+.nav-dropdown-menu a {
+  display: block;
+  padding: 0.42rem 1.1rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.15s, background 0.15s;
+  white-space: nowrap;
+}
+
+.nav-dropdown-menu a:hover { color: var(--accent-bright); background: rgba(91, 155, 213, 0.08); }
+
+/* Mega menu — Tools dropdown */
+.nav-mega-menu {
+  left: 0;
+  transform: none;
+  min-width: 660px;
+  padding: 1rem 0.5rem;
+}
+
+.nav-dropdown.open .nav-mega-menu { display: flex; gap: 0; }
+
+.nav-mega-col {
+  flex: 1;
+  padding: 0 0.75rem;
+  border-right: 1px solid var(--border);
+}
+
+.nav-mega-col:last-child { border-right: none; }
+
+.nav-mega-heading {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent-dim);
+  padding: 0.6rem 0.35rem 0.25rem;
+  margin-top: 0.4rem;
+}
+
+.nav-mega-col .nav-mega-heading:first-child { margin-top: 0; padding-top: 0; }
+
+.nav-mega-col a {
+  padding: 0.32rem 0.35rem;
+  font-size: 0.83rem;
+}
+
 /* ── LAYOUT ── */
 main {
   max-width: 1400px;
