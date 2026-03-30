@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Layer Height Optimizer — Rapid Elevation</title>
+  <meta name="description" content="Find magic number layer heights for your leadscrew pitch. Avoid Z-banding and wobble artifacts by printing at heights that align with your stepper's full steps.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">Rapid <span class="logo-accent">Elevation</span></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="diagnosis.html">Print Diagnosis</a>
+      <a href="models.html">Models</a>
+    </div>
+  </nav>
+
+  <main>
+
+    <div class="page-header">
+      <h1>Layer Height Optimizer</h1>
+      <p>Your Z-axis stepper moves in discrete steps. Printing at layer heights that aren't exact multiples of one full step forces the motor to hold a micro-stepped position — introducing Z-banding artifacts. This tool shows you the "magic numbers" that land perfectly on full steps.</p>
+    </div>
+
+    <!-- Ad placeholder -->
+    <div class="ad-placeholder" style="margin-bottom: 2rem;">
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-size">728 × 90 — Leaderboard</div>
+    </div>
+
+    <!-- Form -->
+    <div class="diag-form">
+
+      <div class="form-section-label">Your Z-axis setup</div>
+
+      <div class="settings-grid" style="margin-bottom: 0.5rem;">
+        <div class="field">
+          <label for="lead">Leadscrew Lead (mm/rev)</label>
+          <input type="number" id="lead" placeholder="e.g. 8" step="0.1" min="0.1" max="50">
+          <span class="field-hint">T8 4-start = 8mm &bull; T8 1-start = 2mm &bull; M5 = 0.8mm</span>
+        </div>
+        <div class="field">
+          <label for="stepAngle">Stepper Full-Step Angle</label>
+          <select id="stepAngle">
+            <option value="1.8">1.8° (200 steps/rev — most common)</option>
+            <option value="0.9">0.9° (400 steps/rev — high-res)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="nozzle">Nozzle Diameter (mm)</label>
+          <select id="nozzle">
+            <option value="0.4">0.4mm (standard)</option>
+            <option value="0.25">0.25mm (fine)</option>
+            <option value="0.6">0.6mm (fast)</option>
+            <option value="0.8">0.8mm (draft)</option>
+            <option value="1.0">1.0mm (large)</option>
+          </select>
+        </div>
+      </div>
+
+      <hr class="form-divider">
+
+      <button class="btn" id="calcBtn">Calculate Magic Layer Heights</button>
+
+    </div>
+
+    <!-- Result -->
+    <div class="result-wrap" id="resultWrap">
+      <div class="result-sublabel">Full Step Height</div>
+      <div class="result-value-row">
+        <span class="result-big-value" id="stepVal">—</span>
+        <span class="result-big-unit">mm</span>
+      </div>
+      <div class="result-delta" id="resultDelta"></div>
+      <div class="result-explanation" id="resultExplanation"></div>
+
+      <div id="tableSection" style="margin-top: 1.5rem; display: none;">
+        <p style="font-size: 0.82rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 0.75rem;">Sweet Spot Layer Heights</p>
+        <div class="calc-table-wrap">
+          <table class="calc-table" id="layerTable">
+            <thead>
+              <tr>
+                <th>Layer Height</th>
+                <th>Multiplier</th>
+                <th>% of Nozzle</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+        </div>
+        <p id="tableLegend" style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.5rem;"></p>
+      </div>
+
+      <div class="result-secondary" id="resultSecondary"></div>
+    </div>
+
+    <!-- Ad placeholder -->
+    <div class="ad-placeholder" style="margin-bottom: 3rem;">
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-size">300 × 250 — Medium Rectangle</div>
+    </div>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Rapid Elevation &mdash; Built by <a href="https://jakebeamer323.github.io/my-site" target="_blank">Jake Lewien</a></p>
+  </footer>
+
+  <script>
+    document.getElementById('calcBtn').addEventListener('click', () => {
+      const lead = parseFloat(document.getElementById('lead').value);
+      const stepAngle = parseFloat(document.getElementById('stepAngle').value);
+      const nozzle = parseFloat(document.getElementById('nozzle').value);
+
+      if (isNaN(lead) || lead <= 0) { alert('Please enter a valid leadscrew lead value.'); return; }
+
+      const stepsPerRev = 360 / stepAngle;           // 200 for 1.8°, 400 for 0.9°
+      const fullStep = lead / stepsPerRev;            // mm per full step
+      const sweetMin = nozzle * 0.25;                 // 25% of nozzle
+      const sweetMax = nozzle * 0.75;                 // 75% of nozzle
+      const idealTarget = nozzle * 0.50;              // 50% of nozzle = ideal quality/speed balance
+
+      document.getElementById('stepVal').textContent = fullStep.toFixed(4);
+
+      const delta = document.getElementById('resultDelta');
+      delta.className = 'result-delta neutral';
+      delta.textContent = `Every multiple of ${fullStep.toFixed(4)}mm is a perfect full-step landing point — zero Z-banding risk.`;
+
+      document.getElementById('resultExplanation').innerHTML =
+        `Formula: <strong>full step = ${lead}mm ÷ ${stepsPerRev} steps = ${fullStep.toFixed(4)}mm</strong>. ` +
+        `The sweet spot (25–75% of your ${nozzle}mm nozzle) is <strong>${sweetMin.toFixed(2)}mm – ${sweetMax.toFixed(2)}mm</strong>. ` +
+        `Heights below 25% of nozzle diameter risk poor layer adhesion; heights above 75% cause under-extrusion on curved surfaces.`;
+
+      // Generate sweet spot heights
+      const rows = [];
+      let n = 1;
+      while (true) {
+        const h = parseFloat((fullStep * n).toFixed(4));
+        if (h > sweetMax * 1.05) break; // stop slightly above sweet max
+        if (h >= sweetMin * 0.98) {     // start slightly below sweet min to catch edge values
+          rows.push({ h, n });
+        }
+        n++;
+        if (n > 10000) break; // safety cap
+      }
+
+      const tbody = document.getElementById('tableBody');
+      tbody.innerHTML = '';
+
+      if (rows.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color: var(--text-muted); padding: 1.5rem;">No sweet spot heights found in range. Your step height may be very small — virtually any layer height will work.</td></tr>`;
+        document.getElementById('tableLegend').textContent = '';
+      } else {
+        // Find closest to ideal
+        let idealRow = rows[0];
+        rows.forEach(r => {
+          if (Math.abs(r.h - idealTarget) < Math.abs(idealRow.h - idealTarget)) idealRow = r;
+        });
+
+        rows.forEach(r => {
+          const pctOfNozzle = Math.round((r.h / nozzle) * 100);
+          const isIdeal = r === idealRow;
+          const inSweet = r.h >= sweetMin && r.h <= sweetMax;
+          const rowClass = isIdeal ? 'ideal-row' : (inSweet ? 'sweet-row' : '');
+          let note = '';
+          if (isIdeal) note = '★ Ideal — best quality / speed balance';
+          else if (pctOfNozzle <= 30) note = 'High detail, slower print';
+          else if (pctOfNozzle <= 50) note = 'Good quality';
+          else if (pctOfNozzle <= 65) note = 'Fast with good strength';
+          else note = 'Draft quality, high strength';
+
+          tbody.innerHTML += `
+            <tr class="${rowClass}">
+              <td class="layer-val">${r.h.toFixed(4)}mm</td>
+              <td>${r.n}× full step</td>
+              <td>${pctOfNozzle}%</td>
+              <td>${note}</td>
+            </tr>`;
+        });
+
+        document.getElementById('tableLegend').innerHTML =
+          `<span style="color: var(--sev-green);">★ Green</span> = ideal (closest to 50% of nozzle) &nbsp;&bull;&nbsp; ` +
+          `<span style="color: var(--accent-bright);">Blue</span> = sweet spot (25–75% of nozzle)`;
+      }
+
+      document.getElementById('tableSection').style.display = 'block';
+      document.getElementById('resultSecondary').innerHTML =
+        `<strong>Using microstepping:</strong> These heights are based on full steps only — microstepping adds more valid positions between them, but full-step positions are the most mechanically stable. Most slicers round to 2 decimal places; use the value shown rounded to 2 places (e.g. ${rows[0] ? rows[0].h.toFixed(2) + 'mm' : 'as needed'}).` +
+        `<br><br><strong>Klipper users:</strong> Klipper can enforce layer heights to the nearest full step automatically — enable <code>step_pulse_duration</code> and consider using <code>force_move</code> or set your layer height to one of these values in your slicer.`;
+
+      const rw = document.getElementById('resultWrap');
+      rw.style.display = 'block';
+      rw.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+  </script>
+
+</body>
+</html>

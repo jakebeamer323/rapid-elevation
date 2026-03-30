@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Support & Infill Optimizer — Rapid Elevation</title>
+  <meta name="description" content="Get infill pattern, density, wall count, and support recommendations tailored to your part's purpose, material, and priority.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">Rapid <span class="logo-accent">Elevation</span></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="diagnosis.html">Print Diagnosis</a>
+      <a href="models.html">Models</a>
+    </div>
+  </nav>
+
+  <main>
+
+    <div class="page-header">
+      <h1>Support &amp; Infill Optimizer</h1>
+      <p>Describe your part's purpose and priorities. The tool recommends the best infill pattern, density, wall count, top/bottom layers, and support strategy — tuned to your material and goals.</p>
+    </div>
+
+    <!-- Ad placeholder -->
+    <div class="ad-placeholder" style="margin-bottom: 2rem;">
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-size">728 × 90 — Leaderboard</div>
+    </div>
+
+    <!-- Form -->
+    <div class="diag-form">
+
+      <!-- Step 1: Purpose -->
+      <div class="form-section-label">Step 1 — What is this part for?</div>
+      <div class="issue-grid" style="margin-bottom: 1.5rem;">
+        <div class="issue-option">
+          <input type="radio" name="purpose" id="p-deco" value="decorative">
+          <label for="p-deco">Decorative / Display</label>
+        </div>
+        <div class="issue-option">
+          <input type="radio" name="purpose" id="p-func-light" value="functional_light">
+          <label for="p-func-light">Functional — Light Use</label>
+        </div>
+        <div class="issue-option">
+          <input type="radio" name="purpose" id="p-func-heavy" value="functional_heavy">
+          <label for="p-func-heavy">Functional — Structural</label>
+        </div>
+        <div class="issue-option">
+          <input type="radio" name="purpose" id="p-flex" value="flexible">
+          <label for="p-flex">Flexible / Jointed</label>
+        </div>
+      </div>
+
+      <!-- Step 2: Priority -->
+      <div class="form-section-label">Step 2 — What matters most?</div>
+      <div class="issue-grid" style="margin-bottom: 1.5rem;">
+        <div class="issue-option">
+          <input type="radio" name="priority" id="pr-strength" value="strength">
+          <label for="pr-strength">Strength</label>
+        </div>
+        <div class="issue-option">
+          <input type="radio" name="priority" id="pr-speed" value="speed">
+          <label for="pr-speed">Print Speed</label>
+        </div>
+        <div class="issue-option">
+          <input type="radio" name="priority" id="pr-material" value="material">
+          <label for="pr-material">Material Savings</label>
+        </div>
+        <div class="issue-option">
+          <input type="radio" name="priority" id="pr-surface" value="surface">
+          <label for="pr-surface">Surface Quality</label>
+        </div>
+      </div>
+
+      <hr class="form-divider">
+
+      <!-- Step 3: Settings -->
+      <div class="form-section-label">Step 3 — Material &amp; overhangs</div>
+      <div class="settings-grid" style="margin-bottom: 1rem;">
+        <div class="field">
+          <label for="material">Material</label>
+          <select id="material">
+            <option value="">— Select —</option>
+            <option value="PLA">PLA</option>
+            <option value="PETG">PETG</option>
+            <option value="ABS">ABS</option>
+            <option value="ASA">ASA</option>
+            <option value="TPU">TPU</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="overhangs">Part Has Overhangs?</label>
+          <select id="overhangs">
+            <option value="no">No</option>
+            <option value="yes">Yes</option>
+          </select>
+        </div>
+        <div class="field" id="angleField" style="display:none;">
+          <label for="overhangAngle">Overhang Angle (from horizontal)</label>
+          <select id="overhangAngle">
+            <option value="under45">Under 45°</option>
+            <option value="45to60">45° – 60°</option>
+            <option value="over60">Over 60°</option>
+          </select>
+        </div>
+      </div>
+
+      <hr class="form-divider">
+
+      <button class="btn" id="optimizeBtn">Get Recommendations</button>
+
+    </div>
+
+    <!-- Results -->
+    <div class="rec-results" id="recResults">
+      <p class="rec-results-heading">Recommendations</p>
+
+      <div class="rec-grid" id="recGrid"></div>
+
+      <div id="supportSection"></div>
+
+      <div class="result-warning" id="recWarning" style="display:none;"></div>
+    </div>
+
+    <!-- Ad placeholder -->
+    <div class="ad-placeholder" style="margin-bottom: 3rem;">
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-size">300 × 250 — Medium Rectangle</div>
+    </div>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Rapid Elevation &mdash; Built by <a href="https://jakebeamer323.github.io/my-site" target="_blank">Jake Lewien</a></p>
+  </footer>
+
+  <script>
+    // ── Overhang angle toggle ──
+    document.getElementById('overhangs').addEventListener('change', function () {
+      document.getElementById('angleField').style.display = this.value === 'yes' ? 'flex' : 'none';
+    });
+
+    // ── Recommendation engine ──
+    const BASE = {
+      decorative:       { pattern: 'Lines',   alt: 'Grid',        density: 15, walls: 2, top: 4, bot: 3 },
+      functional_light: { pattern: 'Gyroid',  alt: 'Grid',        density: 25, walls: 3, top: 5, bot: 4 },
+      functional_heavy: { pattern: 'Gyroid',  alt: 'Cubic',       density: 50, walls: 4, top: 5, bot: 5 },
+      flexible:         { pattern: 'Gyroid',  alt: 'Honeycomb',   density: 20, walls: 3, top: 4, bot: 3 },
+    };
+
+    const PATTERN_WHY = {
+      decorative:       'Lines are fast and use minimal material. For display pieces, surface quality matters more than internal strength.',
+      functional_light: 'Gyroid distributes load evenly in all three axes — great for parts that see varied stress directions.',
+      functional_heavy: 'Gyroid or Cubic provide true 3D strength. Gyroid handles compression and shear; Cubic adds diagonal rigidity.',
+      flexible:         'Gyroid compresses and springs back evenly, giving flexible parts a consistent, predictable feel across their full volume.',
+    };
+
+    const DENSITY_RANGES = {
+      decorative:       '10–20%',
+      functional_light: '20–35%',
+      functional_heavy: '40–65%',
+      flexible:         '15–30%',
+    };
+
+    function getRecommendations(purpose, priority, material, hasOverhangs, overhangAngle) {
+      const rec = { ...BASE[purpose] };
+
+      // Priority adjustments
+      if (priority === 'strength')  { rec.density = Math.min(100, rec.density + 10); rec.walls += 1; }
+      if (priority === 'speed')     { rec.density = Math.max(10, rec.density - 5); }
+      if (priority === 'material')  { rec.density = Math.max(10, rec.density - 5); }
+      if (priority === 'surface')   { rec.top += 2; }
+
+      // Material overrides
+      if (material === 'TPU') {
+        rec.pattern = 'Gyroid';
+        rec.density = Math.min(rec.density, 25);  // more infill = stiffer
+        rec.walls = Math.max(2, rec.walls - 1);
+      }
+      if (material === 'ABS' || material === 'ASA') {
+        rec.density = Math.min(100, rec.density + 5);
+        rec.walls = Math.min(6, rec.walls + 1);
+      }
+      if (material === 'PETG' && priority === 'surface') {
+        rec.top += 1;
+      }
+
+      rec.density = Math.round(Math.min(100, Math.max(10, rec.density)));
+
+      // Support recommendation
+      let support = null;
+      if (hasOverhangs) {
+        if (overhangAngle === 'under45') {
+          support = {
+            state: 'support-none',
+            title: 'No Support Needed',
+            body: 'Overhangs under 45° are self-supporting for most materials with proper cooling. Try printing without support first.',
+          };
+        } else if (overhangAngle === '45to60') {
+          const useTree = material === 'PLA' || material === 'PETG' || !material;
+          support = {
+            state: 'support-optional',
+            title: 'Support Optional',
+            body: `45–60° overhangs may print cleanly without support if your cooling is good. If you see drooping, add ${useTree ? 'Tree' : 'Normal'} supports at 15% density — they\'ll be easier to remove. Try a test print first.`,
+          };
+        } else {
+          const useTree = material === 'PLA' || material === 'PETG' || !material;
+          const supportType = useTree ? 'Tree' : 'Normal';
+          const treeReason = useTree
+            ? 'Tree supports use less material and leave a cleaner surface where they detach.'
+            : `Normal supports are better for ${material} — tree branches can warp or detach on high-temp materials.`;
+          support = {
+            state: 'support-needed',
+            title: `${supportType} Supports Required`,
+            body: `Overhangs over 60° need support. Use <strong>${supportType} supports at 20% density</strong>. ${treeReason} Set support interface layers to 2–3 for a smoother contact surface.`,
+          };
+        }
+      }
+
+      return { rec, support, purpose, material };
+    }
+
+    // ── Render ──
+    document.getElementById('optimizeBtn').addEventListener('click', () => {
+      const purpose = document.querySelector('input[name="purpose"]:checked')?.value;
+      const priority = document.querySelector('input[name="priority"]:checked')?.value;
+      const material = document.getElementById('material').value;
+      const hasOverhangs = document.getElementById('overhangs').value === 'yes';
+      const overhangAngle = document.getElementById('overhangAngle').value;
+
+      if (!purpose) { alert('Please select what this part is for (Step 1).'); return; }
+      if (!priority) { alert('Please select your top priority (Step 2).'); return; }
+
+      const { rec, support, purpose: p } = getRecommendations(purpose, priority, material, hasOverhangs, overhangAngle);
+
+      const matNote = material ? ` for <strong>${material}</strong>` : '';
+
+      // Build rec cards
+      document.getElementById('recGrid').innerHTML = `
+        <div class="rec-card">
+          <div class="rec-card-label">Infill Pattern</div>
+          <div class="rec-card-value">${rec.pattern}</div>
+          <div class="rec-card-sub">Alt: ${rec.alt}</div>
+          <div class="rec-card-why">${PATTERN_WHY[p]}</div>
+        </div>
+        <div class="rec-card">
+          <div class="rec-card-label">Infill Density</div>
+          <div class="rec-card-value">${rec.density}%</div>
+          <div class="rec-card-sub">Typical range: ${DENSITY_RANGES[p]}</div>
+          <div class="rec-card-why">Adjusted${matNote} based on your purpose and priority. Walls carry more load than infill — don't over-inflate density at the expense of wall count.</div>
+        </div>
+        <div class="rec-card">
+          <div class="rec-card-label">Wall Count</div>
+          <div class="rec-card-value">${rec.walls} walls</div>
+          <div class="rec-card-sub">${rec.walls * 0.4}mm shell at 0.4mm nozzle</div>
+          <div class="rec-card-why">Walls determine part strength and surface quality far more than infill density. For structural parts, increasing walls beats increasing infill every time.</div>
+        </div>
+        <div class="rec-card">
+          <div class="rec-card-label">Top / Bottom Layers</div>
+          <div class="rec-card-value">${rec.top} / ${rec.bot}</div>
+          <div class="rec-card-sub">top layers / bottom layers</div>
+          <div class="rec-card-why">More top layers prevent pillowing on low-density infill. At 15–20% infill, use at least 5 top layers for a smooth, gap-free top surface.</div>
+        </div>
+      `;
+
+      // Build support card
+      const supportSection = document.getElementById('supportSection');
+      if (support) {
+        supportSection.innerHTML = `
+          <div class="rec-support-card ${support.state}">
+            <div class="rec-card-label">Support</div>
+            <div class="rec-support-title">${support.title}</div>
+            <div class="rec-support-body">${support.body}</div>
+          </div>`;
+      } else {
+        supportSection.innerHTML = '';
+      }
+
+      // Material warning
+      const warn = document.getElementById('recWarning');
+      if (material === 'TPU') {
+        warn.textContent = 'TPU note: infill density was capped at 25% — higher density makes TPU parts stiffer and reduces flexibility. If you want a firm TPU part intentionally, you can go higher.';
+        warn.style.display = 'block';
+      } else if ((material === 'ABS' || material === 'ASA') && hasOverhangs && overhangAngle === 'over60') {
+        warn.textContent = `${material} note: tall overhangs with support are tricky — ${material} can delaminate from support interfaces. Print in an enclosure and keep your bed temp up for best results.`;
+        warn.style.display = 'block';
+      } else {
+        warn.style.display = 'none';
+      }
+
+      const res = document.getElementById('recResults');
+      res.style.display = 'block';
+      res.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+  </script>
+
+</body>
+</html>

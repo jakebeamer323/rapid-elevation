@@ -606,6 +606,173 @@ a.tool-card:hover {
   margin-top: 1px;
 }
 
+/* ── ZONE ROWS (temp tower & retraction tool) ── */
+.zones-wrap { margin-bottom: 1.5rem; }
+
+.zone-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.65rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.zone-row:first-child { border-top: 1px solid var(--border); }
+
+.zone-info {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  min-width: 170px;
+  flex-shrink: 0;
+}
+
+.zone-num {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  min-width: 50px;
+}
+
+.zone-val {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.zone-tag {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.15rem 0.45rem;
+  border-radius: 20px;
+  background: rgba(91, 155, 213, 0.12);
+  color: var(--accent);
+}
+
+.zone-tag.bottom {
+  background: rgba(62, 86, 110, 0.25);
+  color: var(--text-dim);
+}
+
+.zone-select {
+  flex: 1;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.88rem;
+  padding: 0.5rem 0.75rem;
+  outline: none;
+  transition: border-color 0.2s;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.zone-select:focus { border-color: var(--accent); }
+
+/* ── RESULT CALLOUT ── */
+.result-wrap {
+  display: none;
+  background: var(--card);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 2rem;
+  margin-bottom: 3rem;
+}
+
+.result-value-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.result-big-value {
+  font-family: 'Outfit', sans-serif;
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--accent-bright);
+  line-height: 1;
+}
+
+.result-big-unit {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.result-sublabel {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 0.75rem;
+}
+
+.result-delta {
+  font-size: 0.88rem;
+  font-weight: 500;
+  margin-bottom: 0.75rem;
+}
+
+.result-delta.neutral { color: var(--sev-green); }
+.result-delta.adjusted { color: var(--accent); }
+
+.result-explanation {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+  border-top: 1px solid var(--border);
+  padding-top: 1rem;
+  margin-top: 0.25rem;
+}
+
+.result-secondary {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  background: var(--surface);
+  border-radius: var(--radius-sm);
+  padding: 0.65rem 0.9rem;
+  margin-top: 0.75rem;
+  line-height: 1.65;
+}
+
+.result-warning {
+  font-size: 0.85rem;
+  color: var(--sev-yellow);
+  background: rgba(232, 200, 64, 0.06);
+  border-left: 3px solid var(--sev-yellow);
+  padding: 0.6rem 0.85rem;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  margin-top: 0.75rem;
+  line-height: 1.6;
+}
+
+/* Model link hint */
+.model-link-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.82rem;
+  color: var(--accent);
+  text-decoration: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.4rem 0.85rem;
+  margin-bottom: 1.5rem;
+  transition: border-color 0.2s, color 0.2s;
+  background: var(--surface);
+}
+
+.model-link-hint:hover { border-color: var(--accent); color: var(--accent-bright); }
+
 /* ── MODEL CARDS ── */
 .model-grid {
   display: grid;
@@ -858,6 +1025,217 @@ footer a:hover { color: var(--accent); }
   font-size: 0.85rem;
   color: var(--text-muted);
   text-align: center;
+}
+
+/* ── DROP ZONE ── */
+.drop-zone {
+  border: 2px dashed var(--border-light);
+  border-radius: var(--radius);
+  padding: 2.5rem 2rem;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  background: var(--surface);
+  margin-bottom: 1.5rem;
+}
+
+.drop-zone:hover,
+.drop-zone.dragover {
+  border-color: var(--accent);
+  background: rgba(91, 155, 213, 0.04);
+}
+
+.drop-zone.has-file {
+  border-color: var(--sev-green);
+  border-style: solid;
+  background: rgba(63, 184, 130, 0.04);
+  cursor: default;
+}
+
+.drop-zone-icon {
+  font-size: 2rem;
+  margin-bottom: 0.6rem;
+  line-height: 1;
+  color: var(--text-dim);
+}
+
+.drop-zone.has-file .drop-zone-icon { color: var(--sev-green); }
+
+.drop-zone-main {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 0.3rem;
+}
+
+.drop-zone-sub {
+  font-size: 0.83rem;
+  color: var(--text-muted);
+}
+
+.drop-zone-browse {
+  color: var(--accent);
+  cursor: pointer;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.drop-zone-browse:hover { color: var(--accent-bright); }
+
+/* ── RESULT STATS GRID ── */
+.result-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
+}
+
+.result-stat { display: flex; flex-direction: column; gap: 0.2rem; }
+
+.result-stat-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.result-stat-value {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* ── CALC TABLE (layer height optimizer) ── */
+.calc-table-wrap {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+.calc-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.calc-table th {
+  text-align: left;
+  padding: 0.65rem 1.1rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.calc-table td {
+  padding: 0.7rem 1.1rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-muted);
+}
+
+.calc-table tr:last-child td { border-bottom: none; }
+
+.calc-table td.layer-val {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.calc-table tr.sweet-row td { background: rgba(91, 155, 213, 0.07); }
+.calc-table tr.sweet-row td.layer-val { color: var(--accent-bright); }
+.calc-table tr.ideal-row td { background: rgba(63, 184, 130, 0.08); }
+.calc-table tr.ideal-row td.layer-val { color: var(--sev-green); }
+
+/* ── RECOMMENDATION CARDS (infill optimizer) ── */
+.rec-results { display: none; margin-bottom: 3rem; }
+
+.rec-results-heading {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.rec-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.rec-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+}
+
+.rec-card-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 0.45rem;
+}
+
+.rec-card-value {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--accent-bright);
+  line-height: 1.15;
+  margin-bottom: 0.15rem;
+}
+
+.rec-card-sub {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-bottom: 0.6rem;
+}
+
+.rec-card-why {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  border-top: 1px solid var(--border);
+  padding-top: 0.6rem;
+}
+
+.rec-support-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.rec-support-card.support-needed    { border-color: var(--accent); }
+.rec-support-card.support-optional  { border-color: var(--sev-yellow); }
+.rec-support-card.support-none      { border-color: var(--sev-green); }
+
+.rec-support-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+
+.rec-support-body {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.7;
 }
 
 /* ── RESPONSIVE ── */

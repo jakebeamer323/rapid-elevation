@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Print Time Estimator — Rapid Elevation</title>
+  <meta name="description" content="Upload your sliced G-code file for a more accurate print time estimate. Factors in acceleration overhead, travel moves, and layer count.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">Rapid <span class="logo-accent">Elevation</span></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="diagnosis.html">Print Diagnosis</a>
+      <a href="models.html">Models</a>
+    </div>
+  </nav>
+
+  <main>
+
+    <div class="page-header">
+      <h1>Print Time Estimator</h1>
+      <p>Upload your sliced G-code file. The tool parses every move, sums distances against feedrates, and applies an acceleration correction — giving a more accurate estimate than most slicer previews.</p>
+    </div>
+
+    <!-- Ad placeholder -->
+    <div class="ad-placeholder" style="margin-bottom: 2rem;">
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-size">728 × 90 — Leaderboard</div>
+    </div>
+
+    <!-- Form -->
+    <div class="diag-form">
+
+      <div class="form-section-label">Upload your G-code file</div>
+      <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1.25rem; line-height: 1.7;">
+        Slice your model first, then upload the <code>.gcode</code> output here. Your file is processed entirely in your browser — nothing is uploaded or saved.
+      </p>
+
+      <!-- Drop zone -->
+      <div class="drop-zone" id="dropZone">
+        <div class="drop-zone-icon" id="dropIcon">⬆</div>
+        <p class="drop-zone-main" id="dropMain">Drop your .gcode file here</p>
+        <p class="drop-zone-sub" id="dropSub">or <label for="gcodeFile" class="drop-zone-browse" id="dropBrowse">browse to upload</label></p>
+        <input type="file" id="gcodeFile" accept=".gcode,.gc,.gco,.g" style="display:none;">
+      </div>
+
+      <hr class="form-divider">
+
+      <button class="btn" id="estimateBtn">Estimate Print Time</button>
+
+    </div>
+
+    <!-- Result -->
+    <div class="result-wrap" id="resultWrap">
+      <div class="result-sublabel">Estimated Print Time</div>
+      <div class="result-value-row">
+        <span class="result-big-value" id="timeVal">—</span>
+      </div>
+      <div class="result-delta" id="resultDelta"></div>
+      <div class="result-explanation" id="resultExplanation"></div>
+      <div class="result-stats-grid" id="statsGrid"></div>
+      <div class="result-warning" id="resultWarning" style="display:none;"></div>
+    </div>
+
+    <!-- Ad placeholder -->
+    <div class="ad-placeholder" style="margin-bottom: 3rem;">
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-size">300 × 250 — Medium Rectangle</div>
+    </div>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Rapid Elevation &mdash; Built by <a href="https://jakebeamer323.github.io/my-site" target="_blank">Jake Lewien</a></p>
+  </footer>
+
+  <script>
+    // ── Drag & drop setup ──
+    const dropZone   = document.getElementById('dropZone');
+    const fileInput  = document.getElementById('gcodeFile');
+    const dropIcon   = document.getElementById('dropIcon');
+    const dropMain   = document.getElementById('dropMain');
+    const dropSub    = document.getElementById('dropSub');
+    const estimateBtn = document.getElementById('estimateBtn');
+    const resultWrap = document.getElementById('resultWrap');
+
+    let selectedFile = null;
+
+    dropZone.addEventListener('click', e => {
+      if (e.target.id === 'dropBrowse' || !dropZone.classList.contains('has-file')) fileInput.click();
+    });
+    fileInput.addEventListener('change', e => { if (e.target.files[0]) setFile(e.target.files[0]); });
+    dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('dragover'); });
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+    dropZone.addEventListener('drop', e => {
+      e.preventDefault();
+      dropZone.classList.remove('dragover');
+      if (e.dataTransfer.files[0]) setFile(e.dataTransfer.files[0]);
+    });
+
+    function setFile(file) {
+      if (!file.name.match(/\.(gcode|gc|gco|g)$/i)) {
+        alert('Please upload a valid G-code file (.gcode, .gc, .gco).');
+        return;
+      }
+      selectedFile = file;
+      dropZone.classList.add('has-file');
+      dropIcon.textContent = '✓';
+      dropMain.textContent = file.name;
+      dropSub.innerHTML = `${(file.size / 1024 / 1024).toFixed(2)} MB &mdash; ready to estimate`;
+      resultWrap.style.display = 'none';
+    }
+
+    // ── G-code parser ──
+    function getParam(cmd, key) {
+      const idx = cmd.indexOf(key);
+      if (idx === -1) return undefined;
+      let end = idx + 1;
+      while (end < cmd.length && /[-.\d]/.test(cmd[end])) end++;
+      const v = parseFloat(cmd.substring(idx + 1, end));
+      return isNaN(v) ? undefined : v;
+    }
+
+    function parseGcode(text) {
+      const lines = text.split('\n');
+      let x = 0, y = 0, z = 0, e = 0;
+      let feedrate = 1800; // mm/min default (30 mm/s)
+      let absXYZ = true, absE = true;
+      let printTime = 0, travelTime = 0, dwellTime = 0;
+      let filamentMM = 0;
+      let layerCount = 0, commentLayerMax = 0;
+      let pendingLayerZ = null, lastLayerZ = -999;
+
+      for (let i = 0; i < lines.length; i++) {
+        const raw = lines[i];
+        const semi = raw.indexOf(';');
+
+        // Slicer comment layer detection
+        if (semi >= 0) {
+          const comment = raw.substring(semi + 1).trim().toLowerCase();
+          const m1 = comment.match(/^layer:(\d+)/);
+          const m2 = comment.match(/layer #(\d+)/);
+          const m3 = comment.match(/layer_count:(\d+)/);
+          if (m1) commentLayerMax = Math.max(commentLayerMax, parseInt(m1[1]) + 1);
+          if (m2) commentLayerMax = Math.max(commentLayerMax, parseInt(m2[1]));
+          if (m3) commentLayerMax = Math.max(commentLayerMax, parseInt(m3[1]));
+        }
+
+        const cmd = (semi >= 0 ? raw.substring(0, semi) : raw).trim().toUpperCase();
+        if (!cmd) continue;
+
+        if (cmd === 'G90')        { absXYZ = true; }
+        else if (cmd === 'G91')   { absXYZ = false; }
+        else if (cmd === 'M82')   { absE = true; }
+        else if (cmd === 'M83')   { absE = false; }
+        else if (cmd.startsWith('G92')) {
+          const eV = getParam(cmd, 'E'); if (eV !== undefined) e = eV;
+          const xV = getParam(cmd, 'X'); if (xV !== undefined) x = xV;
+          const yV = getParam(cmd, 'Y'); if (yV !== undefined) y = yV;
+          const zV = getParam(cmd, 'Z'); if (zV !== undefined) z = zV;
+        }
+        else if (cmd.startsWith('G4')) {
+          const p = getParam(cmd, 'P'), s = getParam(cmd, 'S');
+          if (p !== undefined) dwellTime += p / 1000;
+          else if (s !== undefined) dwellTime += s;
+        }
+        else if (cmd.startsWith('G0') || cmd.startsWith('G1')) {
+          const F = getParam(cmd, 'F'); if (F !== undefined) feedrate = F;
+          const X = getParam(cmd, 'X'), Y = getParam(cmd, 'Y');
+          const Z = getParam(cmd, 'Z'), E = getParam(cmd, 'E');
+
+          const nx = absXYZ ? (X !== undefined ? X : x) : x + (X || 0);
+          const ny = absXYZ ? (Y !== undefined ? Y : y) : y + (Y || 0);
+          const nz = absXYZ ? (Z !== undefined ? Z : z) : z + (Z || 0);
+          const ne = absE   ? (E !== undefined ? E : e) : e + (E || 0);
+
+          const dx = nx - x, dy = ny - y, dz = nz - z;
+          const dist = Math.sqrt(dx*dx + dy*dy + dz*dz);
+          const extruding = E !== undefined && (absE ? ne > e + 0.0001 : E > 0.0001);
+
+          // Track pending Z for layer counting (filters z-hops)
+          if (nz > lastLayerZ + 0.01 && nz !== z) pendingLayerZ = nz;
+          if (extruding && pendingLayerZ !== null) {
+            layerCount++;
+            lastLayerZ = pendingLayerZ;
+            pendingLayerZ = null;
+          }
+
+          if (dist > 0.001 && feedrate > 0) {
+            const t = (dist / feedrate) * 60;
+            if (extruding) printTime += t; else travelTime += t;
+          }
+
+          if (extruding) {
+            const eAdded = absE ? ne - e : (E || 0);
+            if (eAdded > 0) filamentMM += eAdded;
+          }
+
+          x = nx; y = ny; z = nz; e = ne;
+        }
+      }
+
+      const finalLayers = commentLayerMax > 0 ? commentLayerMax : layerCount;
+      // Acceleration overhead: print moves ~25% longer, travel moves ~8% longer
+      const corrected = printTime * 1.25 + travelTime * 1.08 + dwellTime;
+
+      return { corrected, printTime, travelTime, dwellTime, layers: finalLayers, filamentMM: Math.round(filamentMM) };
+    }
+
+    function fmt(sec) {
+      const h = Math.floor(sec / 3600);
+      const m = Math.floor((sec % 3600) / 60);
+      const s = Math.floor(sec % 60);
+      if (h > 0) return `${h}h ${m}m`;
+      if (m > 0) return `${m}m ${s}s`;
+      return `${s}s`;
+    }
+
+    // ── Estimate button ──
+    estimateBtn.addEventListener('click', () => {
+      if (!selectedFile) { alert('Please upload a G-code file first.'); return; }
+
+      estimateBtn.textContent = 'Processing…';
+      estimateBtn.disabled = true;
+
+      const reader = new FileReader();
+      reader.onload = ev => {
+        setTimeout(() => {
+          try {
+            const res = parseGcode(ev.target.result);
+            showResult(res);
+          } catch (err) {
+            alert('Could not parse this file. Make sure it\'s a valid G-code file.');
+          } finally {
+            estimateBtn.textContent = 'Estimate Print Time';
+            estimateBtn.disabled = false;
+          }
+        }, 10);
+      };
+      reader.readAsText(selectedFile);
+    });
+
+    function showResult(res) {
+      document.getElementById('timeVal').textContent = fmt(res.corrected);
+
+      const delta = document.getElementById('resultDelta');
+      delta.className = 'result-delta adjusted';
+      delta.textContent = '±15–20% accuracy — real time depends on your printer\'s acceleration and jerk settings.';
+
+      const rawTotal = res.printTime + res.travelTime + res.dwellTime;
+      const pct = rawTotal > 0 ? Math.round((res.printTime / rawTotal) * 100) : 0;
+      document.getElementById('resultExplanation').innerHTML =
+        `Based on ${fmt(res.printTime * 1.25)} of print moves and ${fmt(res.travelTime * 1.08)} of travel moves, ` +
+        `plus a 1.25× correction applied to print segments to account for acceleration and cornering slowdowns. ` +
+        `${pct}% of move time is active extrusion.`;
+
+      const filamentM = (res.filamentMM / 1000).toFixed(2);
+      document.getElementById('statsGrid').innerHTML = `
+        <div class="result-stat"><span class="result-stat-label">Print Moves</span><span class="result-stat-value">${fmt(res.printTime * 1.25)}</span></div>
+        <div class="result-stat"><span class="result-stat-label">Travel Moves</span><span class="result-stat-value">${fmt(res.travelTime * 1.08)}</span></div>
+        <div class="result-stat"><span class="result-stat-label">Layer Count</span><span class="result-stat-value">${res.layers > 0 ? res.layers.toLocaleString() : '—'}</span></div>
+        <div class="result-stat"><span class="result-stat-label">Filament Used</span><span class="result-stat-value">${filamentM}m</span></div>
+      `;
+
+      const warn = document.getElementById('resultWarning');
+      if (res.layers === 0) {
+        warn.textContent = 'Layer count could not be detected — the G-code may lack standard slicer comments. All other values are still valid.';
+        warn.style.display = 'block';
+      } else {
+        warn.style.display = 'none';
+      }
+
+      resultWrap.style.display = 'block';
+      resultWrap.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  </script>
+
+</body>
+</html>
