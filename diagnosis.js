@@ -197,6 +197,7 @@ function parseNum(id) {
 function getSettings() {
   return {
     printer:         document.getElementById('printer').value || null,
+    extruderType:    document.getElementById('extruderType').value || null,
     material:        document.getElementById('material').value || null,
     nozzleTemp:      parseNum('nozzleTemp'),
     bedTemp:         parseNum('bedTemp'),
@@ -237,9 +238,15 @@ const ISSUES = {
         rank(s) {
           if (!s.material || s.bedTemp === null) return 2;
           const [min] = MATERIAL_RANGES[s.material].bed;
-          if (s.bedTemp < min - 10) return 4;
-          if (s.bedTemp < min) return 3;
-          return null;
+          let r;
+          if (s.bedTemp < min - 10) r = 4;
+          else if (s.bedTemp < min) r = 3;
+          else return null;
+          // Cross: fast first layer on a cold bed prevents any bond from forming
+          if (r < 4 && s.firstLayerSpeed !== null && s.firstLayerSpeed > 30) r = Math.min(4, r + 1);
+          // Cross: cooling fan on a cold bed rapidly kills adhesion
+          if (r < 4 && s.coolingFan !== null && s.coolingFan > 20) r = Math.min(4, r + 1);
+          return r;
         }
       },
       {
@@ -262,10 +269,17 @@ const ISSUES = {
         severity: 'orange',
         rank(s) {
           if (s.firstLayerSpeed === null) return 2;
-          if (s.firstLayerSpeed > 50) return 4;
-          if (s.firstLayerSpeed > 30) return 3;
-          if (s.firstLayerSpeed > 20) return 2;
-          return null;
+          let r;
+          if (s.firstLayerSpeed > 50) r = 4;
+          else if (s.firstLayerSpeed > 30) r = 3;
+          else if (s.firstLayerSpeed > 20) r = 2;
+          else return null;
+          // Cross: a cold bed makes high first-layer speed even more destructive to adhesion
+          if (r < 4 && s.material && s.bedTemp !== null) {
+            const [min] = MATERIAL_RANGES[s.material].bed;
+            if (s.bedTemp < min) r = Math.min(4, r + 1);
+          }
+          return r;
         }
       },
       {
@@ -312,9 +326,13 @@ const ISSUES = {
         rank(s) {
           if (!s.material || s.bedTemp === null) return 3;
           const [min] = MATERIAL_RANGES[s.material].bed;
-          if (s.bedTemp < min - 10) return 4;
-          if (s.bedTemp < min) return 3;
-          return null;
+          let r;
+          if (s.bedTemp < min - 10) r = 4;
+          else if (s.bedTemp < min) r = 3;
+          else return null;
+          // Cross: ABS/ASA with any cooling on top of a cold bed is a near-guaranteed warp
+          if (r < 4 && ['ABS', 'ASA'].includes(s.material) && s.coolingFan !== null && s.coolingFan > 10) r = Math.min(4, r + 1);
+          return r;
         }
       },
       {
@@ -344,9 +362,16 @@ const ISSUES = {
         severity: 'yellow',
         rank(s) {
           if (s.firstLayerSpeed === null) return null;
-          if (s.firstLayerSpeed > 40) return 2;
-          if (s.firstLayerSpeed > 25) return 1;
-          return null;
+          let r;
+          if (s.firstLayerSpeed > 40) r = 2;
+          else if (s.firstLayerSpeed > 25) r = 1;
+          else return null;
+          // Cross: a cold bed means the fast-printed first layer has nothing keeping it stuck
+          if (r < 4 && s.material && s.bedTemp !== null) {
+            const [min] = MATERIAL_RANGES[s.material].bed;
+            if (s.bedTemp < min) r = Math.min(4, r + 1);
+          }
+          return r;
         }
       },
       {
@@ -376,10 +401,14 @@ const ISSUES = {
         severity: 'red',
         rank(s) {
           if (s.infill === null) return 3;
-          if (s.infill < 10) return 4;
-          if (s.infill < 15) return 3;
-          if (s.infill < 20) return 2;
-          return null;
+          let r;
+          if (s.infill < 10) r = 4;
+          else if (s.infill < 15) r = 3;
+          else if (s.infill < 20) r = 2;
+          else return null;
+          // Cross: thick layers need more infill below them to bridge gaps — the combination is worse than either alone
+          if (r < 4 && s.layerHeight !== null && s.layerHeight > 0.25) r = Math.min(4, r + 1);
+          return r;
         }
       },
       {
@@ -396,9 +425,16 @@ const ISSUES = {
         severity: 'orange',
         rank(s) {
           if (s.printSpeed === null) return null;
-          if (s.printSpeed > 100) return 3;
-          if (s.printSpeed > 80) return 2;
-          return null;
+          let r;
+          if (s.printSpeed > 100) r = 3;
+          else if (s.printSpeed > 80) r = 2;
+          else return null;
+          // Cross: a cool nozzle at high speed under-extrudes on top layers, amplifying roughness
+          if (r < 4 && s.material && s.nozzleTemp !== null) {
+            const [min] = MATERIAL_RANGES[s.material].nozzle;
+            if (s.nozzleTemp < min + 5) r = Math.min(4, r + 1);
+          }
+          return r;
         }
       },
       {
@@ -527,10 +563,30 @@ const ISSUES = {
         severity: 'red',
         rank(s) {
           if (s.retractionDist === null) return 2;
-          if (s.retractionDist > 8) return 4;
-          if (s.retractionDist > 5) return 3;
-          if (s.retractionDist > 3) return 2;
-          return null;
+          let r;
+          if (s.extruderType === 'direct') {
+            // Direct drive: the extruder is right above the melt zone — even 3mm can cause clogs
+            if (s.retractionDist > 5) r = 4;
+            else if (s.retractionDist > 3) r = 3;
+            else if (s.retractionDist > 2) r = 2;
+            else return null;
+          } else if (s.extruderType === 'bowden') {
+            // Bowden: more retraction is needed, but there are still limits
+            if (s.retractionDist > 8) r = 4;
+            else if (s.retractionDist > 6) r = 3;
+            else return null;
+          } else {
+            if (s.retractionDist > 8) r = 4;
+            else if (s.retractionDist > 5) r = 3;
+            else if (s.retractionDist > 3) r = 2;
+            else return null;
+          }
+          // Cross: cold nozzle + aggressive retraction = filament solidifies in cold zone almost immediately
+          if (r < 4 && s.material && s.nozzleTemp !== null) {
+            const [min] = MATERIAL_RANGES[s.material].nozzle;
+            if (s.nozzleTemp < min + 5) r = Math.min(4, r + 1);
+          }
+          return r;
         }
       },
       {
@@ -586,10 +642,14 @@ const ISSUES = {
         severity: 'red',
         rank(s) {
           if (s.printSpeed === null) return 2;
-          if (s.printSpeed > 120) return 4;
-          if (s.printSpeed > 80) return 3;
-          if (s.printSpeed > 60) return 2;
-          return null;
+          let r;
+          if (s.printSpeed > 120) r = 4;
+          else if (s.printSpeed > 80) r = 3;
+          else if (s.printSpeed > 60) r = 2;
+          else return null;
+          // Cross: direct drive toolheads are significantly heavier — the extra inertia causes skipped steps at lower speeds
+          if (r < 4 && s.extruderType === 'direct') r = Math.min(4, r + 1);
+          return r;
         }
       },
       {
@@ -642,10 +702,17 @@ const ISSUES = {
         rank(s) {
           if (!s.material || s.nozzleTemp === null) return 2;
           const [, max] = MATERIAL_RANGES[s.material].nozzle;
-          if (s.nozzleTemp > max + 10) return 4;
-          if (s.nozzleTemp > max + 5) return 3;
-          if (s.nozzleTemp > max) return 2;
-          return null;
+          let r;
+          if (s.nozzleTemp > max + 10) r = 4;
+          else if (s.nozzleTemp > max + 5) r = 3;
+          else if (s.nozzleTemp > max) r = 2;
+          else return null;
+          // Cross: runny filament with insufficient retraction to pull it back = severe stringing
+          if (r < 4 && s.retractionDist !== null) {
+            const lowThresh = s.extruderType === 'bowden' ? 4 : 1.5;
+            if (s.retractionDist < lowThresh) r = Math.min(4, r + 1);
+          }
+          return r;
         }
       },
       {
@@ -655,10 +722,32 @@ const ISSUES = {
         severity: 'red',
         rank(s) {
           if (s.retractionDist === null) return 3;
-          if (s.retractionDist < 0.5) return 4;
-          if (s.retractionDist < 1.5) return 3;
-          if (s.retractionDist < 2.5) return 2;
-          return null;
+          let r;
+          if (s.extruderType === 'bowden') {
+            // Bowden tubes require much more retraction due to slack in the tube
+            if (s.retractionDist < 2)   r = 4;
+            else if (s.retractionDist < 4) r = 3;
+            else if (s.retractionDist < 5) r = 2;
+            else return null;
+          } else if (s.extruderType === 'direct') {
+            // Direct drive extruders sit right on the hotend — minimal retraction needed
+            if (s.retractionDist < 0.3) r = 4;
+            else if (s.retractionDist < 0.8) r = 3;
+            else if (s.retractionDist < 1.5) r = 2;
+            else return null;
+          } else {
+            // Extruder type unknown — use conservative middle-ground thresholds
+            if (s.retractionDist < 0.5) r = 4;
+            else if (s.retractionDist < 1.5) r = 3;
+            else if (s.retractionDist < 2.5) r = 2;
+            else return null;
+          }
+          // Cross: a hot nozzle makes even a borderline retraction setting fail
+          if (r < 4 && s.material && s.nozzleTemp !== null) {
+            const [, max] = MATERIAL_RANGES[s.material].nozzle;
+            if (s.nozzleTemp > max) r = Math.min(4, r + 1);
+          }
+          return r;
         }
       },
       {
@@ -719,9 +808,13 @@ const ISSUES = {
         rank(s) {
           if (!s.material || s.nozzleTemp === null) return 3;
           const [min] = MATERIAL_RANGES[s.material].nozzle;
-          if (s.nozzleTemp < min - 10) return 4;
-          if (s.nozzleTemp < min) return 3;
-          return null;
+          let r;
+          if (s.nozzleTemp < min - 10) r = 4;
+          else if (s.nozzleTemp < min) r = 3;
+          else return null;
+          // Cross: demanding high speed from a cold hotend starves the nozzle even faster
+          if (r < 4 && s.printSpeed !== null && s.printSpeed > 60) r = Math.min(4, r + 1);
+          return r;
         }
       },
       {
@@ -775,9 +868,15 @@ const ISSUES = {
         rank(s) {
           if (!s.material || s.nozzleTemp === null) return 3;
           const [min] = MATERIAL_RANGES[s.material].nozzle;
-          if (s.nozzleTemp < min - 10) return 4;
-          if (s.nozzleTemp < min) return 3;
-          return null;
+          let r;
+          if (s.nozzleTemp < min - 10) r = 4;
+          else if (s.nozzleTemp < min) r = 3;
+          else return null;
+          // Cross: high speed + cold nozzle = filament isn't molten long enough to bond to the layer below
+          if (r < 4 && s.printSpeed !== null && s.printSpeed > 60) r = Math.min(4, r + 1);
+          // Cross: thick layers require more heat to fuse — cold + thick is a reliable recipe for splitting
+          if (r < 4 && s.layerHeight !== null && s.layerHeight > 0.25) r = Math.min(4, r + 1);
+          return r;
         }
       },
       {
@@ -802,9 +901,16 @@ const ISSUES = {
         severity: 'orange',
         rank(s) {
           if (s.layerHeight === null) return null;
-          if (s.layerHeight > 0.35) return 3;
-          if (s.layerHeight > 0.28) return 2;
-          return null;
+          let r;
+          if (s.layerHeight > 0.35) r = 3;
+          else if (s.layerHeight > 0.28) r = 2;
+          else return null;
+          // Cross: thick layers need extra heat to fuse — a cold nozzle can't bond them reliably
+          if (r < 4 && s.material && s.nozzleTemp !== null) {
+            const [min] = MATERIAL_RANGES[s.material].nozzle;
+            if (s.nozzleTemp < min) r = Math.min(4, r + 1);
+          }
+          return r;
         }
       },
       {
@@ -814,9 +920,16 @@ const ISSUES = {
         severity: 'orange',
         rank(s) {
           if (s.printSpeed === null) return null;
-          if (s.printSpeed > 100) return 3;
-          if (s.printSpeed > 80) return 2;
-          return null;
+          let r;
+          if (s.printSpeed > 100) r = 3;
+          else if (s.printSpeed > 80) r = 2;
+          else return null;
+          // Cross: a cold nozzle combined with high speed means layers are barely molten when they're laid
+          if (r < 4 && s.material && s.nozzleTemp !== null) {
+            const [min] = MATERIAL_RANGES[s.material].nozzle;
+            if (s.nozzleTemp < min + 5) r = Math.min(4, r + 1);
+          }
+          return r;
         }
       },
       {
@@ -854,9 +967,26 @@ const ISSUES = {
         severity: 'orange',
         rank(s) {
           if (s.retractionDist === null) return 2;
-          if (s.retractionDist < 0.5) return 4;
-          if (s.retractionDist < 1.5) return 3;
-          return null;
+          let r;
+          if (s.extruderType === 'bowden') {
+            if (s.retractionDist < 2)   r = 4;
+            else if (s.retractionDist < 4) r = 3;
+            else return null;
+          } else if (s.extruderType === 'direct') {
+            if (s.retractionDist < 0.3) r = 4;
+            else if (s.retractionDist < 0.8) r = 3;
+            else return null;
+          } else {
+            if (s.retractionDist < 0.5) r = 4;
+            else if (s.retractionDist < 1.5) r = 3;
+            else return null;
+          }
+          // Cross: hot nozzle + poor retraction = constant ooze deposited as blobs on every travel
+          if (r < 4 && s.material && s.nozzleTemp !== null) {
+            const [, max] = MATERIAL_RANGES[s.material].nozzle;
+            if (s.nozzleTemp > max) r = Math.min(4, r + 1);
+          }
+          return r;
         }
       },
       {
@@ -867,9 +997,16 @@ const ISSUES = {
         rank(s) {
           if (!s.material || s.nozzleTemp === null) return null;
           const [, max] = MATERIAL_RANGES[s.material].nozzle;
-          if (s.nozzleTemp > max + 10) return 3;
-          if (s.nozzleTemp > max + 5) return 2;
-          return null;
+          let r;
+          if (s.nozzleTemp > max + 10) r = 3;
+          else if (s.nozzleTemp > max + 5) r = 2;
+          else return null;
+          // Cross: hot nozzle oozing with insufficient retraction = blobs on every travel move
+          if (r < 4 && s.retractionDist !== null) {
+            const lowThresh = s.extruderType === 'bowden' ? 4 : 1.5;
+            if (s.retractionDist < lowThresh) r = Math.min(4, r + 1);
+          }
+          return r;
         }
       },
       {
@@ -927,9 +1064,16 @@ const ISSUES = {
         severity: 'orange',
         rank(s) {
           if (s.printSpeed === null) return null;
-          if (s.printSpeed > 100) return 3;
-          if (s.printSpeed > 80) return 2;
-          return null;
+          let r;
+          if (s.printSpeed > 100) r = 3;
+          else if (s.printSpeed > 80) r = 2;
+          else return null;
+          // Cross: a cold nozzle can't melt fast enough even at moderate speeds — the extruder grinds immediately
+          if (r < 4 && s.material && s.nozzleTemp !== null) {
+            const [min] = MATERIAL_RANGES[s.material].nozzle;
+            if (s.nozzleTemp < min + 5) r = Math.min(4, r + 1);
+          }
+          return r;
         }
       },
       {
@@ -939,8 +1083,16 @@ const ISSUES = {
         severity: 'orange',
         rank(s) {
           if (s.retractionDist === null) return null;
-          if (s.retractionDist > 8) return 3;
-          if (s.retractionDist > 5) return 2;
+          if (s.extruderType === 'direct') {
+            if (s.retractionDist > 5) return 3;
+            if (s.retractionDist > 3) return 2;
+          } else if (s.extruderType === 'bowden') {
+            if (s.retractionDist > 8) return 3;
+            if (s.retractionDist > 6) return 2;
+          } else {
+            if (s.retractionDist > 8) return 3;
+            if (s.retractionDist > 5) return 2;
+          }
           return null;
         }
       },
@@ -1033,9 +1185,16 @@ const ISSUES = {
         rank(s) {
           if (!s.material || s.bedTemp === null) return null;
           const [, max] = MATERIAL_RANGES[s.material].bed;
-          if (s.bedTemp > max + 15) return 3;
-          if (s.bedTemp > max + 5) return 2;
-          return null;
+          let r;
+          if (s.bedTemp > max + 15) r = 3;
+          else if (s.bedTemp > max + 5) r = 2;
+          else return null;
+          // Cross: both nozzle and bed running hot keeps the first layer liquid far too long
+          if (r < 4 && s.nozzleTemp !== null) {
+            const [, nMax] = MATERIAL_RANGES[s.material].nozzle;
+            if (s.nozzleTemp > nMax + 5) r = Math.min(4, r + 1);
+          }
+          return r;
         }
       },
       {
@@ -1078,10 +1237,14 @@ const ISSUES = {
         severity: 'red',
         rank(s) {
           if (s.printSpeed === null) return 3;
-          if (s.printSpeed > 100) return 4;
-          if (s.printSpeed > 80) return 3;
-          if (s.printSpeed > 60) return 2;
-          return null;
+          let r;
+          if (s.printSpeed > 100) r = 4;
+          else if (s.printSpeed > 80) r = 3;
+          else if (s.printSpeed > 60) r = 2;
+          else return null;
+          // Cross: direct drive toolheads are heavier, amplifying speed-induced ringing
+          if (r < 4 && s.extruderType === 'direct') r = Math.min(4, r + 1);
+          return r;
         }
       },
       {
@@ -1122,7 +1285,14 @@ const ISSUES = {
         description: 'A heavy direct drive extruder, large cooling shroud, or poorly balanced toolhead increases the inertia that causes ringing.',
         fix: 'Lower print speed and acceleration to compensate. Consider lighter components if upgrading.',
         severity: 'yellow',
-        rank: (s) => 1,
+        rank(s) {
+          // Direct drive setups carry the extruder motor on the toolhead — this is the primary source of mass-induced ghosting
+          if (s.extruderType === 'direct') {
+            if (s.printSpeed !== null && s.printSpeed > 80) return 3;
+            return 2;
+          }
+          return 1;
+        }
       },
     ]
   },
