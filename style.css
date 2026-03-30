@@ -138,7 +138,8 @@ nav {
 
 /* Mega menu — Tools dropdown */
 .nav-mega-menu {
-  left: 0;
+  left: auto;
+  right: 0;
   transform: none;
   min-width: 660px;
   padding: 1rem 0.5rem;
