@@ -169,6 +169,21 @@ main {
   margin-bottom: 1.75rem;
 }
 
+/* ── TOOL CATEGORY LABEL ── */
+.tool-category-label {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin: 2.25rem 0 0.9rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.tool-category-label:first-of-type { margin-top: 0; }
+
 /* ── TOOL CARDS ── */
 .tool-grid {
   display: grid;
