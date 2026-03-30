@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Print Diagnosis — Rapid Elevation</title>
+  <meta name="description" content="Diagnose 3D print failures. Select your issue, enter your settings, and get a ranked list of likely causes with fixes.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">Rapid <span class="logo-accent">Elevation</span></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="diagnosis.html" class="active">Print Diagnosis</a>
+    </div>
+  </nav>
+
+  <main>
+
+    <div class="page-header">
+      <h1>Print Diagnosis</h1>
+      <p>Select what's going wrong, fill in your current settings, and I'll give you a ranked list of likely causes — most to least likely — with specific fixes for each one.</p>
+    </div>
+
+    <!-- Ad placeholder -->
+    <div class="ad-placeholder" style="margin-bottom: 2rem;">
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-size">728 × 90 — Leaderboard</div>
+    </div>
+
+    <!-- Diagnosis Form -->
+    <div class="diag-form">
+
+      <!-- Step 1: Issue -->
+      <div class="form-section-label">Step 1 — What's going wrong?</div>
+      <div class="issue-grid">
+        <div class="issue-option">
+          <input type="radio" name="issue" id="issue-bed" value="bed_adhesion">
+          <label for="issue-bed">Bed Adhesion Problems</label>
+        </div>
+        <div class="issue-option">
+          <input type="radio" name="issue" id="issue-curling" value="curling_edges">
+          <label for="issue-curling">Curling / Warping Edges</label>
+        </div>
+        <div class="issue-option">
+          <input type="radio" name="issue" id="issue-top" value="warped_top">
+          <label for="issue-top">Rough / Warped Top Layer</label>
+        </div>
+        <div class="issue-option">
+          <input type="radio" name="issue" id="issue-spaghetti" value="spaghetti">
+          <label for="issue-spaghetti">Spaghetti (Collapsed Print)</label>
+        </div>
+        <div class="issue-option">
+          <input type="radio" name="issue" id="issue-clog" value="clogged_nozzle">
+          <label for="issue-clog">Clogged Nozzle</label>
+        </div>
+      </div>
+
+      <hr class="form-divider">
+
+      <!-- Step 2: Basic Settings -->
+      <div class="form-section-label">Step 2 — Your current settings</div>
+      <div class="settings-grid">
+        <div class="field">
+          <label for="material">Material</label>
+          <select id="material">
+            <option value="">— Select —</option>
+            <option value="PLA">PLA</option>
+            <option value="PETG">PETG</option>
+            <option value="ABS">ABS</option>
+            <option value="ASA">ASA</option>
+            <option value="TPU">TPU</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="nozzleTemp">Nozzle Temp (°C)</label>
+          <input type="number" id="nozzleTemp" placeholder="e.g. 210" min="150" max="320">
+        </div>
+        <div class="field">
+          <label for="bedTemp">Bed Temp (°C)</label>
+          <input type="number" id="bedTemp" placeholder="e.g. 60" min="0" max="150">
+        </div>
+        <div class="field">
+          <label for="printSpeed">Print Speed (mm/s)</label>
+          <input type="number" id="printSpeed" placeholder="e.g. 60" min="1" max="500">
+        </div>
+      </div>
+
+      <!-- Advanced toggle -->
+      <button class="advanced-toggle-btn" id="advancedToggle">+ Show Advanced Settings</button>
+
+      <!-- Advanced settings -->
+      <div id="advancedPanel">
+        <div class="form-section-label">Advanced Settings</div>
+        <div class="settings-grid">
+          <div class="field">
+            <label for="layerHeight">Layer Height (mm)</label>
+            <input type="number" id="layerHeight" placeholder="e.g. 0.2" step="0.01" min="0.05" max="1.0">
+          </div>
+          <div class="field">
+            <label for="firstLayerSpeed">First Layer Speed (mm/s)</label>
+            <input type="number" id="firstLayerSpeed" placeholder="e.g. 20" min="1" max="200">
+          </div>
+          <div class="field">
+            <label for="coolingFan">Cooling Fan (%)</label>
+            <input type="number" id="coolingFan" placeholder="e.g. 100" min="0" max="100">
+          </div>
+          <div class="field">
+            <label for="retractionDist">Retraction Distance (mm)</label>
+            <input type="number" id="retractionDist" placeholder="e.g. 1.5" step="0.1" min="0" max="20">
+          </div>
+          <div class="field">
+            <label for="retractionSpeed">Retraction Speed (mm/s)</label>
+            <input type="number" id="retractionSpeed" placeholder="e.g. 35" min="1" max="150">
+          </div>
+          <div class="field">
+            <label for="infill">Infill (%)</label>
+            <input type="number" id="infill" placeholder="e.g. 15" min="0" max="100">
+          </div>
+        </div>
+      </div>
+
+      <hr class="form-divider">
+
+      <button class="btn" id="diagnoseBtn">Diagnose My Print</button>
+
+    </div>
+
+    <!-- Results -->
+    <div id="resultsWrap">
+      <h2 class="results-header">Results — <span class="results-issue-name" id="resultsIssueName"></span></h2>
+      <p class="results-sub">Causes are ranked from most to least likely based on your settings.</p>
+
+      <div class="sev-legend">
+        <div class="legend-item"><div class="sev-dot sev-red"></div> Very Likely</div>
+        <div class="legend-item"><div class="sev-dot sev-orange"></div> Likely</div>
+        <div class="legend-item"><div class="sev-dot sev-yellow"></div> Possible</div>
+        <div class="legend-item"><div class="sev-dot sev-green"></div> Unlikely</div>
+      </div>
+
+      <div id="results"></div>
+    </div>
+
+    <!-- Ad placeholder below results -->
+    <div class="ad-placeholder" style="margin-bottom: 3rem;">
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-size">300 × 250 — Medium Rectangle</div>
+    </div>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Rapid Elevation &mdash; Built by <a href="https://jakebeamer323.github.io/my-site" target="_blank">Jake Lewien</a></p>
+  </footer>
+
+  <script src="diagnosis.js"></script>
+
+</body>
+</html>
