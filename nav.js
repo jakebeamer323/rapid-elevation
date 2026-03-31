@@ -7,37 +7,59 @@
   document.addEventListener('DOMContentLoaded', function () {
     var triggers = document.querySelectorAll('.nav-dropdown-trigger');
 
-    triggers.forEach(function (trigger) {
-      trigger.addEventListener('click', function (e) {
-        e.stopPropagation();
-        var dd = trigger.closest('.nav-dropdown');
-        var isOpen = dd.classList.contains('open');
+    function closeAll() {
+      document.querySelectorAll('.nav-dropdown').forEach(function (d) {
+        d.classList.remove('open');
+      });
+    }
 
-        // Close all dropdowns
-        document.querySelectorAll('.nav-dropdown').forEach(function (d) {
-          d.classList.remove('open');
+    triggers.forEach(function (trigger) {
+      var dd = trigger.closest('.nav-dropdown');
+      var href = trigger.dataset.href;
+
+      if (href) {
+        // Hover-open trigger: open on mouseenter, navigate on click
+        var leaveTimer;
+
+        dd.addEventListener('mouseenter', function () {
+          clearTimeout(leaveTimer);
+          closeAll();
+          dd.classList.add('open');
         });
 
-        // Toggle this one
-        if (!isOpen) {
-          dd.classList.add('open');
-        }
-      });
+        dd.addEventListener('mouseleave', function () {
+          leaveTimer = setTimeout(function () {
+            dd.classList.remove('open');
+          }, 120);
+        });
+
+        trigger.addEventListener('click', function (e) {
+          e.stopPropagation();
+          window.location.href = href;
+        });
+
+      } else {
+        // Click-toggle trigger (e.g. Popular)
+        trigger.addEventListener('click', function (e) {
+          e.stopPropagation();
+          var isOpen = dd.classList.contains('open');
+          closeAll();
+          if (!isOpen) {
+            dd.classList.add('open');
+          }
+        });
+      }
     });
 
     // Close on outside click
     document.addEventListener('click', function () {
-      document.querySelectorAll('.nav-dropdown').forEach(function (d) {
-        d.classList.remove('open');
-      });
+      closeAll();
     });
 
     // Close on Escape
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') {
-        document.querySelectorAll('.nav-dropdown').forEach(function (d) {
-          d.classList.remove('open');
-        });
+        closeAll();
       }
     });
   });
