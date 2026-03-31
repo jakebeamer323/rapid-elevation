@@ -66,7 +66,7 @@
     window.addEventListener('scroll', function () {
       var total = document.documentElement.scrollHeight - window.innerHeight;
       var pct = total > 0 ? (window.scrollY / total) * 100 : 0;
-      progressBar.style.width = pct + '%';
+      progressBar.style.setProperty('--scroll-pct', pct / 100);
     }, { passive: true });
   }
 
