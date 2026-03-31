@@ -322,12 +322,12 @@ a.tool-card:hover {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Bruno Ace SC', 'Outfit', sans-serif;
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: var(--spool-color, var(--text-muted));
   margin: 2.25rem 0 0.9rem;
   padding-bottom: 0.6rem;
   border-bottom: 2px solid var(--spool-color, var(--border));
@@ -1217,7 +1217,7 @@ a.tool-card:hover {
 }
 
 .home-value {
-  margin-top: 5rem;
+  margin-top: 8rem;
   padding-block: 3rem;
 }
 
