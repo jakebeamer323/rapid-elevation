@@ -60,6 +60,29 @@
   var statsBar = document.querySelector('.home-stats');
   if (statsBar) statsObserver.observe(statsBar);
 
+  /* ── SCROLL PROGRESS BAR ── */
+  var progressBar = document.getElementById('scrollProgress');
+  if (progressBar) {
+    window.addEventListener('scroll', function () {
+      var total = document.documentElement.scrollHeight - window.innerHeight;
+      var pct = total > 0 ? (window.scrollY / total) * 100 : 0;
+      progressBar.style.width = pct + '%';
+    }, { passive: true });
+  }
+
+  /* ── JOURNEY STAGE OBSERVER (scroll narrative) ── */
+  var journeySections = document.querySelectorAll('[data-journey]');
+  if (journeySections.length) {
+    var journeyObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          document.body.dataset.journey = entry.target.dataset.journey;
+        }
+      });
+    }, { threshold: 0.35 });
+    journeySections.forEach(function (el) { journeyObserver.observe(el); });
+  }
+
   if (!prefersReducedMotion) {
 
     /* ── HERO PARALLAX (homepage only) ── */

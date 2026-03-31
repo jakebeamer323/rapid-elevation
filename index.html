@@ -71,6 +71,8 @@
     </div>
   </nav>
 
+  <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+
   <main class="home-main">
 
     <!-- ── HERO ── -->
@@ -111,7 +113,8 @@
     </div>
 
     <!-- ── FEATURED TOOLS ── -->
-    <section class="home-section reveal">
+    <section class="home-section reveal" data-journey="diagnose">
+      <div class="journey-label">Stage 1 — Diagnose &amp; Calibrate</div>
       <div class="home-section-header">
         <div class="home-section-title layer-wipe">Popular Tools</div>
         <a href="tools.html" class="home-section-link">View all →</a>
@@ -158,50 +161,87 @@
     </section>
 
     <!-- ── CATEGORY GRID ── -->
-    <section class="home-section reveal">
+    <section class="home-section reveal" data-journey="browse">
+      <div class="journey-label">Stage 2 — Browse All Tool Categories</div>
       <div class="home-section-header">
         <div class="home-section-title layer-wipe">Browse by Category</div>
         <a href="tools.html" class="home-section-link">See all →</a>
       </div>
       <div class="home-cat-grid reveal-stagger">
 
-        <a href="tools.html#tools" class="home-cat-card card-depth">
-          <div class="home-cat-icon">&#128269;</div>
+        <a href="tools.html#diagnostic-section" class="home-cat-card card-depth" style="--cat-color:#e05252;--cat-glow:rgba(224,82,82,0.08);">
+          <div class="home-cat-spool">
+            <svg viewBox="0 0 22 22" width="30" height="30" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <circle cx="11" cy="11" r="9" stroke="currentColor" stroke-width="1.5"/>
+              <circle cx="11" cy="11" r="5.5" stroke="currentColor" stroke-width="1"/>
+              <circle cx="11" cy="11" r="2" fill="currentColor"/>
+            </svg>
+          </div>
           <div class="home-cat-name">Diagnostic</div>
           <div class="home-cat-count">2 tools</div>
           <div class="home-cat-desc">Identify and fix print failures fast</div>
         </a>
 
-        <a href="tools.html#tools" class="home-cat-card card-depth">
-          <div class="home-cat-icon">&#127919;</div>
+        <a href="tools.html#calibration-section" class="home-cat-card card-depth" style="--cat-color:#5b9bd5;--cat-glow:rgba(91,155,213,0.08);">
+          <div class="home-cat-spool">
+            <svg viewBox="0 0 22 22" width="30" height="30" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <circle cx="11" cy="11" r="9" stroke="currentColor" stroke-width="1.5"/>
+              <circle cx="11" cy="11" r="5.5" stroke="currentColor" stroke-width="1"/>
+              <circle cx="11" cy="11" r="2" fill="currentColor"/>
+            </svg>
+          </div>
           <div class="home-cat-name">Calibration</div>
           <div class="home-cat-count">6 tools</div>
           <div class="home-cat-desc">Dial in E-steps, flow, temp, retraction</div>
         </a>
 
-        <a href="tools.html#tools" class="home-cat-card card-depth">
-          <div class="home-cat-icon">&#9202;</div>
+        <a href="tools.html#print-prep-section" class="home-cat-card card-depth" style="--cat-color:#3fb882;--cat-glow:rgba(63,184,130,0.08);">
+          <div class="home-cat-spool">
+            <svg viewBox="0 0 22 22" width="30" height="30" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <circle cx="11" cy="11" r="9" stroke="currentColor" stroke-width="1.5"/>
+              <circle cx="11" cy="11" r="5.5" stroke="currentColor" stroke-width="1"/>
+              <circle cx="11" cy="11" r="2" fill="currentColor"/>
+            </svg>
+          </div>
           <div class="home-cat-name">Print Prep</div>
           <div class="home-cat-count">3 tools</div>
           <div class="home-cat-desc">Estimate time, layer height, infill</div>
         </a>
 
-        <a href="tools.html#tools" class="home-cat-card card-depth">
-          <div class="home-cat-icon">&#128196;</div>
+        <a href="tools.html#model-section" class="home-cat-card card-depth" style="--cat-color:#a78bfa;--cat-glow:rgba(167,139,250,0.08);">
+          <div class="home-cat-spool">
+            <svg viewBox="0 0 22 22" width="30" height="30" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <circle cx="11" cy="11" r="9" stroke="currentColor" stroke-width="1.5"/>
+              <circle cx="11" cy="11" r="5.5" stroke="currentColor" stroke-width="1"/>
+              <circle cx="11" cy="11" r="2" fill="currentColor"/>
+            </svg>
+          </div>
           <div class="home-cat-name">Model &amp; File</div>
           <div class="home-cat-count">3 tools</div>
           <div class="home-cat-desc">Analyze STLs, check walls, orient parts</div>
         </a>
 
-        <a href="tools.html#tools" class="home-cat-card card-depth">
-          <div class="home-cat-icon">&#129520;</div>
+        <a href="tools.html#material-section" class="home-cat-card card-depth" style="--cat-color:#e8892a;--cat-glow:rgba(232,137,42,0.08);">
+          <div class="home-cat-spool">
+            <svg viewBox="0 0 22 22" width="30" height="30" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <circle cx="11" cy="11" r="9" stroke="currentColor" stroke-width="1.5"/>
+              <circle cx="11" cy="11" r="5.5" stroke="currentColor" stroke-width="1"/>
+              <circle cx="11" cy="11" r="2" fill="currentColor"/>
+            </svg>
+          </div>
           <div class="home-cat-name">Material &amp; Hardware</div>
           <div class="home-cat-count">6 tools</div>
           <div class="home-cat-desc">Cost, drying, nozzle compat, spool weight</div>
         </a>
 
-        <a href="tools.html#tools" class="home-cat-card card-depth">
-          <div class="home-cat-icon">&#9881;</div>
+        <a href="tools.html#advanced-section" class="home-cat-card card-depth" style="--cat-color:#89c4f4;--cat-glow:rgba(137,196,244,0.08);">
+          <div class="home-cat-spool">
+            <svg viewBox="0 0 22 22" width="30" height="30" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <circle cx="11" cy="11" r="9" stroke="currentColor" stroke-width="1.5"/>
+              <circle cx="11" cy="11" r="5.5" stroke="currentColor" stroke-width="1"/>
+              <circle cx="11" cy="11" r="2" fill="currentColor"/>
+            </svg>
+          </div>
           <div class="home-cat-name">Advanced</div>
           <div class="home-cat-count">6 tools</div>
           <div class="home-cat-desc">G-code viewer, firmware compare, AMS planner</div>
@@ -211,7 +251,7 @@
     </section>
 
     <!-- ── VALUE PROP ── -->
-    <section class="home-value reveal">
+    <section class="home-value reveal" data-journey="confidence">
       <div class="home-value-inner">
         <div class="home-value-text">
           <div class="home-section-title layer-wipe" style="margin-bottom: 0.75rem;">Built by a maker, for makers</div>
