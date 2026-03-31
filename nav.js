@@ -39,14 +39,17 @@
         });
 
       } else {
-        // Click-toggle trigger (e.g. Popular)
-        trigger.addEventListener('click', function (e) {
-          e.stopPropagation();
-          var isOpen = dd.classList.contains('open');
+        // Hover-open trigger, no navigation on click
+        var leaveTimer;
+        dd.addEventListener('mouseenter', function () {
+          clearTimeout(leaveTimer);
           closeAll();
-          if (!isOpen) {
-            dd.classList.add('open');
-          }
+          dd.classList.add('open');
+        });
+        dd.addEventListener('mouseleave', function () {
+          leaveTimer = setTimeout(function () {
+            dd.classList.remove('open');
+          }, 120);
         });
       }
     });

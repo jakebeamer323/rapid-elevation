@@ -78,12 +78,6 @@
       <p>Every free tool and reference in one place — diagnostics, calibration, print prep, model analysis, and more.</p>
     </div>
 
-    <!-- Ad placeholder — leaderboard -->
-    <div class="ad-placeholder" style="margin-bottom: 1rem;">
-      <div class="ad-label">Advertisement</div>
-      <div class="ad-size">728 × 90 — Leaderboard</div>
-    </div>
-
     <!-- ── EXPLODED-VIEW PRINTER NAVIGATION ── -->
     <div class="printer-nav reveal" id="printer-nav-section" style="position:relative;">
       <div class="printer-nav-title">Navigate by Printer System</div>
@@ -166,7 +160,12 @@
           <rect class="part-body" x="374" y="78" width="200" height="68" rx="4"/>
           <!-- Fan shroud (left of carriage) -->
           <rect class="part-body" x="342" y="90" width="52" height="50" rx="3"/>
-          <text class="part-label-small" x="368" y="120" text-anchor="middle">Fan</text>
+          <!-- Fan: 3-blade propeller visual -->
+          <circle cx="368" cy="115" r="19" fill="#0d1525" stroke="#253d5e" stroke-width="0.8"/>
+          <path d="M 368 115 C 366 108 371 99 378 98 C 385 98 385 107 379 112 Z" fill="#1e3048" stroke="#3a6e9e" stroke-width="0.7"/>
+          <path d="M 368 115 C 374 116 382 123 380 130 C 378 137 370 136 368 130 Z" fill="#1e3048" stroke="#3a6e9e" stroke-width="0.7"/>
+          <path d="M 368 115 C 368 122 361 130 354 128 C 347 126 349 118 355 115 Z" fill="#1e3048" stroke="#3a6e9e" stroke-width="0.7"/>
+          <circle cx="368" cy="115" r="3.5" fill="#3a6e9e"/>
           <!-- Hotend tube -->
           <rect class="part-body" x="457" y="146" width="26" height="42" rx="2"/>
           <!-- Heater block -->
@@ -174,12 +173,11 @@
           <!-- Nozzle tip -->
           <polygon class="part-body" points="457,188 483,188 477,206 463,206"/>
 
-          <!-- CALLOUT: upper-right open area, clearly separated from carriage -->
-          <!-- Connector: from callout corner to right side of carriage -->
-          <path class="callout-connector" d="M 634 80 L 574 80 L 574 106"/>
-          <circle class="callout-dot" cx="574" cy="106" r="2"/>
-          <text class="callout-name" x="640" y="76" text-anchor="start">Hotend / Extruder</text>
-          <text class="callout-cat"  x="640" y="92" text-anchor="start">→ Calibration Tools</text>
+          <!-- CALLOUT: top-left, outside frame elements -->
+          <text class="callout-name" x="210" y="18" text-anchor="middle">Hotend / Extruder</text>
+          <text class="callout-cat"  x="210" y="34" text-anchor="middle">→ Calibration Tools</text>
+          <path class="callout-connector" d="M 210 40 L 210 78 L 374 78"/>
+          <circle class="callout-dot" cx="374" cy="78" r="2"/>
         </g>
 
         <!-- ─────────────────────────────────────────
@@ -239,10 +237,6 @@
           <!-- Diagonal spokes -->
           <line x1="961" y1="131" x2="978" y2="148" stroke="#1e3048" stroke-width="1"/>
           <line x1="998" y1="168" x2="1015" y2="185" stroke="#1e3048" stroke-width="1"/>
-          <!-- Filament path from spool to carriage -->
-          <path d="M 930 150 C 890 144, 760 140, 680 136" fill="none" stroke="#3a6e9e" stroke-width="1.8" stroke-dasharray="5 4"/>
-          <!-- Filament entry arrow at carriage -->
-          <polygon points="680,133 690,136 680,139" fill="#3a6e9e"/>
 
           <!-- CALLOUT: below spool with clear gap -->
           <!-- Connector: from spool bottom down to callout -->
@@ -571,13 +565,6 @@
 
     </section>
 
-    <!-- Ad placeholder — medium rectangle -->
-    <section class="section" style="border-top: none; padding-top: 0;">
-      <div class="ad-placeholder">
-        <div class="ad-label">Advertisement</div>
-        <div class="ad-size">300 × 250 — Medium Rectangle</div>
-      </div>
-    </section>
 
   </main>
 

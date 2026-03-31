@@ -590,8 +590,8 @@ a.tool-card:hover {
 
 /* Active journey section gets a faint top edge light */
 [data-journey].reveal-in {
-  border-top: 1px solid rgba(137,196,244,0.08);
-  margin-top: -1px;
+  border-top: none;
+  margin-top: 0;
 }
 
 /* ── DIAGNOSIS: crosshatch grid behind form ── */
@@ -634,8 +634,8 @@ a.tool-card:hover {
 }
 
 .home-hero {
-  min-height: min(92vh, 860px);
-  padding: 5.25rem 2rem 4.5rem;
+  min-height: auto;
+  padding: 5.25rem 2rem 2.5rem;
 }
 
 .home-hero-inner {
@@ -659,8 +659,8 @@ a.tool-card:hover {
 
 .hero-visual {
   position: relative;
-  min-height: 560px;
-  padding: 1.25rem 1.25rem 6.5rem;
+  min-height: 0;
+  padding: 1.25rem;
   border: 1px solid rgba(91, 155, 213, 0.16);
   border-radius: 34px;
   background:
@@ -1209,7 +1209,7 @@ a.tool-card:hover {
 }
 
 .home-section {
-  padding-top: 4.25rem;
+  padding-top: 1.5rem;
 }
 
 .home-section + .home-section {
