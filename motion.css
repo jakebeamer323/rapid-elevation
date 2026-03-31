@@ -193,7 +193,6 @@ nav { z-index: 100; }
 }
 
 a.tool-card:hover {
-  border-image: linear-gradient(135deg, var(--accent), var(--accent-bright), var(--accent-dim)) 1 !important;
   box-shadow: 0 8px 28px rgba(0,0,0,0.4), inset 0 0 24px rgba(91,155,213,0.05) !important;
 }
 
@@ -458,6 +457,16 @@ a.tool-card:hover {
 @keyframes blink {
   0%, 100% { opacity: 1; }
   50%       { opacity: 0; }
+}
+
+/* ── ABOUT: two-column layout ── */
+.about-cols {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+@media (max-width: 860px) {
+  .about-cols { flex-direction: column; }
 }
 
 /* ══════════════════════════════════════════════════════════════════
@@ -1210,15 +1219,17 @@ a.tool-card:hover {
 
 .home-section {
   padding-top: 1.5rem;
+  padding-bottom: 2rem;
 }
 
 .home-section + .home-section {
-  margin-top: 2rem;
+  margin-top: 3.5rem;
 }
 
 .home-value {
   margin-top: 8rem;
-  padding-block: 3rem;
+  padding-top: 1.5rem;
+  padding-bottom: 3rem;
 }
 
 .home-section::before,
