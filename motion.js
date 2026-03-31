@@ -110,23 +110,31 @@
 
   if (!prefersReducedMotion) {
     var heroGlow = document.querySelector('.home-hero-glow');
+    var heroVisual = document.querySelector('.hero-visual');
     var heroScene = document.getElementById('heroPrinterScene');
-    if (heroGlow || heroScene) {
+    if (heroGlow) {
       document.addEventListener('mousemove', function (e) {
         var cx = window.innerWidth / 2;
         var cy = window.innerHeight / 2;
         var dx = (e.clientX - cx) / cx;
         var dy = (e.clientY - cy) / cy;
-
-        if (heroGlow) {
-          heroGlow.style.transform = 'translateX(calc(-50% + ' + (dx * 24) + 'px)) translateY(' + (dy * 14) + 'px)';
-        }
-
-        if (heroScene) {
-          heroScene.style.setProperty('--scene-tilt-x', (-dy * 5).toFixed(2) + 'deg');
-          heroScene.style.setProperty('--scene-tilt-y', (dx * 8).toFixed(2) + 'deg');
-        }
+        heroGlow.style.transform = 'translateX(calc(-50% + ' + (dx * 18) + 'px)) translateY(' + (dy * 10) + 'px)';
       }, { passive: true });
+    }
+
+    if (heroVisual && heroScene) {
+      heroVisual.addEventListener('mousemove', function (e) {
+        var rect = heroVisual.getBoundingClientRect();
+        var px = clamp((e.clientX - rect.left) / rect.width, 0, 1);
+        var py = clamp((e.clientY - rect.top) / rect.height, 0, 1);
+        heroScene.style.setProperty('--scene-tilt-x', ((0.5 - py) * 1.6).toFixed(2) + 'deg');
+        heroScene.style.setProperty('--scene-tilt-y', ((px - 0.5) * 2.2).toFixed(2) + 'deg');
+      });
+
+      heroVisual.addEventListener('mouseleave', function () {
+        heroScene.style.setProperty('--scene-tilt-x', '0deg');
+        heroScene.style.setProperty('--scene-tilt-y', '0deg');
+      });
     }
 
     document.querySelectorAll('.tool-card').forEach(function (card) {
