@@ -19,40 +19,7 @@
   .hero-scanline { display: none !important; }
 }
 
-/* ── BODY: workbench texture + vignette ── */
-body {
-  position: relative;
-  background-image:
-    repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 39px,
-      rgba(30, 48, 72, 0.18) 39px,
-      rgba(30, 48, 72, 0.18) 40px
-    ),
-    repeating-linear-gradient(
-      90deg,
-      transparent,
-      transparent 39px,
-      rgba(30, 48, 72, 0.18) 39px,
-      rgba(30, 48, 72, 0.18) 40px
-    );
-}
-
-body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  background: radial-gradient(
-    ellipse at center,
-    transparent 40%,
-    rgba(8, 13, 24, 0.55) 100%
-  );
-  z-index: 1;
-}
-
-/* Keep nav above vignette */
+/* Keep nav above background layers */
 nav { z-index: 100; }
 
 /* ── REVEAL: scroll fade-up animation ── */
@@ -82,8 +49,8 @@ nav { z-index: 100; }
 }
 
 .card-depth:hover {
-  transform: translateY(-4px) !important;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45), 0 4px 12px rgba(91, 155, 213, 0.12) !important;
+  transform: translateY(-3px) !important;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5), 0 0 18px rgba(255, 107, 0, 0.12) !important;
 }
 
 /* ── LAYER WIPE: section heading reveal accent ── */
@@ -117,8 +84,8 @@ nav { z-index: 100; }
 }
 
 @keyframes glowPulse {
-  0%, 100% { box-shadow: 0 0 0 1px var(--accent-dim), 0 0 12px rgba(91, 155, 213, 0.15); }
-  50%       { box-shadow: 0 0 0 1px var(--accent),     0 0 22px rgba(89, 196, 244, 0.28); }
+  0%, 100% { box-shadow: 0 0 0 1px var(--accent-dim), 0 0 12px rgba(255, 107, 0, 0.12); }
+  50%       { box-shadow: 0 0 0 1px var(--accent),     0 0 22px rgba(255, 107, 0, 0.28); }
 }
 
 /* ── SECTION ACCENT: top-border glow ── */
@@ -193,12 +160,11 @@ nav { z-index: 100; }
 }
 
 a.tool-card:hover {
-  box-shadow: 0 8px 28px rgba(0,0,0,0.4), inset 0 0 24px rgba(91,155,213,0.05) !important;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.5), 0 0 20px rgba(255,107,0,0.15) !important;
 }
 
 /* ── ENHANCED BUTTON ── */
 .btn:not(.btn-outline) {
-  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-bright) 100%);
   position: relative;
   overflow: hidden;
 }
@@ -210,7 +176,7 @@ a.tool-card:hover {
   left: -100%;
   width: 60%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.14), transparent);
   transform: skewX(-20deg);
   transition: left 0.4s ease;
 }
@@ -246,9 +212,9 @@ a.tool-card:hover {
 }
 
 @keyframes scanComplete {
-  0%   { box-shadow: 0 0 0 1px var(--accent-bright), 0 0 20px rgba(89,196,244,0.4); }
-  60%  { box-shadow: 0 0 0 2px var(--accent-bright), 0 0 30px rgba(89,196,244,0.6); }
-  100% { box-shadow: 0 0 0 1px var(--accent), 0 0 8px rgba(91,155,213,0.2); }
+  0%   { box-shadow: 0 0 0 1px var(--accent-bright), 0 0 20px rgba(255,107,0,0.4); }
+  60%  { box-shadow: 0 0 0 2px var(--accent-bright), 0 0 30px rgba(255,107,0,0.6); }
+  100% { box-shadow: 0 0 0 1px var(--accent), 0 0 8px rgba(255,107,0,0.2); }
 }
 
 /* ── MATERIAL SWATCH WIPE ── */
@@ -281,7 +247,7 @@ a.tool-card:hover {
 }
 
 .mat-swatch-name {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Rajdhani', sans-serif;
   font-size: 0.95rem;
   font-weight: 700;
   color: var(--mat-color, var(--accent));
@@ -321,7 +287,7 @@ a.tool-card:hover {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  font-family: 'Bruno Ace SC', 'Outfit', sans-serif;
+  font-family: 'Rajdhani', sans-serif;
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -362,7 +328,7 @@ a.tool-card:hover {
 }
 
 .printer-nav-title {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Rajdhani', sans-serif;
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -406,7 +372,7 @@ a.tool-card:hover {
 .printer-part .part-label {
   fill: var(--text-muted);
   font-size: 9px;
-  font-family: 'Inter', sans-serif;
+  font-family: 'JetBrains Mono', monospace;
   font-weight: 500;
   transition: fill 0.2s;
   pointer-events: none;
@@ -473,9 +439,8 @@ a.tool-card:hover {
    SPOOL CATEGORY CARDS (homepage category grid)
    ══════════════════════════════════════════════════════════════════ */
 
-/* Colored top-border accent per category */
+/* Category card additional states */
 .home-cat-card {
-  border-top: 3px solid var(--cat-color, var(--border));
   position: relative;
   overflow: hidden;
 }
@@ -496,14 +461,6 @@ a.tool-card:hover {
 /* Ensure text stays above the pseudo glow */
 .home-cat-card > * { position: relative; z-index: 1; }
 
-/* Colored hover border and shadow */
-.home-cat-card:hover {
-  border-color: var(--cat-color, var(--accent-dim));
-  box-shadow:
-    0 8px 28px rgba(0,0,0,0.45),
-    0 0 0 1px var(--cat-color, transparent),
-    0 0 18px -4px var(--cat-color, transparent);
-}
 
 /* Spool icon container */
 .home-cat-spool {
@@ -539,7 +496,7 @@ a.tool-card:hover {
   width: 100%;
   height: 2px;
   z-index: 99;
-  background: rgba(91, 155, 213, 0.12);
+  background: rgba(255, 107, 0, 0.08);
   pointer-events: none;
 }
 
@@ -548,7 +505,7 @@ a.tool-card:hover {
   position: absolute;
   inset: 0;
   background: linear-gradient(90deg, var(--accent), var(--accent-bright));
-  box-shadow: 0 0 8px rgba(137, 196, 244, 0.5);
+  box-shadow: 0 0 8px rgba(255, 107, 0, 0.5);
   transform: scaleX(var(--scroll-pct, 0));
   transform-origin: left center;
   transition: transform 0.08s linear;
@@ -563,7 +520,7 @@ a.tool-card:hover {
    ══════════════════════════════════════════════════════════════════ */
 
 .journey-label {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Rajdhani', sans-serif;
   font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.14em;
@@ -603,24 +560,6 @@ a.tool-card:hover {
   margin-top: 0;
 }
 
-/* ── DIAGNOSIS: crosshatch grid behind form ── */
-.diag-form {
-  background-image:
-    repeating-linear-gradient(
-      45deg,
-      transparent,
-      transparent 18px,
-      rgba(30, 48, 72, 0.1) 18px,
-      rgba(30, 48, 72, 0.1) 19px
-    ),
-    repeating-linear-gradient(
-      -45deg,
-      transparent,
-      transparent 18px,
-      rgba(30, 48, 72, 0.1) 18px,
-      rgba(30, 48, 72, 0.1) 19px
-    ) !important;
-}
 
 /* Home page: stronger 3D hero and workflow motion */
 .home-main {
@@ -713,7 +652,7 @@ a.tool-card:hover {
 }
 
 .telemetry-value {
-  font-family: 'Outfit', sans-serif;
+  font-family: 'JetBrains Mono', monospace;
   font-size: 1rem;
   font-weight: 700;
   color: var(--accent-bright);
@@ -1117,7 +1056,7 @@ a.tool-card:hover {
 .hero-scene-action-name {
   display: block;
   padding-left: 0.85rem;
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Orbitron', sans-serif;
   font-size: 0.96rem;
   font-weight: 600;
 }
@@ -1199,7 +1138,7 @@ a.tool-card:hover {
 
 .workflow-name {
   display: block;
-  font-family: 'Outfit', sans-serif;
+  font-family: 'Orbitron', sans-serif;
   font-size: 0.92rem;
   font-weight: 700;
   color: var(--text);

@@ -363,18 +363,52 @@ main {
 .tool-card {
   background: var(--card);
   border: 1px solid var(--border);
+  border-left: 2px solid var(--accent-dim);
   border-radius: var(--radius);
   padding: 1.5rem;
   text-decoration: none;
   color: var(--text);
-  transition: border-color 0.2s, background 0.2s, transform 0.15s;
+  transition: border-color 0.2s, border-left-color 0.2s, background 0.2s, transform 0.15s, box-shadow 0.2s;
   display: block;
+  position: relative;
+}
+
+.tool-card::before,
+.tool-card::after {
+  content: '';
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  pointer-events: none;
+  opacity: 0.5;
+  transition: opacity 0.2s;
+}
+
+.tool-card::before {
+  top: 5px;
+  right: 5px;
+  border-top: 1px solid var(--accent);
+  border-right: 1px solid var(--accent);
+}
+
+.tool-card::after {
+  bottom: 5px;
+  left: 5px;
+  border-bottom: 1px solid var(--accent);
+  border-left: 1px solid var(--accent);
 }
 
 a.tool-card:hover {
-  border-color: var(--accent);
+  border-color: var(--border-light);
+  border-left-color: var(--accent);
   background: var(--card-hover);
   transform: translateY(-2px);
+  box-shadow: 0 0 20px rgba(255, 107, 0, 0.15);
+}
+
+a.tool-card:hover::before,
+a.tool-card:hover::after {
+  opacity: 1;
 }
 
 .tool-card.coming-soon {
@@ -458,9 +492,11 @@ a.tool-card:hover {
 .diag-form {
   background: var(--card);
   border: 1px solid var(--border);
+  border-left: 2px solid var(--accent-dim);
   border-radius: var(--radius);
   padding: 2rem;
   margin-bottom: 2rem;
+  position: relative;
 }
 
 .form-section-label {
@@ -670,9 +706,15 @@ a.tool-card:hover {
 .result-card {
   background: var(--card);
   border: 1px solid var(--border);
+  border-left: 2px solid var(--accent-dim);
   border-radius: var(--radius);
   padding: 1.25rem 1.5rem;
   margin-bottom: 0.85rem;
+  transition: border-left-color 0.2s;
+}
+
+.result-card:hover {
+  border-left-color: var(--accent);
 }
 
 .result-header {
@@ -1962,15 +2004,18 @@ footer a:hover { color: var(--accent); }
   gap: 1rem;
   background: var(--card);
   border: 1px solid var(--border);
+  border-left: 2px solid var(--accent-dim);
   border-radius: var(--radius);
   padding: 1.1rem 1.25rem;
   text-decoration: none;
-  transition: border-color 0.2s, background 0.2s, transform 0.15s;
+  transition: border-color 0.2s, border-left-color 0.2s, background 0.2s, transform 0.15s, box-shadow 0.2s;
 }
 .home-featured-card:hover {
-  border-color: var(--accent-dim);
+  border-color: var(--border-light);
+  border-left-color: var(--accent);
   background: var(--card-hover);
   transform: translateY(-2px);
+  box-shadow: 0 0 16px rgba(255, 107, 0, 0.12);
 }
 
 .home-featured-icon {
@@ -2017,15 +2062,18 @@ footer a:hover { color: var(--accent); }
   align-items: flex-start;
   background: var(--card);
   border: 1px solid var(--border);
+  border-left: 2px solid var(--cat-color, var(--accent-dim));
   border-radius: var(--radius);
   padding: 1.25rem 1.25rem 1.1rem;
   text-decoration: none;
-  transition: border-color 0.2s, background 0.2s, transform 0.15s;
+  transition: border-color 0.2s, border-left-color 0.2s, background 0.2s, transform 0.15s, box-shadow 0.2s;
 }
 .home-cat-card:hover {
-  border-color: var(--accent-dim);
+  border-color: var(--border-light);
+  border-left-color: var(--cat-color, var(--accent));
   background: var(--card-hover);
   transform: translateY(-2px);
+  box-shadow: 0 0 18px rgba(255, 107, 0, 0.12);
 }
 
 .home-cat-icon { font-size: 1.5rem; margin-bottom: 0.7rem; }
