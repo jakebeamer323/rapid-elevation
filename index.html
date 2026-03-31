@@ -54,6 +54,7 @@
             <a href="slicer-profile.html">Slicer Profile Generator</a>
             <a href="ai-chat.html">3D Printing FAQ</a>
           </div>
+          <div class="nav-mega-viewall"><a href="tools.html">Browse all tools &rarr;</a></div>
         </div>
       </div>
       <div class="nav-dropdown">
@@ -69,280 +70,183 @@
     </div>
   </nav>
 
-  <main>
+  <main class="home-main">
 
-    <!-- Hero -->
-    <section class="hero">
-      <p class="hero-eyebrow">Free 3D Printing Tools &amp; Resources</p>
-      <h1>Better prints,<br><span class="h1-accent">fewer headaches.</span></h1>
-      <p class="hero-intro">
-        Hey, I'm Jake — a maker and engineer who has spent way too many hours troubleshooting
-        bad prints so you don't have to. Rapid Elevation is my free collection of tools and
-        references to help you diagnose problems, dial in settings, and get back to printing.
-      </p>
-      <div class="btn-row">
-        <a href="diagnosis.html" class="btn">Try Print Diagnosis</a>
-        <a href="#tools" class="btn btn-outline">Browse Tools</a>
+    <!-- ── HERO ── -->
+    <section class="home-hero">
+      <div class="home-hero-glow"></div>
+      <div class="home-hero-content">
+        <p class="hero-eyebrow">Free 3D Printing Tools &amp; Resources</p>
+        <h1 class="home-h1">Better prints,<br><span class="h1-accent">fewer headaches.</span></h1>
+        <p class="home-hero-sub">
+          A free collection of calculators, analyzers, and references built by a maker, for makers.
+          Diagnose failures, dial in settings, and get back to printing — no accounts, no paywalls.
+        </p>
+        <div class="btn-row">
+          <a href="diagnosis.html" class="btn">Try Print Diagnosis</a>
+          <a href="tools.html" class="btn btn-outline">Browse All Tools</a>
+        </div>
       </div>
     </section>
 
-    <!-- Ad placeholder — leaderboard -->
-    <div class="ad-placeholder" style="margin-bottom: 1rem;">
+    <!-- ── STATS BAR ── -->
+    <div class="home-stats">
+      <div class="home-stat"><span class="home-stat-num">28</span><span class="home-stat-label">Tools</span></div>
+      <div class="home-stat-div"></div>
+      <div class="home-stat"><span class="home-stat-num">6</span><span class="home-stat-label">Categories</span></div>
+      <div class="home-stat-div"></div>
+      <div class="home-stat"><span class="home-stat-num">100%</span><span class="home-stat-label">Free</span></div>
+      <div class="home-stat-div"></div>
+      <div class="home-stat"><span class="home-stat-num">0</span><span class="home-stat-label">Accounts needed</span></div>
+    </div>
+
+    <!-- Ad placeholder -->
+    <div class="ad-placeholder" style="margin: 2rem auto; max-width: 740px;">
       <div class="ad-label">Advertisement</div>
       <div class="ad-size">728 × 90 — Leaderboard</div>
     </div>
 
-    <!-- Tools -->
-    <section class="section" id="tools">
-      <h2 class="section-heading">Tools</h2>
-
-      <!-- Diagnostic -->
-      <div class="tool-category-label">Diagnostic</div>
-      <div class="tool-grid">
-
-        <a href="diagnosis.html" class="tool-card">
-          <div class="tool-card-tag">Diagnostic</div>
-          <h3>Print Diagnosis</h3>
-          <p>Select your issue, enter your current settings, and get a ranked list of likely causes with specific fixes.</p>
-          <div class="tool-card-arrow">Use tool →</div>
-        </a>
-
-        <a href="troubleshooting-db.html" class="tool-card">
-          <div class="tool-card-tag">Diagnostic</div>
-          <h3>Troubleshooting Database</h3>
-          <p>Browse a searchable index of print failures, symptoms, causes, and fixes — with reference photos.</p>
-          <div class="tool-card-arrow">Browse database →</div>
-        </a>
-
+    <!-- ── FEATURED TOOLS ── -->
+    <section class="home-section">
+      <div class="home-section-header">
+        <div class="home-section-title">Popular Tools</div>
+        <a href="tools.html" class="home-section-link">View all →</a>
       </div>
+      <div class="home-featured-grid">
 
-      <!-- Calibration -->
-      <div class="tool-category-label">Calibration</div>
-      <div class="tool-grid">
-
-        <a href="esteps.html" class="tool-card">
-          <div class="tool-card-tag">Calculator</div>
-          <h3>E-steps Calculator</h3>
-          <p>Measure your actual extruded length and get the corrected steps/mm value for your extruder motor.</p>
-          <div class="tool-card-arrow">Use tool →</div>
+        <a href="diagnosis.html" class="home-featured-card">
+          <div class="home-featured-icon">&#128270;</div>
+          <div class="home-featured-body">
+            <div class="home-featured-name">Print Diagnosis</div>
+            <div class="home-featured-desc">Select your symptom and settings — get ranked causes and specific fixes for your exact problem.</div>
+          </div>
+          <div class="home-featured-arrow">→</div>
         </a>
 
-        <a href="flow-rate.html" class="tool-card">
-          <div class="tool-card-tag">Calculator</div>
-          <h3>Flow Rate Calculator</h3>
-          <p>Fine-tune your extrusion multiplier using a single-wall test cube measurement for accurate walls and infill.</p>
-          <div class="tool-card-arrow">Use tool →</div>
+        <a href="esteps.html" class="home-featured-card">
+          <div class="home-featured-icon">&#9881;</div>
+          <div class="home-featured-body">
+            <div class="home-featured-name">E-Steps Calculator</div>
+            <div class="home-featured-desc">Measure your actual extruded filament and get a corrected steps/mm value in seconds.</div>
+          </div>
+          <div class="home-featured-arrow">→</div>
         </a>
 
-        <a href="temp-tower.html" class="tool-card">
-          <div class="tool-card-tag">Analyzer</div>
-          <h3>Temperature Tower Analyzer</h3>
-          <p>Describe your temp tower results and get a suggested ideal temperature for your filament and printer combo.</p>
-          <div class="tool-card-arrow">Use tool →</div>
+        <a href="settings-cheat.html" class="home-featured-card">
+          <div class="home-featured-icon">&#128210;</div>
+          <div class="home-featured-body">
+            <div class="home-featured-name">Settings Cheat Sheet</div>
+            <div class="home-featured-desc">Recommended temps, speeds, and retraction for every common filament — one quick reference.</div>
+          </div>
+          <div class="home-featured-arrow">→</div>
         </a>
 
-        <a href="retraction-tool.html" class="tool-card">
-          <div class="tool-card-tag">Tool</div>
-          <h3>Retraction Test Tool</h3>
-          <p>Dial in retraction distance and speed settings to eliminate stringing and blobs from your prints.</p>
-          <div class="tool-card-arrow">Use tool →</div>
+        <a href="flow-rate.html" class="home-featured-card">
+          <div class="home-featured-icon">&#128200;</div>
+          <div class="home-featured-body">
+            <div class="home-featured-name">Flow Rate Calculator</div>
+            <div class="home-featured-desc">Single-wall cube measurement → corrected extrusion multiplier. The fastest way to fix over/under extrusion.</div>
+          </div>
+          <div class="home-featured-arrow">→</div>
         </a>
 
-        <a href="pressure-advance.html" class="tool-card">
-          <div class="tool-card-tag">Calculator</div>
-          <h3>Pressure Advance / K-factor</h3>
-          <p>Tune Pressure Advance (Klipper) or Linear Advance (Marlin) for sharper corners and cleaner line starts.</p>
-          <div class="tool-card-arrow">Use tool →</div>
-        </a>
-
-        <a href="max-flow.html" class="tool-card">
-          <div class="tool-card-tag">Calculator</div>
-          <h3>Max Volumetric Flow Calculator</h3>
-          <p>Find the highest safe print speed your hotend can handle before under-extrusion sets in. Input nozzle size, layer height, and material.</p>
-          <div class="tool-card-arrow">Use tool →</div>
-        </a>
-
-      </div>
-
-      <!-- Print Preparation & Estimation -->
-      <div class="tool-category-label">Print Preparation &amp; Estimation</div>
-      <div class="tool-grid">
-
-        <a href="print-time.html" class="tool-card">
-          <div class="tool-card-tag">Estimator</div>
-          <h3>Print Time Estimator</h3>
-          <p>Upload your G-code file for a more accurate time estimate — factors in acceleration overhead, travel moves, and layer count.</p>
-          <div class="tool-card-arrow">Use tool →</div>
-        </a>
-
-        <a href="layer-height.html" class="tool-card">
-          <div class="tool-card-tag">Calculator</div>
-          <h3>Layer Height Optimizer</h3>
-          <p>Find "magic number" layer heights for your leadscrew pitch to minimize Z-wobble and banding artifacts.</p>
-          <div class="tool-card-arrow">Use tool →</div>
-        </a>
-
-        <a href="infill-optimizer.html" class="tool-card">
-          <div class="tool-card-tag">Tool</div>
-          <h3>Support &amp; Infill Optimizer</h3>
-          <p>Get recommendations for minimal support settings and infill patterns balanced for strength vs. material savings.</p>
-          <div class="tool-card-arrow">Use tool →</div>
-        </a>
-
-      </div>
-
-      <!-- Model & File -->
-      <div class="tool-category-label">Model &amp; File</div>
-      <div class="tool-grid">
-
-        <a href="stl-analyzer.html" class="tool-card">
-          <div class="tool-card-tag">Tool</div>
-          <h3>STL Analyzer &amp; Repair</h3>
-          <p>Upload an STL to detect non-manifold edges, inverted normals, and holes — with one-click repair suggestions.</p>
-          <div class="tool-card-arrow">Use tool →</div>
-        </a>
-
-        <a href="wall-checker.html" class="tool-card">
-          <div class="tool-card-tag">Analyzer</div>
-          <h3>Wall Thickness Checker</h3>
-          <p>Scan a model for walls too thin to print reliably with your nozzle diameter before you waste a print.</p>
-          <div class="tool-card-arrow">Use tool →</div>
-        </a>
-
-        <a href="orientation-calc.html" class="tool-card">
-          <div class="tool-card-tag">Tool</div>
-          <h3>Model Orientation Calculator</h3>
-          <p>Find the optimal print orientation to minimize supports, maximize part strength, or fit your build plate.</p>
-          <div class="tool-card-arrow">Use tool →</div>
-        </a>
-
-      </div>
-
-      <!-- Material & Hardware -->
-      <div class="tool-category-label">Material &amp; Hardware</div>
-      <div class="tool-grid">
-
-        <a href="filament-cost.html" class="tool-card">
-          <div class="tool-card-tag">Calculator</div>
-          <h3>Filament Cost Calculator</h3>
-          <p>Figure out exactly how much each print costs based on spool price, weight, and estimated print usage.</p>
-          <div class="tool-card-arrow">Use tool →</div>
-        </a>
-
-        <a href="settings-cheat.html" class="tool-card">
-          <div class="tool-card-tag">Reference</div>
-          <h3>Settings Cheat Sheet</h3>
-          <p>Recommended temperature, speed, and retraction settings for PLA, PETG, ABS, ASA, TPU, and more.</p>
-          <div class="tool-card-arrow">View reference →</div>
-        </a>
-
-        <a href="drying-guide.html" class="tool-card">
-          <div class="tool-card-tag">Reference</div>
-          <h3>Filament Drying Guide &amp; Timer</h3>
-          <p>Material-specific drying temperatures, humidity targets, and a built-in countdown timer to dry your filament right.</p>
-          <div class="tool-card-arrow">Use tool →</div>
-        </a>
-
-        <a href="nozzle-compat.html" class="tool-card">
-          <div class="tool-card-tag">Reference</div>
-          <h3>Nozzle &amp; Hotend Compatibility</h3>
-          <p>Check nozzle compatibility for your hotend and see max flow rates and abrasion-resistant options for filled filaments.</p>
-          <div class="tool-card-arrow">View reference →</div>
-        </a>
-
-        <a href="spool-estimator.html" class="tool-card">
-          <div class="tool-card-tag">Calculator</div>
-          <h3>Spool Weight Estimator</h3>
-          <p>Weigh your spool on a scale to calculate remaining filament length and estimated print time left on the roll.</p>
-          <div class="tool-card-arrow">Use tool →</div>
-        </a>
-
-        <a href="diameter-variance.html" class="tool-card">
-          <div class="tool-card-tag">Tool</div>
-          <h3>Filament Diameter Variance</h3>
-          <p>Log multiple diameter measurements across your spool and get flow compensation suggestions for inconsistent filament.</p>
-          <div class="tool-card-arrow">Use tool →</div>
-        </a>
-
-      </div>
-
-      <!-- Advanced -->
-      <div class="tool-category-label">Advanced</div>
-      <div class="tool-grid">
-
-        <a href="gcode-viewer.html" class="tool-card">
-          <div class="tool-card-tag">Tool</div>
-          <h3>G-code Viewer &amp; Simulator</h3>
-          <p>Visualize your sliced G-code, simulate the print path layer by layer, and spot potential issues before printing.</p>
-          <div class="tool-card-arrow">Use tool →</div>
-        </a>
-
-        <a href="test-print-gen.html" class="tool-card">
-          <div class="tool-card-tag">Generator</div>
-          <h3>Custom Test Print Generator</h3>
-          <p>Create tailored calibration prints — stringing towers, tolerance tests, overhang benchmarks — tuned to your exact setup.</p>
-          <div class="tool-card-arrow">Use tool →</div>
-        </a>
-
-        <a href="firmware-compare.html" class="tool-card">
-          <div class="tool-card-tag">Tool</div>
-          <h3>Firmware Settings Compare</h3>
-          <p>Compare Marlin or Klipper config files side by side, or generate recommended start/end G-code snippets for your printer.</p>
-          <div class="tool-card-arrow">Use tool →</div>
-        </a>
-
-        <a href="ams-planner.html" class="tool-card">
-          <div class="tool-card-tag">Tool</div>
-          <h3>Multi-Material / AMS Planner</h3>
-          <p>Plan purge volumes, color order, and waste minimization for multi-filament and AMS setups.</p>
-          <div class="tool-card-arrow">Use tool →</div>
-        </a>
-
-        <a href="slicer-profile.html" class="tool-card">
-          <div class="tool-card-tag">Generator</div>
-          <h3>Slicer Profile Generator</h3>
-          <p>Input your printer model and filament type and get a starter slicer profile for Cura, PrusaSlicer, or OrcaSlicer.</p>
-          <div class="tool-card-arrow">Use tool →</div>
-        </a>
-
-        <a href="ai-chat.html" class="tool-card">
-          <div class="tool-card-tag">Reference</div>
-          <h3>3D Printing FAQ</h3>
-          <p>Quick answers to print questions, tied into the diagnosis tool for guided troubleshooting without the guesswork.</p>
-          <div class="tool-card-arrow">Browse FAQ →</div>
-        </a>
-
-      </div>
-
-      <!-- Models -->
-      <div class="tool-category-label">Models</div>
-      <div class="tool-grid">
-
-        <a href="models.html" class="tool-card">
-          <div class="tool-card-tag">Models</div>
-          <h3>Test Print Library</h3>
-          <p>Free curated STLs for calibration — temp towers, retraction towers, overhang tests, stringing benchmarks, and more.</p>
-          <div class="tool-card-arrow">Browse models →</div>
-        </a>
-
-        <a href="models.html" class="tool-card">
-          <div class="tool-card-tag">Models</div>
-          <h3>Print-in-Place Models</h3>
-          <p>Beginner-friendly articulated models that print fully assembled — no supports, no post-processing, just peel and play.</p>
-          <div class="tool-card-arrow">Browse models →</div>
-        </a>
-
-      </div>
-
-    </section>
-
-    <!-- Ad placeholder — medium rectangle -->
-    <section class="section" style="border-top: none; padding-top: 0;">
-      <div class="ad-placeholder">
-        <div class="ad-label">Advertisement</div>
-        <div class="ad-size">300 × 250 — Medium Rectangle</div>
       </div>
     </section>
+
+    <!-- ── CATEGORY GRID ── -->
+    <section class="home-section">
+      <div class="home-section-header">
+        <div class="home-section-title">Browse by Category</div>
+        <a href="tools.html" class="home-section-link">See all →</a>
+      </div>
+      <div class="home-cat-grid">
+
+        <a href="tools.html#tools" class="home-cat-card">
+          <div class="home-cat-icon">&#128269;</div>
+          <div class="home-cat-name">Diagnostic</div>
+          <div class="home-cat-count">2 tools</div>
+          <div class="home-cat-desc">Identify and fix print failures fast</div>
+        </a>
+
+        <a href="tools.html#tools" class="home-cat-card">
+          <div class="home-cat-icon">&#127919;</div>
+          <div class="home-cat-name">Calibration</div>
+          <div class="home-cat-count">6 tools</div>
+          <div class="home-cat-desc">Dial in E-steps, flow, temp, retraction</div>
+        </a>
+
+        <a href="tools.html#tools" class="home-cat-card">
+          <div class="home-cat-icon">&#9202;</div>
+          <div class="home-cat-name">Print Prep</div>
+          <div class="home-cat-count">3 tools</div>
+          <div class="home-cat-desc">Estimate time, layer height, infill</div>
+        </a>
+
+        <a href="tools.html#tools" class="home-cat-card">
+          <div class="home-cat-icon">&#128196;</div>
+          <div class="home-cat-name">Model &amp; File</div>
+          <div class="home-cat-count">3 tools</div>
+          <div class="home-cat-desc">Analyze STLs, check walls, orient parts</div>
+        </a>
+
+        <a href="tools.html#tools" class="home-cat-card">
+          <div class="home-cat-icon">&#129520;</div>
+          <div class="home-cat-name">Material &amp; Hardware</div>
+          <div class="home-cat-count">6 tools</div>
+          <div class="home-cat-desc">Cost, drying, nozzle compat, spool weight</div>
+        </a>
+
+        <a href="tools.html#tools" class="home-cat-card">
+          <div class="home-cat-icon">&#9881;</div>
+          <div class="home-cat-name">Advanced</div>
+          <div class="home-cat-count">6 tools</div>
+          <div class="home-cat-desc">G-code viewer, firmware compare, AMS planner</div>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- ── VALUE PROP ── -->
+    <section class="home-value">
+      <div class="home-value-inner">
+        <div class="home-value-text">
+          <div class="home-section-title" style="margin-bottom: 0.75rem;">Built by a maker, for makers</div>
+          <p>
+            I'm Jake — an engineer and maker who has spent way too many hours troubleshooting bad prints.
+            Every tool here was built because I needed it myself. No fluff, no signups, no paywalls.
+            Just useful stuff that runs entirely in your browser.
+          </p>
+          <div style="margin-top: 1.5rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+            <a href="diagnosis.html" class="btn">Start with Print Diagnosis</a>
+            <a href="about.html" class="btn btn-outline">About the project</a>
+          </div>
+        </div>
+        <div class="home-value-bullets">
+          <div class="home-bullet">
+            <div class="home-bullet-icon">&#10003;</div>
+            <div>No data sent to any server — everything runs locally in your browser</div>
+          </div>
+          <div class="home-bullet">
+            <div class="home-bullet-icon">&#10003;</div>
+            <div>No account, no login, no email required</div>
+          </div>
+          <div class="home-bullet">
+            <div class="home-bullet-icon">&#10003;</div>
+            <div>Works on desktop and mobile</div>
+          </div>
+          <div class="home-bullet">
+            <div class="home-bullet-icon">&#10003;</div>
+            <div>28 tools across 6 categories — more added regularly</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Ad placeholder -->
+    <div class="ad-placeholder" style="margin: 2rem auto 3rem; max-width: 740px;">
+      <div class="ad-label">Advertisement</div>
+      <div class="ad-size">300 × 250 — Medium Rectangle</div>
+    </div>
 
   </main>
 
