@@ -373,9 +373,15 @@ a.tool-card:hover {
 }
 
 .printer-nav svg {
-  max-height: 280px;
   width: 100%;
+  display: block;
 }
+
+/* Callout labels brighten when their part is hovered */
+.printer-part:hover .callout-name { fill: var(--accent-bright); }
+.printer-part:hover .callout-cat  { fill: var(--accent-bright); opacity: 0.85; }
+.printer-part:hover .callout-connector { stroke: var(--accent-dim); }
+.printer-part:hover .callout-dot  { fill: var(--accent); }
 
 .printer-part {
   cursor: pointer;
