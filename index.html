@@ -6,6 +6,7 @@
   <title>Rapid Elevation — Free 3D Printing Tools</title>
   <meta name="description" content="Free 3D printing tools and resources built by a maker, for makers. Diagnose print failures, calculate costs, and level up your prints.">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="motion.css">
 </head>
 <body>
 
@@ -74,8 +75,11 @@
 
     <!-- ── HERO ── -->
     <section class="home-hero">
+      <div class="hero-scanline"></div>
+      <canvas id="buildPlateCanvas" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:0.72;"></canvas>
       <div class="home-hero-glow"></div>
       <div class="home-hero-content">
+        <div class="hero-ambient-dot">System Ready</div>
         <p class="hero-eyebrow">Free 3D Printing Tools &amp; Resources</p>
         <h1 class="home-h1">Better prints,<br><span class="h1-accent">fewer headaches.</span></h1>
         <p class="home-hero-sub">
@@ -107,14 +111,14 @@
     </div>
 
     <!-- ── FEATURED TOOLS ── -->
-    <section class="home-section">
+    <section class="home-section reveal">
       <div class="home-section-header">
-        <div class="home-section-title">Popular Tools</div>
+        <div class="home-section-title layer-wipe">Popular Tools</div>
         <a href="tools.html" class="home-section-link">View all →</a>
       </div>
-      <div class="home-featured-grid">
+      <div class="home-featured-grid reveal-stagger">
 
-        <a href="diagnosis.html" class="home-featured-card">
+        <a href="diagnosis.html" class="home-featured-card card-depth">
           <div class="home-featured-icon">&#128270;</div>
           <div class="home-featured-body">
             <div class="home-featured-name">Print Diagnosis</div>
@@ -123,7 +127,7 @@
           <div class="home-featured-arrow">→</div>
         </a>
 
-        <a href="esteps.html" class="home-featured-card">
+        <a href="esteps.html" class="home-featured-card card-depth">
           <div class="home-featured-icon">&#9881;</div>
           <div class="home-featured-body">
             <div class="home-featured-name">E-Steps Calculator</div>
@@ -132,7 +136,7 @@
           <div class="home-featured-arrow">→</div>
         </a>
 
-        <a href="settings-cheat.html" class="home-featured-card">
+        <a href="settings-cheat.html" class="home-featured-card card-depth">
           <div class="home-featured-icon">&#128210;</div>
           <div class="home-featured-body">
             <div class="home-featured-name">Settings Cheat Sheet</div>
@@ -141,7 +145,7 @@
           <div class="home-featured-arrow">→</div>
         </a>
 
-        <a href="flow-rate.html" class="home-featured-card">
+        <a href="flow-rate.html" class="home-featured-card card-depth">
           <div class="home-featured-icon">&#128200;</div>
           <div class="home-featured-body">
             <div class="home-featured-name">Flow Rate Calculator</div>
@@ -154,49 +158,49 @@
     </section>
 
     <!-- ── CATEGORY GRID ── -->
-    <section class="home-section">
+    <section class="home-section reveal">
       <div class="home-section-header">
-        <div class="home-section-title">Browse by Category</div>
+        <div class="home-section-title layer-wipe">Browse by Category</div>
         <a href="tools.html" class="home-section-link">See all →</a>
       </div>
-      <div class="home-cat-grid">
+      <div class="home-cat-grid reveal-stagger">
 
-        <a href="tools.html#tools" class="home-cat-card">
+        <a href="tools.html#tools" class="home-cat-card card-depth">
           <div class="home-cat-icon">&#128269;</div>
           <div class="home-cat-name">Diagnostic</div>
           <div class="home-cat-count">2 tools</div>
           <div class="home-cat-desc">Identify and fix print failures fast</div>
         </a>
 
-        <a href="tools.html#tools" class="home-cat-card">
+        <a href="tools.html#tools" class="home-cat-card card-depth">
           <div class="home-cat-icon">&#127919;</div>
           <div class="home-cat-name">Calibration</div>
           <div class="home-cat-count">6 tools</div>
           <div class="home-cat-desc">Dial in E-steps, flow, temp, retraction</div>
         </a>
 
-        <a href="tools.html#tools" class="home-cat-card">
+        <a href="tools.html#tools" class="home-cat-card card-depth">
           <div class="home-cat-icon">&#9202;</div>
           <div class="home-cat-name">Print Prep</div>
           <div class="home-cat-count">3 tools</div>
           <div class="home-cat-desc">Estimate time, layer height, infill</div>
         </a>
 
-        <a href="tools.html#tools" class="home-cat-card">
+        <a href="tools.html#tools" class="home-cat-card card-depth">
           <div class="home-cat-icon">&#128196;</div>
           <div class="home-cat-name">Model &amp; File</div>
           <div class="home-cat-count">3 tools</div>
           <div class="home-cat-desc">Analyze STLs, check walls, orient parts</div>
         </a>
 
-        <a href="tools.html#tools" class="home-cat-card">
+        <a href="tools.html#tools" class="home-cat-card card-depth">
           <div class="home-cat-icon">&#129520;</div>
           <div class="home-cat-name">Material &amp; Hardware</div>
           <div class="home-cat-count">6 tools</div>
           <div class="home-cat-desc">Cost, drying, nozzle compat, spool weight</div>
         </a>
 
-        <a href="tools.html#tools" class="home-cat-card">
+        <a href="tools.html#tools" class="home-cat-card card-depth">
           <div class="home-cat-icon">&#9881;</div>
           <div class="home-cat-name">Advanced</div>
           <div class="home-cat-count">6 tools</div>
@@ -207,10 +211,10 @@
     </section>
 
     <!-- ── VALUE PROP ── -->
-    <section class="home-value">
+    <section class="home-value reveal">
       <div class="home-value-inner">
         <div class="home-value-text">
-          <div class="home-section-title" style="margin-bottom: 0.75rem;">Built by a maker, for makers</div>
+          <div class="home-section-title layer-wipe" style="margin-bottom: 0.75rem;">Built by a maker, for makers</div>
           <p>
             I'm Jake — an engineer and maker who has spent way too many hours troubleshooting bad prints.
             Every tool here was built because I needed it myself. No fluff, no signups, no paywalls.
@@ -255,5 +259,254 @@
   </footer>
 
   <script src="nav.js"></script>
+  <script src="motion.js"></script>
+  <script>
+  /* ── BUILD PLATE CANVAS ANIMATION (homepage only) ── */
+  (function () {
+    var canvas = document.getElementById('buildPlateCanvas');
+    if (!canvas) return;
+    var ctx = canvas.getContext('2d');
+    var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // CSS variable helpers
+    var style = getComputedStyle(document.documentElement);
+    var C_BG      = '#080d18';
+    var C_GRID    = 'rgba(30, 48, 72, 0.5)';
+    var C_ACCENT  = '#5b9bd5';
+    var C_BRIGHT  = '#89c4f4';
+    var C_DIM     = '#3a6e9e';
+
+    function resize() {
+      var hero = canvas.parentElement;
+      canvas.width  = hero.offsetWidth;
+      canvas.height = hero.offsetHeight;
+    }
+    resize();
+    window.addEventListener('resize', function () { resize(); drawStatic(); }, { passive: true });
+
+    // ── Grid helpers (isometric perspective foreshortening) ──
+    function toScreen(gx, gy, W, H) {
+      // Isometric-ish projection centered low
+      var originX = W / 2;
+      var originY = H * 0.78;
+      var tileW = Math.min(W, H) * 0.048;
+      var tileH = tileW * 0.5;
+      var sx = originX + (gx - gy) * tileW;
+      var sy = originY + (gx + gy) * tileH;
+      return { x: sx, y: sy };
+    }
+
+    var GRID_SIZE = 9;
+
+    function drawGrid(alpha) {
+      var W = canvas.width, H = canvas.height;
+      ctx.save();
+      ctx.globalAlpha = alpha || 1;
+      ctx.strokeStyle = C_GRID;
+      ctx.lineWidth = 0.8;
+      // Draw grid lines
+      for (var i = 0; i <= GRID_SIZE; i++) {
+        var a = toScreen(i, 0, W, H);
+        var b = toScreen(i, GRID_SIZE, W, H);
+        ctx.beginPath();
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(b.x, b.y);
+        ctx.stroke();
+
+        var c = toScreen(0, i, W, H);
+        var d = toScreen(GRID_SIZE, i, W, H);
+        ctx.beginPath();
+        ctx.moveTo(c.x, c.y);
+        ctx.lineTo(d.x, d.y);
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+
+    // Cube voxel at grid position
+    function drawCubeLayer(gx, gy, layer, totalLayers, activeGlow) {
+      var W = canvas.width, H = canvas.height;
+      var tileW = Math.min(W, H) * 0.048;
+      var tileH = tileW * 0.5;
+      var liftY = tileH * 1.8 * layer;
+
+      var bl = toScreen(gx,     gy + 1, W, H);
+      var br = toScreen(gx + 1, gy + 1, W, H);
+      var tr = toScreen(gx + 1, gy,     W, H);
+      var tl = toScreen(gx,     gy,     W, H);
+
+      // lift each point by layer height
+      function lift(p) { return { x: p.x, y: p.y - liftY }; }
+      var BL = lift(bl), BR = lift(br), TR = lift(tr), TL = lift(tl);
+      var TOPBL = { x: BL.x, y: BL.y - tileH * 1.8 };
+      var TOPBR = { x: BR.x, y: BR.y - tileH * 1.8 };
+      var TOPTR = { x: TR.x, y: TR.y - tileH * 1.8 };
+      var TOPTL = { x: TL.x, y: TL.y - tileH * 1.8 };
+
+      ctx.save();
+
+      var isActive = activeGlow;
+      var baseAlpha = activeGlow ? 1 : 0.85;
+
+      // Left face
+      ctx.beginPath();
+      ctx.moveTo(BL.x, BL.y);
+      ctx.lineTo(TL.x, TL.y);
+      ctx.lineTo(TOPTL.x, TOPTL.y);
+      ctx.lineTo(TOPBL.x, TOPBL.y);
+      ctx.closePath();
+      ctx.fillStyle = isActive
+        ? 'rgba(58,110,158,0.8)'
+        : 'rgba(17,28,45,0.9)';
+      ctx.fill();
+      ctx.strokeStyle = isActive ? C_ACCENT : C_DIM;
+      ctx.lineWidth = 0.8;
+      ctx.stroke();
+
+      // Right face
+      ctx.beginPath();
+      ctx.moveTo(BR.x, BR.y);
+      ctx.lineTo(TR.x, TR.y);
+      ctx.lineTo(TOPTR.x, TOPTR.y);
+      ctx.lineTo(TOPBR.x, TOPBR.y);
+      ctx.closePath();
+      ctx.fillStyle = isActive
+        ? 'rgba(40,80,130,0.8)'
+        : 'rgba(13,21,37,0.9)';
+      ctx.fill();
+      ctx.strokeStyle = isActive ? C_ACCENT : C_DIM;
+      ctx.stroke();
+
+      // Top face
+      ctx.beginPath();
+      ctx.moveTo(TOPBL.x, TOPBL.y);
+      ctx.lineTo(TOPTL.x, TOPTL.y);
+      ctx.lineTo(TOPTR.x, TOPTR.y);
+      ctx.lineTo(TOPBR.x, TOPBR.y);
+      ctx.closePath();
+      if (isActive) {
+        var grad = ctx.createLinearGradient(TOPTL.x, TOPTL.y, TOPBR.x, TOPBR.y);
+        grad.addColorStop(0, 'rgba(137,196,244,0.9)');
+        grad.addColorStop(1, 'rgba(91,155,213,0.7)');
+        ctx.fillStyle = grad;
+      } else {
+        ctx.fillStyle = 'rgba(22,34,53,0.9)';
+      }
+      ctx.fill();
+      ctx.strokeStyle = isActive ? C_BRIGHT : C_DIM;
+      ctx.lineWidth = isActive ? 1.2 : 0.8;
+      ctx.stroke();
+
+      if (isActive) {
+        ctx.shadowColor = C_BRIGHT;
+        ctx.shadowBlur = 14;
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+      }
+
+      ctx.restore();
+    }
+
+    var CUBE_GX = 3.5, CUBE_GY = 3.5;
+    var CUBE_LAYERS = 8;
+
+    function drawStaticCube() {
+      for (var l = 0; l < CUBE_LAYERS; l++) {
+        drawCubeLayer(CUBE_GX, CUBE_GY, l, CUBE_LAYERS, false);
+      }
+    }
+
+    function drawStatic() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawGrid(0.6);
+      drawStaticCube();
+    }
+
+    if (prefersReduced) {
+      drawStatic();
+      return;
+    }
+
+    // Animated version
+    var animLayer = 0;
+    var animPhase = 'building'; // 'building' | 'idle'
+    var sweepX = null;
+    var startTime = null;
+    var LAYER_DURATION = 280;  // ms per layer
+    var idleBreath = 0;
+
+    function draw(ts) {
+      if (!startTime) startTime = ts;
+      var elapsed = ts - startTime;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawGrid(0.55);
+
+      if (animPhase === 'building') {
+        var layerProgress = elapsed / LAYER_DURATION;
+        var currentLayer = Math.floor(layerProgress);
+        var fracLayer = layerProgress - currentLayer;
+
+        if (currentLayer >= CUBE_LAYERS) {
+          animPhase = 'idle';
+        } else {
+          animLayer = currentLayer;
+          sweepX = fracLayer; // 0..1 progress of sweep across this layer
+        }
+
+        // Draw completed layers
+        for (var l = 0; l < animLayer; l++) {
+          drawCubeLayer(CUBE_GX, CUBE_GY, l, CUBE_LAYERS, false);
+        }
+        // Draw active layer with glow
+        if (animLayer < CUBE_LAYERS) {
+          drawCubeLayer(CUBE_GX, CUBE_GY, animLayer, CUBE_LAYERS, true);
+          // Draw sweep line
+          var W = canvas.width, H = canvas.height;
+          var tileW = Math.min(W, H) * 0.048;
+          var tileH = tileW * 0.5;
+          var liftY = tileH * 1.8 * animLayer;
+          var p0 = toScreen(CUBE_GX,     CUBE_GY + 1, W, H);
+          var p1 = toScreen(CUBE_GX + 1, CUBE_GY,     W, H);
+          var sx0 = p0.x + (p1.x - p0.x) * sweepX - (p1.x - p0.x) * 0.3;
+          var sx1 = p0.x + (p1.x - p0.x) * sweepX + (p1.x - p0.x) * 0.3;
+          var sy  = (p0.y + p1.y) / 2 - liftY - tileH * 1.8;
+          ctx.save();
+          var sweepGrad = ctx.createLinearGradient(sx0, sy, sx1, sy);
+          sweepGrad.addColorStop(0, 'transparent');
+          sweepGrad.addColorStop(0.5, C_BRIGHT);
+          sweepGrad.addColorStop(1, 'transparent');
+          ctx.strokeStyle = sweepGrad;
+          ctx.lineWidth = 2;
+          ctx.shadowColor = C_BRIGHT;
+          ctx.shadowBlur = 8;
+          ctx.beginPath();
+          ctx.moveTo(sx0, sy);
+          ctx.lineTo(sx1, sy);
+          ctx.stroke();
+          ctx.restore();
+        }
+      } else {
+        // Idle — draw complete cube with breathing glow on top
+        idleBreath += 0.025;
+        var breathAlpha = 0.55 + Math.sin(idleBreath) * 0.2;
+        for (var ll = 0; ll < CUBE_LAYERS - 1; ll++) {
+          drawCubeLayer(CUBE_GX, CUBE_GY, ll, CUBE_LAYERS, false);
+        }
+        // Top layer with breath
+        ctx.save();
+        ctx.globalAlpha = breathAlpha;
+        drawCubeLayer(CUBE_GX, CUBE_GY, CUBE_LAYERS - 1, CUBE_LAYERS, true);
+        ctx.restore();
+      }
+
+      requestAnimationFrame(draw);
+    }
+
+    // Start after short delay so page is settled
+    setTimeout(function () {
+      requestAnimationFrame(draw);
+    }, 350);
+  })();
+  </script>
 </body>
 </html>

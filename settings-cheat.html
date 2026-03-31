@@ -6,6 +6,53 @@
   <title>Settings Cheat Sheet — Rapid Elevation</title>
   <meta name="description" content="Recommended nozzle temperature, bed temperature, print speed, retraction, and cooling settings for PLA, PETG, ABS, ASA, TPU, Nylon, and PC.">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="motion.css">
+  <style>
+    /* ── Per-material CSS variable definitions ── */
+    [data-material="pla"]   { --mat-color: #5bc8f5; --mat-glow: rgba(91,200,245,0.12);  --mat-desc: "Best for beginners"; }
+    [data-material="petg"]  { --mat-color: #a78bfa; --mat-glow: rgba(167,139,250,0.12); --mat-desc: "Moisture-sensitive"; }
+    [data-material="abs"]   { --mat-color: #fb923c; --mat-glow: rgba(251,146,60,0.10);  --mat-desc: "Needs enclosure"; }
+    [data-material="asa"]   { --mat-color: #a3e635; --mat-glow: rgba(163,230,53,0.10);  --mat-desc: "UV-resistant outdoor"; }
+    [data-material="tpu"]   { --mat-color: #f472b6; --mat-glow: rgba(244,114,182,0.10); --mat-desc: "Flexible / elastic"; }
+    [data-material="nylon"] { --mat-color: #94a3b8; --mat-glow: rgba(148,163,184,0.08); --mat-desc: "Engineering-grade"; }
+    [data-material="pc"]    { --mat-color: #f59e0b; --mat-glow: rgba(245,158,11,0.10);  --mat-desc: "High-performance"; }
+
+    /* Tab dot colors */
+    button[data-mat="pla"]   { --mat-tab-color: #5bc8f5; }
+    button[data-mat="petg"]  { --mat-tab-color: #a78bfa; }
+    button[data-mat="abs"]   { --mat-tab-color: #fb923c; }
+    button[data-mat="asa"]   { --mat-tab-color: #a3e635; }
+    button[data-mat="tpu"]   { --mat-tab-color: #f472b6; }
+    button[data-mat="nylon"] { --mat-tab-color: #94a3b8; }
+    button[data-mat="pc"]    { --mat-tab-color: #f59e0b; }
+
+    .mat-tab.active {
+      border-color: var(--mat-tab-color, var(--accent)) !important;
+      color: var(--mat-tab-color, var(--accent-bright)) !important;
+      background: color-mix(in srgb, var(--mat-tab-color, var(--accent)) 10%, transparent) !important;
+    }
+
+    /* Swatch colors per material */
+    #panel-pla   .mat-swatch { --mat-color: #5bc8f5; --mat-glow: rgba(91,200,245,0.12); }
+    #panel-petg  .mat-swatch { --mat-color: #a78bfa; --mat-glow: rgba(167,139,250,0.12); }
+    #panel-abs   .mat-swatch { --mat-color: #fb923c; --mat-glow: rgba(251,146,60,0.10); }
+    #panel-asa   .mat-swatch { --mat-color: #a3e635; --mat-glow: rgba(163,230,53,0.10); }
+    #panel-tpu   .mat-swatch { --mat-color: #f472b6; --mat-glow: rgba(244,114,182,0.10); }
+    #panel-nylon .mat-swatch { --mat-color: #94a3b8; --mat-glow: rgba(148,163,184,0.08); }
+    #panel-pc    .mat-swatch { --mat-color: #f59e0b; --mat-glow: rgba(245,158,11,0.10); }
+
+    /* Active panel border tint */
+    #panel-pla.active   { --mat-color: #5bc8f5; --mat-glow: rgba(91,200,245,0.07); }
+    #panel-petg.active  { --mat-color: #a78bfa; --mat-glow: rgba(167,139,250,0.07); }
+    #panel-abs.active   { --mat-color: #fb923c; --mat-glow: rgba(251,146,60,0.07); }
+    #panel-asa.active   { --mat-color: #a3e635; --mat-glow: rgba(163,230,53,0.07); }
+    #panel-tpu.active   { --mat-color: #f472b6; --mat-glow: rgba(244,114,182,0.07); }
+    #panel-nylon.active { --mat-color: #94a3b8; --mat-glow: rgba(148,163,184,0.06); }
+    #panel-pc.active    { --mat-color: #f59e0b; --mat-glow: rgba(245,158,11,0.07); }
+
+    /* Fallback for browsers without color-mix */
+    .mat-tab.active { background: rgba(91, 155, 213, 0.08); }
+  </style>
 </head>
 <body>
 
@@ -72,7 +119,7 @@
 
   <main>
 
-    <div class="page-header">
+    <div class="page-header reveal">
       <h1>Settings Cheat Sheet</h1>
       <p>Quick-reference starting points for the most common filament materials. These are tuned ranges — your ideal settings may vary by brand and printer. Use these as a baseline and dial in from there.</p>
     </div>
@@ -84,17 +131,24 @@
 
     <!-- Material tabs -->
     <div class="mat-tabs" id="matTabs">
-      <button class="mat-tab active" data-mat="pla">PLA</button>
-      <button class="mat-tab" data-mat="petg">PETG</button>
-      <button class="mat-tab" data-mat="abs">ABS</button>
-      <button class="mat-tab" data-mat="asa">ASA</button>
-      <button class="mat-tab" data-mat="tpu">TPU</button>
-      <button class="mat-tab" data-mat="nylon">Nylon</button>
-      <button class="mat-tab" data-mat="pc">PC</button>
+      <button class="mat-tab active" data-mat="pla" data-material="pla"><span class="mat-tab-dot" style="--mat-tab-color:#5bc8f5;"></span>PLA</button>
+      <button class="mat-tab" data-mat="petg" data-material="petg"><span class="mat-tab-dot" style="--mat-tab-color:#a78bfa;"></span>PETG</button>
+      <button class="mat-tab" data-mat="abs" data-material="abs"><span class="mat-tab-dot" style="--mat-tab-color:#fb923c;"></span>ABS</button>
+      <button class="mat-tab" data-mat="asa" data-material="asa"><span class="mat-tab-dot" style="--mat-tab-color:#a3e635;"></span>ASA</button>
+      <button class="mat-tab" data-mat="tpu" data-material="tpu"><span class="mat-tab-dot" style="--mat-tab-color:#f472b6;"></span>TPU</button>
+      <button class="mat-tab" data-mat="nylon" data-material="nylon"><span class="mat-tab-dot" style="--mat-tab-color:#94a3b8;"></span>Nylon</button>
+      <button class="mat-tab" data-mat="pc" data-material="pc"><span class="mat-tab-dot" style="--mat-tab-color:#f59e0b;"></span>PC</button>
     </div>
 
     <!-- PLA -->
-    <div class="cheat-panel active" id="panel-pla">
+    <div class="cheat-panel active" id="panel-pla" data-material="pla">
+      <div class="mat-swatch">
+        <div class="mat-swatch-color" style="background:#5bc8f5;box-shadow:0 0 8px rgba(91,200,245,0.5);"></div>
+        <div>
+          <div class="mat-swatch-name">PLA</div>
+          <div class="mat-swatch-desc">Best for beginners — easy to print, great detail</div>
+        </div>
+      </div>
       <div class="cheat-row"><span class="cheat-label">Nozzle Temp</span><span class="cheat-value"><strong>190–220°C</strong> — typical sweet spot 200–215°C. Go lower to reduce stringing; higher for better layer adhesion on fast prints.</span></div>
       <div class="cheat-row"><span class="cheat-label">Bed Temp</span><span class="cheat-value"><strong>50–65°C</strong> — or unheated on textured PEI. Higher bed temps improve first-layer adhesion on smooth surfaces.</span></div>
       <div class="cheat-row"><span class="cheat-label">Print Speed</span><span class="cheat-value"><strong>40–80 mm/s</strong> — PLA is forgiving at speed. First layer: 20–25 mm/s.</span></div>
@@ -108,7 +162,14 @@
     </div>
 
     <!-- PETG -->
-    <div class="cheat-panel" id="panel-petg">
+    <div class="cheat-panel" id="panel-petg" data-material="petg">
+      <div class="mat-swatch">
+        <div class="mat-swatch-color" style="background:#a78bfa;box-shadow:0 0 8px rgba(167,139,250,0.5);"></div>
+        <div>
+          <div class="mat-swatch-name">PETG</div>
+          <div class="mat-swatch-desc">Moisture-sensitive — dry before printing</div>
+        </div>
+      </div>
       <div class="cheat-row"><span class="cheat-label">Nozzle Temp</span><span class="cheat-value"><strong>225–250°C</strong> — typical sweet spot 235–245°C. PETG strings heavily if temp is too high.</span></div>
       <div class="cheat-row"><span class="cheat-label">Bed Temp</span><span class="cheat-value"><strong>70–85°C</strong> — PETG bonds very aggressively to some surfaces. Use a release agent on PEI.</span></div>
       <div class="cheat-row"><span class="cheat-label">Print Speed</span><span class="cheat-value"><strong>30–60 mm/s</strong> — slower than PLA to control stringing. First layer: 20 mm/s.</span></div>
@@ -122,7 +183,14 @@
     </div>
 
     <!-- ABS -->
-    <div class="cheat-panel" id="panel-abs">
+    <div class="cheat-panel" id="panel-abs" data-material="abs">
+      <div class="mat-swatch">
+        <div class="mat-swatch-color" style="background:#fb923c;box-shadow:0 0 8px rgba(251,146,60,0.5);"></div>
+        <div>
+          <div class="mat-swatch-name">ABS</div>
+          <div class="mat-swatch-desc">Needs enclosure — ventilate fumes</div>
+        </div>
+      </div>
       <div class="cheat-row"><span class="cheat-label">Nozzle Temp</span><span class="cheat-value"><strong>230–255°C</strong> — typical sweet spot 240–250°C.</span></div>
       <div class="cheat-row"><span class="cheat-label">Bed Temp</span><span class="cheat-value"><strong>100–115°C</strong> — consistent bed heat is critical. Use a PEI sheet with high temps.</span></div>
       <div class="cheat-row"><span class="cheat-label">Print Speed</span><span class="cheat-value"><strong>40–60 mm/s</strong> — slower speeds reduce thermal stress and cracking.</span></div>
@@ -136,7 +204,14 @@
     </div>
 
     <!-- ASA -->
-    <div class="cheat-panel" id="panel-asa">
+    <div class="cheat-panel" id="panel-asa" data-material="asa">
+      <div class="mat-swatch">
+        <div class="mat-swatch-color" style="background:#a3e635;box-shadow:0 0 8px rgba(163,230,53,0.5);"></div>
+        <div>
+          <div class="mat-swatch-name">ASA</div>
+          <div class="mat-swatch-desc">UV-resistant outdoor material</div>
+        </div>
+      </div>
       <div class="cheat-row"><span class="cheat-label">Nozzle Temp</span><span class="cheat-value"><strong>240–265°C</strong> — typical sweet spot 250–260°C.</span></div>
       <div class="cheat-row"><span class="cheat-label">Bed Temp</span><span class="cheat-value"><strong>90–110°C</strong> — slightly lower than ABS but still needs consistent heat.</span></div>
       <div class="cheat-row"><span class="cheat-label">Print Speed</span><span class="cheat-value"><strong>40–60 mm/s</strong>.</span></div>
@@ -150,7 +225,14 @@
     </div>
 
     <!-- TPU -->
-    <div class="cheat-panel" id="panel-tpu">
+    <div class="cheat-panel" id="panel-tpu" data-material="tpu">
+      <div class="mat-swatch">
+        <div class="mat-swatch-color" style="background:#f472b6;box-shadow:0 0 8px rgba(244,114,182,0.5);"></div>
+        <div>
+          <div class="mat-swatch-name">TPU</div>
+          <div class="mat-swatch-desc">Flexible / elastic — direct drive required</div>
+        </div>
+      </div>
       <div class="cheat-row"><span class="cheat-label">Nozzle Temp</span><span class="cheat-value"><strong>220–240°C</strong> — typical 225–235°C for Shore 95A. Softer TPU (85A) may need lower temps.</span></div>
       <div class="cheat-row"><span class="cheat-label">Bed Temp</span><span class="cheat-value"><strong>30–60°C</strong> — often printable without bed heat. 40–50°C improves first-layer adhesion.</span></div>
       <div class="cheat-row"><span class="cheat-label">Print Speed</span><span class="cheat-value"><strong>15–30 mm/s</strong> — TPU must print slowly. The material stretches instead of buckling under pressure; speed causes blobs and jams.</span></div>
@@ -164,7 +246,14 @@
     </div>
 
     <!-- Nylon -->
-    <div class="cheat-panel" id="panel-nylon">
+    <div class="cheat-panel" id="panel-nylon" data-material="nylon">
+      <div class="mat-swatch">
+        <div class="mat-swatch-color" style="background:#94a3b8;box-shadow:0 0 8px rgba(148,163,184,0.4);"></div>
+        <div>
+          <div class="mat-swatch-name">Nylon</div>
+          <div class="mat-swatch-desc">Engineering-grade — extremely hygroscopic</div>
+        </div>
+      </div>
       <div class="cheat-row"><span class="cheat-label">Nozzle Temp</span><span class="cheat-value"><strong>240–265°C</strong> — PA6 typically 250–260°C; PA12 can be lower at 240–250°C.</span></div>
       <div class="cheat-row"><span class="cheat-label">Bed Temp</span><span class="cheat-value"><strong>70–90°C</strong> — some PA6 variants need 100°C+. Garolite holds much better than PEI.</span></div>
       <div class="cheat-row"><span class="cheat-label">Print Speed</span><span class="cheat-value"><strong>30–60 mm/s</strong> — moderate speeds for good layer bonding.</span></div>
@@ -178,7 +267,14 @@
     </div>
 
     <!-- PC -->
-    <div class="cheat-panel" id="panel-pc">
+    <div class="cheat-panel" id="panel-pc" data-material="pc">
+      <div class="mat-swatch">
+        <div class="mat-swatch-color" style="background:#f59e0b;box-shadow:0 0 8px rgba(245,158,11,0.5);"></div>
+        <div>
+          <div class="mat-swatch-name">PC</div>
+          <div class="mat-swatch-desc">High-performance — all-metal hotend required</div>
+        </div>
+      </div>
       <div class="cheat-row"><span class="cheat-label">Nozzle Temp</span><span class="cheat-value"><strong>270–310°C</strong> — most PC prints well at 285–300°C. Requires all-metal hotend.</span></div>
       <div class="cheat-row"><span class="cheat-label">Bed Temp</span><span class="cheat-value"><strong>110–120°C</strong> — high and consistent. Use an enclosure to maintain ambient temp.</span></div>
       <div class="cheat-row"><span class="cheat-label">Print Speed</span><span class="cheat-value"><strong>30–50 mm/s</strong> — slow for reliable layer bonding. PC is unforgiving at high speeds.</span></div>
@@ -211,10 +307,22 @@
       document.querySelectorAll('.mat-tab').forEach(t => t.classList.remove('active'));
       document.querySelectorAll('.cheat-panel').forEach(p => p.classList.remove('active'));
       tab.classList.add('active');
-      document.getElementById('panel-' + tab.dataset.mat).classList.add('active');
+      const panel = document.getElementById('panel-' + tab.dataset.mat);
+      if (panel) {
+        panel.classList.add('active');
+        // Re-trigger swatch animation
+        const swatch = panel.querySelector('.mat-swatch');
+        if (swatch) {
+          swatch.style.animation = 'none';
+          // Force reflow
+          void swatch.offsetWidth;
+          swatch.style.animation = '';
+        }
+      }
     });
   </script>
 
   <script src="nav.js"></script>
+  <script src="motion.js"></script>
 </body>
 </html>

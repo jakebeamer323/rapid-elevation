@@ -6,6 +6,7 @@
   <title>About — Rapid Elevation</title>
   <meta name="description" content="About Rapid Elevation — a free collection of 3D printing tools built by a maker, for makers.">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="motion.css">
 </head>
 <body>
 
@@ -72,12 +73,17 @@
 
   <main>
 
-    <div class="page-header">
+    <div class="page-header reveal">
       <h1>About Rapid Elevation</h1>
       <p>A free toolkit for FDM 3D printing, built by a maker who got tired of hunting for answers across a dozen different browser tabs.</p>
     </div>
 
-    <div class="diag-form" style="max-width: 720px;">
+    <div class="diag-form reveal" style="max-width: 720px;">
+
+      <div class="calibrating-indicator">
+        <span class="calibrating-cursor"></span>
+        System online
+      </div>
 
       <div class="form-section-label">The project</div>
       <p style="font-size: 0.95rem; line-height: 1.85; color: var(--text-muted); margin-bottom: 1.5rem;">
@@ -92,10 +98,18 @@
 
       <div class="form-section-label">What's here</div>
       <div class="result-stats-grid" style="margin-bottom: 2rem;">
-        <div class="result-stat"><span class="result-stat-label">Tools</span><span class="result-stat-value">28</span></div>
-        <div class="result-stat"><span class="result-stat-label">Categories</span><span class="result-stat-value">6</span></div>
-        <div class="result-stat"><span class="result-stat-label">Cost</span><span class="result-stat-value">Free</span></div>
-        <div class="result-stat"><span class="result-stat-label">Data sent to server</span><span class="result-stat-value">None</span></div>
+        <div class="result-stat card-depth" style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:0.85rem 1rem;">
+          <span class="result-stat-label">Tools</span><span class="result-stat-value">28</span>
+        </div>
+        <div class="result-stat card-depth" style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:0.85rem 1rem;">
+          <span class="result-stat-label">Categories</span><span class="result-stat-value">6</span>
+        </div>
+        <div class="result-stat card-depth" style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:0.85rem 1rem;">
+          <span class="result-stat-label">Cost</span><span class="result-stat-value">Free</span>
+        </div>
+        <div class="result-stat card-depth" style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);padding:0.85rem 1rem;">
+          <span class="result-stat-label">Data sent to server</span><span class="result-stat-value">None</span>
+        </div>
       </div>
 
       <div class="form-section-label">Get in touch</div>
@@ -113,6 +127,7 @@
   </footer>
 
   <script src="nav.js"></script>
+  <script src="motion.js"></script>
 
 </body>
 </html>

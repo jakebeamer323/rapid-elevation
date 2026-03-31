@@ -6,6 +6,7 @@
   <title>Print Diagnosis — Rapid Elevation</title>
   <meta name="description" content="Diagnose 3D print failures. Select your issue, enter your settings, and get a ranked list of likely causes with fixes.">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="motion.css">
 </head>
 <body>
 
@@ -72,7 +73,7 @@
 
   <main>
 
-    <div class="page-header">
+    <div class="page-header reveal">
       <h1>Print Diagnosis</h1>
       <p>Select what's going wrong, fill in your current settings, and I'll give you a ranked list of likely causes — most to least likely — with specific fixes for each one.</p>
     </div>
@@ -84,7 +85,7 @@
     </div>
 
     <!-- Diagnosis Form -->
-    <div class="diag-form">
+    <div class="diag-form reveal">
 
       <!-- Step 1: Issue -->
       <div class="form-section-label">Step 1 — What's going wrong?</div>
@@ -283,5 +284,6 @@
 
   <script src="custom-select.js"></script>
   <script src="nav.js"></script>
+  <script src="motion.js"></script>
 </body>
 </html>

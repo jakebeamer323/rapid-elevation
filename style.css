@@ -2023,3 +2023,80 @@ footer a:hover { color: var(--accent); }
   .home-value-inner { grid-template-columns: 1fr; gap: 1.5rem; }
   .home-cat-grid { grid-template-columns: 1fr 1fr; }
 }
+
+/* ══════════════════════════════════════════════════════════════════
+   PREMIUM REFINEMENTS — added alongside motion.css
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ── Stronger card shadow system ── */
+.tool-card,
+.home-featured-card,
+.home-cat-card,
+.model-card {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), 0 0 0 0 transparent;
+}
+
+a.tool-card:hover,
+.home-featured-card:hover,
+.home-cat-card:hover,
+.model-card:hover {
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45), 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* ── Enhanced tool card gradient border on hover ── */
+a.tool-card:hover {
+  border-color: var(--accent);
+  background: var(--card-hover);
+  position: relative;
+}
+
+/* ── Premium button refinement ── */
+.btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn:not(.btn-outline) {
+  box-shadow: 0 2px 12px rgba(91, 155, 213, 0.25);
+}
+
+.btn:not(.btn-outline):hover {
+  box-shadow: 0 4px 20px rgba(137, 196, 244, 0.35);
+}
+
+/* ── Better page-header ── */
+.page-header h1 {
+  position: relative;
+}
+
+/* ── Main workbench texture ── */
+main {
+  background-image:
+    radial-gradient(
+      ellipse at 50% 0%,
+      rgba(91, 155, 213, 0.04) 0%,
+      transparent 60%
+    );
+}
+
+/* ── Hero eyebrow on home page ── */
+.hero-eyebrow {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+
+/* ── Spool chip color override for text ── */
+.spool-chip {
+  color: var(--text-muted);
+}
+
+/* ── result-stats-grid spacing fix for about page ── */
+.result-stats-grid {
+  gap: 0.75rem;
+}
+
