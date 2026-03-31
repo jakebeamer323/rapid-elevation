@@ -87,20 +87,20 @@
 
       <div class="form-section-label">Part type</div>
       <div class="issue-grid" id="partType" style="margin-bottom: 1.5rem;">
-        <label class="issue-pill"><input type="radio" name="partType" value="structural"> Structural / load-bearing</label>
-        <label class="issue-pill"><input type="radio" name="partType" value="cosmetic"> Cosmetic / display piece</label>
-        <label class="issue-pill"><input type="radio" name="partType" value="functional"> Functional mechanism / snap fit</label>
-        <label class="issue-pill"><input type="radio" name="partType" value="prototype"> Prototype / test fit</label>
-        <label class="issue-pill"><input type="radio" name="partType" value="flexible"> Flexible / living hinge</label>
+        <div class="issue-option"><input type="radio" name="partType" id="pt-structural" value="structural"><label for="pt-structural">Structural / load-bearing</label></div>
+        <div class="issue-option"><input type="radio" name="partType" id="pt-cosmetic" value="cosmetic"><label for="pt-cosmetic">Cosmetic / display piece</label></div>
+        <div class="issue-option"><input type="radio" name="partType" id="pt-functional" value="functional"><label for="pt-functional">Functional mechanism / snap fit</label></div>
+        <div class="issue-option"><input type="radio" name="partType" id="pt-prototype" value="prototype"><label for="pt-prototype">Prototype / test fit</label></div>
+        <div class="issue-option"><input type="radio" name="partType" id="pt-flexible" value="flexible"><label for="pt-flexible">Flexible / living hinge</label></div>
       </div>
 
       <div class="form-section-label">Primary goal</div>
       <div class="issue-grid" id="primaryGoal" style="margin-bottom: 1.5rem;">
-        <label class="issue-pill"><input type="radio" name="primaryGoal" value="strength"> Maximum strength</label>
-        <label class="issue-pill"><input type="radio" name="primaryGoal" value="surface"> Best surface quality</label>
-        <label class="issue-pill"><input type="radio" name="primaryGoal" value="supports"> Minimize supports</label>
-        <label class="issue-pill"><input type="radio" name="primaryGoal" value="speed"> Fastest print</label>
-        <label class="issue-pill"><input type="radio" name="primaryGoal" value="accuracy"> Dimensional accuracy</label>
+        <div class="issue-option"><input type="radio" name="primaryGoal" id="pg-strength" value="strength"><label for="pg-strength">Maximum strength</label></div>
+        <div class="issue-option"><input type="radio" name="primaryGoal" id="pg-surface" value="surface"><label for="pg-surface">Best surface quality</label></div>
+        <div class="issue-option"><input type="radio" name="primaryGoal" id="pg-supports" value="supports"><label for="pg-supports">Minimize supports</label></div>
+        <div class="issue-option"><input type="radio" name="primaryGoal" id="pg-speed" value="speed"><label for="pg-speed">Fastest print</label></div>
+        <div class="issue-option"><input type="radio" name="primaryGoal" id="pg-accuracy" value="accuracy"><label for="pg-accuracy">Dimensional accuracy</label></div>
       </div>
 
       <div class="form-section-label">Part geometry</div>
@@ -108,31 +108,31 @@
         <div class="field">
           <label>Does the part have overhangs over 45°?</label>
           <div class="issue-grid" style="margin-top: 0.5rem;">
-            <label class="issue-pill"><input type="radio" name="overhangs" value="yes"> Yes</label>
-            <label class="issue-pill"><input type="radio" name="overhangs" value="no"> No</label>
-            <label class="issue-pill"><input type="radio" name="overhangs" value="unsure"> Not sure</label>
+            <div class="issue-option"><input type="radio" name="overhangs" id="ov-yes" value="yes"><label for="ov-yes">Yes</label></div>
+            <div class="issue-option"><input type="radio" name="overhangs" id="ov-no" value="no"><label for="ov-no">No</label></div>
+            <div class="issue-option"><input type="radio" name="overhangs" id="ov-unsure" value="unsure"><label for="ov-unsure">Not sure</label></div>
           </div>
         </div>
         <div class="field">
           <label>Is there a critical surface that must look perfect?</label>
           <div class="issue-grid" style="margin-top: 0.5rem;">
-            <label class="issue-pill"><input type="radio" name="critSurface" value="yes"> Yes</label>
-            <label class="issue-pill"><input type="radio" name="critSurface" value="no"> No</label>
+            <div class="issue-option"><input type="radio" name="critSurface" id="cs-yes" value="yes"><label for="cs-yes">Yes</label></div>
+            <div class="issue-option"><input type="radio" name="critSurface" id="cs-no" value="no"><label for="cs-no">No</label></div>
           </div>
         </div>
         <div class="field">
           <label>Is the part tall and narrow (likely to wobble)?</label>
           <div class="issue-grid" style="margin-top: 0.5rem;">
-            <label class="issue-pill"><input type="radio" name="tallNarrow" value="yes"> Yes</label>
-            <label class="issue-pill"><input type="radio" name="tallNarrow" value="no"> No</label>
+            <div class="issue-option"><input type="radio" name="tallNarrow" id="tn-yes" value="yes"><label for="tn-yes">Yes</label></div>
+            <div class="issue-option"><input type="radio" name="tallNarrow" id="tn-no" value="no"><label for="tn-no">No</label></div>
           </div>
         </div>
         <div class="field">
           <label>Where is the main load / stress direction?</label>
           <div class="issue-grid" style="margin-top: 0.5rem;">
-            <label class="issue-pill"><input type="radio" name="loadDir" value="vertical"> Vertical (pulling apart layers)</label>
-            <label class="issue-pill"><input type="radio" name="loadDir" value="horizontal"> Horizontal (along layers)</label>
-            <label class="issue-pill"><input type="radio" name="loadDir" value="mixed"> Mixed / unsure</label>
+            <div class="issue-option"><input type="radio" name="loadDir" id="ld-vertical" value="vertical"><label for="ld-vertical">Vertical (pulling apart layers)</label></div>
+            <div class="issue-option"><input type="radio" name="loadDir" id="ld-horizontal" value="horizontal"><label for="ld-horizontal">Horizontal (along layers)</label></div>
+            <div class="issue-option"><input type="radio" name="loadDir" id="ld-mixed" value="mixed"><label for="ld-mixed">Mixed / unsure</label></div>
           </div>
         </div>
       </div>

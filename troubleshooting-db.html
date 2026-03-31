@@ -341,6 +341,7 @@
 
       grid.innerHTML = filtered.map(entry => `
         <div class="db-card">
+          <div class="db-photo"><span class="db-photo-placeholder">Example photo coming soon</span></div>
           <div class="db-category">${entry.category.charAt(0).toUpperCase() + entry.category.slice(1)}</div>
           <div class="db-symptom">${entry.symptom}</div>
           <div class="db-causes">

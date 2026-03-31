@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bruno+Ace+SC&family=Outfit:wght@300;400;500;600;700&family=Inter:wght@400;500&display=swap');
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -410,7 +410,8 @@ a.tool-card:hover {
 
 .issue-option { position: relative; }
 
-.issue-option input[type="radio"] {
+.issue-option input[type="radio"],
+.issue-option input[type="checkbox"] {
   position: absolute;
   opacity: 0;
   width: 0;
@@ -1700,12 +1701,12 @@ footer a:hover { color: var(--accent); }
 .faq-list { margin-bottom: 0.5rem; }
 .faq-item { border-bottom: 1px solid var(--border); }
 .faq-item:first-child { border-top: 1px solid var(--border); }
-.faq-q { display: flex; justify-content: space-between; align-items: center; padding: 0.9rem 0; cursor: pointer; font-size: 0.92rem; font-weight: 500; color: var(--text); gap: 1rem; user-select: none; transition: color 0.2s; }
+.faq-q { display: flex; justify-content: space-between; align-items: center; padding: 0.9rem 0; cursor: pointer; font-size: 0.92rem; font-weight: 500; color: var(--text); gap: 1rem; user-select: none; transition: color 0.2s; background: none; border: none; width: 100%; text-align: left; }
 .faq-q:hover { color: var(--accent-bright); }
 .faq-chevron { color: var(--text-dim); flex-shrink: 0; transition: transform 0.2s; font-size: 0.75rem; }
-.faq-item.open .faq-chevron { transform: rotate(180deg); }
+.faq-item[data-open="true"] .faq-chevron { transform: rotate(180deg); }
 .faq-a { display: none; padding: 0 0 1rem; font-size: 0.88rem; color: var(--text-muted); line-height: 1.8; }
-.faq-item.open .faq-a { display: block; }
+.faq-item[data-open="true"] .faq-a { display: block; }
 .faq-a a { color: var(--accent); text-decoration: none; }
 .faq-a a:hover { color: var(--accent-bright); text-decoration: underline; }
 
@@ -1964,7 +1965,7 @@ footer a:hover { color: var(--accent); }
 /* ── VALUE SECTION ── */
 .home-value {
   max-width: 1400px;
-  margin: 3rem auto 0;
+  margin: 5rem auto 0;
   padding: 2.5rem 2rem;
   background: var(--surface);
   border-top: 1px solid var(--border);
@@ -2092,11 +2093,44 @@ main {
 
 /* ── Spool chip color override for text ── */
 .spool-chip {
-  color: var(--text-muted);
+  color: var(--spool-color, var(--text-muted));
 }
 
 /* ── result-stats-grid spacing fix for about page ── */
 .result-stats-grid {
   gap: 0.75rem;
+}
+
+/* ── DB photo placeholder ── */
+.db-photo {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: var(--surface);
+  border: 1.5px dashed var(--border-light);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+
+.db-photo-placeholder {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  font-style: italic;
+  text-align: center;
+  padding: 0.5rem;
+}
+
+/* ── Bruno Ace SC — headings & card names ── */
+h1, h2, h3,
+.home-cat-name,
+.db-symptom,
+.rec-card-label,
+.home-featured-title,
+.tool-category-label,
+.spool-chip {
+  font-family: 'Bruno Ace SC', 'Outfit', sans-serif;
 }
 
