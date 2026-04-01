@@ -385,7 +385,7 @@ main {
   padding: 1.5rem;
   text-decoration: none;
   color: var(--text);
-  transition: border-color 0.2s, border-left-color 0.2s, background 0.2s, transform 0.15s, box-shadow 0.2s;
+  transition: border-color 0.2s, border-left-color 0.2s, background 0.2s, transform 0.15s, filter 0.2s;
   display: block;
   position: relative;
 }
@@ -420,7 +420,6 @@ a.tool-card:hover {
   border-left-color: var(--accent);
   background: var(--card-hover);
   transform: translateY(-2px);
-  box-shadow: 0 0 20px rgba(255, 107, 0, 0.15);
 }
 
 a.tool-card:hover::before,
@@ -1062,10 +1061,9 @@ a.tool-card:hover::after {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: border-color 0.2s, transform 0.15s;
+  transition: border-color 0.2s, transform 0.15s, filter 0.2s;
 }
 
 .model-card:hover {
@@ -2073,7 +2071,7 @@ footer a:hover { color: var(--accent); }
   letter-spacing: 2px;
   position: relative;
   display: inline-block;
-  text-shadow: 0 0 8px rgba(255,106,0,0.6), 0 0 30px rgba(255,74,0,0.27);
+  text-shadow: 0 0 6px rgba(255,106,0,0.25);
   animation: heroFadeIn 0.3s 1s both;
 }
 .glitch-headline::before,
@@ -2090,7 +2088,7 @@ footer a:hover { color: var(--accent); }
   clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
 }
 .glitch-headline::after {
-  color: #00f0ff;
+  color: #ff8c00;
   animation: glitchBot 4s steps(1) infinite;
   clip-path: polygon(0 60%, 100% 60%, 100% 100%, 0 100%);
 }
@@ -2214,7 +2212,7 @@ footer a:hover { color: var(--accent); }
   background: #ff6a00;
   vertical-align: text-bottom;
   margin-left: 4px;
-  animation: blink 0.8s steps(1) infinite;
+  animation: blink 0.8s step-end infinite;
 }
 
 @keyframes heroFadeIn {
@@ -2316,7 +2314,7 @@ footer a:hover { color: var(--accent); }
   border-radius: var(--radius);
   padding: 1.1rem 1.25rem;
   text-decoration: none;
-  transition: border-color 0.2s, border-left-color 0.2s, background 0.2s, transform 0.15s, box-shadow 0.2s;
+  transition: border-color 0.2s, border-left-color 0.2s, background 0.2s, transform 0.15s, filter 0.2s;
 }
 .home-featured-card:hover {
   border-color: var(--border-light);
@@ -2374,7 +2372,7 @@ footer a:hover { color: var(--accent); }
   border-radius: var(--radius);
   padding: 1.25rem 1.25rem 1.1rem;
   text-decoration: none;
-  transition: border-color 0.2s, border-left-color 0.2s, background 0.2s, transform 0.15s, box-shadow 0.2s;
+  transition: border-color 0.2s, border-left-color 0.2s, background 0.2s, transform 0.15s, filter 0.2s;
 }
 .home-cat-card:hover {
   border-color: var(--border-light);
@@ -2477,19 +2475,25 @@ footer a:hover { color: var(--accent); }
    PREMIUM REFINEMENTS — added alongside motion.css
    ══════════════════════════════════════════════════════════════════ */
 
-/* ── Stronger card shadow system ── */
+/* ── Octagonal chamfer corners + shadow system ── */
 .tool-card,
 .home-featured-card,
 .home-cat-card,
 .model-card {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), 0 0 0 0 transparent;
+  clip-path: polygon(
+    5px 0%, calc(100% - 5px) 0%,
+    100% 5px, 100% calc(100% - 5px),
+    calc(100% - 5px) 100%, 5px 100%,
+    0% calc(100% - 5px), 0% 5px
+  );
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
 }
 
 a.tool-card:hover,
 .home-featured-card:hover,
 .home-cat-card:hover,
 .model-card:hover {
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45), 0 2px 8px rgba(0, 0, 0, 0.3);
+  filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.45)) drop-shadow(0 0 16px rgba(255, 107, 0, 0.12));
 }
 
 /* ── Enhanced tool card gradient border on hover ── */
