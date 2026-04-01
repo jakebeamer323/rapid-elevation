@@ -1914,25 +1914,22 @@ footer a:hover { color: var(--accent); }
   position: relative;
   overflow: hidden;
   padding: 4rem 5vw;
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: 1fr 480px;
   align-items: center;
-  gap: 3rem;
+  gap: 4rem;
   font-family: 'Share Tech Mono', monospace;
 }
 
 .hero-left {
-  flex: 1 1 0;
   min-width: 0;
-  max-width: 520px;
   text-align: left;
   position: relative;
   z-index: 5;
 }
 
 .hero-right {
-  flex: 0 0 480px;
-  width: 480px;
+  min-width: 0;
   position: relative;
   z-index: 5;
 }
@@ -2479,9 +2476,8 @@ footer a:hover { color: var(--accent); }
   .sev-legend { gap: 0.75rem; }
   .likelihood-bar { display: none; }
   .results-layout { grid-template-columns: 1fr; }
-  .home-hero { flex-direction: column; align-items: flex-start; padding: 3rem 1.25rem 2.5rem; gap: 2rem; }
-  .hero-right { width: 100%; }
-  .hero-inner { width: 100%; padding: 28px 20px; }
+  .home-hero { grid-template-columns: 1fr; padding: 3rem 1.25rem 2.5rem; gap: 2rem; }
+  .hero-inner { padding: 28px 20px; }
   .glitch-headline { font-size: clamp(18px, 6vw, 32px); }
   .term-metrics { gap: 20px; flex-wrap: wrap; }
   .home-stat { padding: 0 1.25rem; }
