@@ -4,6 +4,25 @@
 (function () {
   'use strict';
 
+  // Inject parallax background element
+  var siteBg = document.createElement('div');
+  siteBg.id = 'site-bg';
+  document.addEventListener('DOMContentLoaded', function () {
+    document.body.insertBefore(siteBg, document.body.firstChild);
+  });
+
+  // Parallax scroll handler — bg drifts at 20% of scroll speed
+  var ticking = false;
+  window.addEventListener('scroll', function () {
+    if (!ticking) {
+      requestAnimationFrame(function () {
+        siteBg.style.transform = 'translateY(' + (window.scrollY * 0.2) + 'px)';
+        ticking = false;
+      });
+      ticking = true;
+    }
+  });
+
   document.addEventListener('DOMContentLoaded', function () {
     var triggers = document.querySelectorAll('.nav-dropdown-trigger');
 
