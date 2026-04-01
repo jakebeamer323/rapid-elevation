@@ -504,11 +504,19 @@ a.tool-card:hover::after {
 .form-section-label {
   font-family: 'Rajdhani', sans-serif;
   font-size: 0.78rem;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--accent);
   margin-bottom: 1rem;
+  padding-left: 0.6rem;
+  border-left: 3px solid var(--accent);
+}
+
+.form-section-label::before {
+  content: '>_ ';
+  opacity: 0.6;
+  font-family: 'JetBrains Mono', monospace;
 }
 
 /* Issue selector */
@@ -545,7 +553,7 @@ a.tool-card:hover::after {
 
 .issue-option input:checked + label {
   border-color: var(--accent);
-  background: rgba(91, 155, 213, 0.1);
+  background: rgba(255, 107, 0, 0.1);
   color: var(--accent-bright);
 }
 
@@ -788,7 +796,7 @@ a.tool-card:hover::after {
 
 .result-fix {
   font-size: 0.85rem;
-  background: rgba(91, 155, 213, 0.07);
+  background: rgba(255, 107, 0, 0.06);
   border-left: 3px solid var(--accent);
   padding: 0.6rem 0.85rem;
   border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
@@ -899,7 +907,7 @@ a.tool-card:hover::after {
   text-transform: uppercase;
   padding: 0.15rem 0.45rem;
   border-radius: 20px;
-  background: rgba(91, 155, 213, 0.12);
+  background: rgba(255, 107, 0, 0.1);
   color: var(--accent);
 }
 
@@ -1052,7 +1060,7 @@ a.tool-card:hover::after {
 
 .model-card:target {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(91, 155, 213, 0.18);
+  box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.18);
 }
 
 .model-card-img-wrap {
@@ -1104,7 +1112,7 @@ a.tool-card:hover::after {
 .model-card-settings {
   font-size: 0.78rem;
   color: var(--text-muted);
-  background: rgba(91, 155, 213, 0.06);
+  background: rgba(255, 107, 0, 0.04);
   border-left: 3px solid var(--border-light);
   padding: 0.5rem 0.75rem;
   border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
@@ -1273,7 +1281,7 @@ footer a:hover { color: var(--accent); }
   transition: background 0.12s, color 0.12s;
 }
 
-.ss-option:hover { background: rgba(91, 155, 213, 0.12); color: var(--accent-bright); }
+.ss-option:hover { background: rgba(255, 107, 0, 0.1); color: var(--accent-bright); }
 .ss-option-active { color: var(--accent-bright) !important; }
 
 .ss-no-results {
@@ -1298,7 +1306,7 @@ footer a:hover { color: var(--accent); }
 .drop-zone:hover,
 .drop-zone.dragover {
   border-color: var(--accent);
-  background: rgba(91, 155, 213, 0.04);
+  background: rgba(255, 107, 0, 0.04);
 }
 
 .drop-zone.has-file {
@@ -1408,7 +1416,7 @@ footer a:hover { color: var(--accent); }
   color: var(--text);
 }
 
-.calc-table tr.sweet-row td { background: rgba(91, 155, 213, 0.07); }
+.calc-table tr.sweet-row td { background: rgba(255, 107, 0, 0.07); }
 .calc-table tr.sweet-row td.layer-val { color: var(--accent-bright); }
 .calc-table tr.ideal-row td { background: rgba(63, 184, 130, 0.08); }
 .calc-table tr.ideal-row td.layer-val { color: var(--sev-green); }
@@ -1516,7 +1524,7 @@ footer a:hover { color: var(--accent); }
 }
 
 .mat-tab:hover { border-color: var(--border-light); color: var(--text); }
-.mat-tab.active { border-color: var(--accent); color: var(--accent-bright); background: rgba(91, 155, 213, 0.08); }
+.mat-tab.active { border-color: var(--accent); color: var(--accent-bright); background: rgba(255, 107, 0, 0.08); }
 
 .cheat-panel { display: none; }
 .cheat-panel.active { display: block; }
@@ -1551,7 +1559,7 @@ footer a:hover { color: var(--accent); }
 .cheat-note {
   font-size: 0.83rem;
   color: var(--text-muted);
-  background: rgba(91, 155, 213, 0.06);
+  background: rgba(255, 107, 0, 0.05);
   border-left: 3px solid var(--border-light);
   padding: 0.6rem 0.85rem;
   border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
@@ -1578,7 +1586,7 @@ footer a:hover { color: var(--accent); }
 }
 
 .drying-card:hover { border-color: var(--border-light); }
-.drying-card.selected { border-color: var(--accent); background: rgba(91, 155, 213, 0.07); }
+.drying-card.selected { border-color: var(--accent); background: rgba(255, 107, 0, 0.07); }
 
 .drying-card-mat {
   font-family: 'Orbitron', sans-serif;
@@ -1667,7 +1675,7 @@ footer a:hover { color: var(--accent); }
   border-radius: var(--radius-sm);
   border: 1.5px solid var(--accent);
   background: var(--accent);
-  color: #050a14;
+  color: #0A0A0A;
   cursor: pointer;
   transition: background 0.2s;
 }
@@ -1679,7 +1687,7 @@ footer a:hover { color: var(--accent); }
   color: var(--accent);
 }
 
-.timer-btn.secondary:hover { background: rgba(91, 155, 213, 0.1); }
+.timer-btn.secondary:hover { background: rgba(255, 107, 0, 0.1); }
 
 /* ── VARIANCE MEASUREMENT INPUTS ── */
 .meas-list { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 0.75rem; }
@@ -1763,7 +1771,7 @@ footer a:hover { color: var(--accent); }
 }
 
 .grade-excellent { background: rgba(63, 184, 130, 0.15); color: var(--sev-green); }
-.grade-good      { background: rgba(91, 155, 213, 0.15); color: var(--accent-bright); }
+.grade-good      { background: rgba(255, 107, 0, 0.12); color: var(--accent-bright); }
 .grade-fair      { background: rgba(232, 200, 64, 0.15);  color: var(--sev-yellow); }
 .grade-poor      { background: rgba(224, 82, 82, 0.15);   color: var(--sev-red); }
 
@@ -1794,7 +1802,7 @@ footer a:hover { color: var(--accent); }
 .db-fixes { font-size: 0.85rem; color: var(--text-muted); line-height: 1.7; }
 .db-causes strong, .db-fixes strong { color: var(--text); }
 .db-tags { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.75rem; }
-.db-tag { font-size: 0.68rem; font-weight: 600; padding: 0.15rem 0.5rem; border-radius: 20px; background: rgba(91,155,213,0.1); color: var(--accent); }
+.db-tag { font-size: 0.68rem; font-weight: 600; padding: 0.15rem 0.5rem; border-radius: 20px; background: rgba(255,107,0,0.1); color: var(--accent); }
 .db-empty { text-align: center; color: var(--text-muted); padding: 3rem; font-size: 0.95rem; }
 
 /* ── FIRMWARE DIFF ── */
@@ -1903,7 +1911,7 @@ footer a:hover { color: var(--accent); }
   transform: translateX(-50%);
   width: 700px;
   height: 500px;
-  background: radial-gradient(ellipse at center, rgba(91, 155, 213, 0.18) 0%, transparent 70%);
+  background: radial-gradient(ellipse at center, rgba(255, 107, 0, 0.15) 0%, transparent 70%);
   pointer-events: none;
   z-index: 0;
 }
@@ -2211,11 +2219,11 @@ a.tool-card:hover {
 }
 
 .btn:not(.btn-outline) {
-  box-shadow: 0 2px 12px rgba(91, 155, 213, 0.25);
+  box-shadow: 0 2px 12px rgba(255, 107, 0, 0.2);
 }
 
 .btn:not(.btn-outline):hover {
-  box-shadow: 0 4px 20px rgba(137, 196, 244, 0.35);
+  box-shadow: 0 4px 20px rgba(255, 107, 0, 0.3);
 }
 
 /* ── Better page-header ── */
@@ -2228,7 +2236,7 @@ main {
   background-image:
     radial-gradient(
       ellipse at 50% 0%,
-      rgba(91, 155, 213, 0.04) 0%,
+      rgba(255, 107, 0, 0.04) 0%,
       transparent 60%
     );
 }
