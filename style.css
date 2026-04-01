@@ -1912,11 +1912,21 @@ footer a:hover { color: var(--accent); }
 .home-hero {
   position: relative;
   overflow: hidden;
-  padding: 5rem 2rem 4rem;
-  text-align: center;
+  padding: 5rem 5vw 4rem;
+  text-align: left;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
+  gap: 4rem;
+}
+
+.hero-left {
+  flex: 1;
+  min-width: 0;
+}
+
+.hero-right {
+  flex-shrink: 0;
 }
 
 .home-hero-glow {
@@ -1952,7 +1962,96 @@ footer a:hover { color: var(--accent); }
   color: var(--text-muted);
   line-height: 1.75;
   max-width: 600px;
-  margin: 0 auto 2rem;
+  margin: 0 0 2rem;
+}
+
+/* ── HERO SYSTEM PANEL ── */
+.hero-sys-panel {
+  width: 310px;
+  background: rgba(17, 18, 19, 0.85);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  font-family: 'JetBrains Mono', monospace;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 0 40px rgba(255, 107, 0, 0.06), inset 0 1px 0 rgba(255, 107, 0, 0.08);
+}
+
+.hero-sys-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1.4rem;
+}
+
+.hero-sys-led {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #3fb882;
+  box-shadow: 0 0 6px #3fb882, 0 0 12px rgba(63, 184, 130, 0.5);
+  flex-shrink: 0;
+}
+
+.hero-sys-title {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.hero-sys-uptime-label {
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  color: var(--text-dim);
+  margin-bottom: 0.35rem;
+}
+
+.hero-sys-uptime-val {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--accent-bright);
+  letter-spacing: 0.04em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.hero-sys-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 1.25rem 0;
+}
+
+.hero-sys-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+
+.hero-sys-metric {
+  text-align: center;
+  padding: 0.75rem 0.25rem;
+  background: rgba(255, 107, 0, 0.04);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+.hero-sys-metric-val {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: 0.3rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.hero-sys-metric-label {
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  line-height: 1.3;
 }
 
 /* ── STATS BAR ── */
@@ -2195,7 +2294,8 @@ footer a:hover { color: var(--accent); }
   .sev-legend { gap: 0.75rem; }
   .likelihood-bar { display: none; }
   .results-layout { grid-template-columns: 1fr; }
-  .home-hero { padding: 3.5rem 1rem 2.5rem; }
+  .home-hero { padding: 3.5rem 1.25rem 2.5rem; flex-direction: column; align-items: flex-start; gap: 2.5rem; }
+  .hero-sys-panel { width: 100%; }
   .home-stat { padding: 0 1.25rem; }
   .home-value-inner { grid-template-columns: 1fr; gap: 1.5rem; }
   .home-cat-grid { grid-template-columns: 1fr 1fr; }

@@ -76,16 +76,45 @@
   <main class="home-main">
 
     <section class="home-hero">
-      <div class="hero-ambient-dot">System Ready</div>
-      <p class="hero-eyebrow">Free 3D Printing Tools &amp; Resources</p>
-      <h1 class="home-h1">Better prints,<br><span class="h1-accent">fewer headaches.</span></h1>
-      <p class="home-hero-sub">
-        A free collection of calculators, analyzers, and references built by a maker, for makers.
-        Diagnose failures, dial in settings, and get back to printing &mdash; no accounts, no paywalls.
-      </p>
-      <div class="btn-row">
-        <a href="diagnosis.html" class="btn">Try Print Diagnosis</a>
-        <a href="tools.html" class="btn btn-outline">Browse All Tools</a>
+      <div class="hero-left">
+        <div class="hero-ambient-dot">System Ready</div>
+        <p class="hero-eyebrow">Free 3D Printing Tools &amp; Resources</p>
+        <h1 class="home-h1">Better prints,<br><span class="h1-accent">fewer headaches.</span></h1>
+        <p class="home-hero-sub">
+          A free collection of calculators, analyzers, and references built by a maker, for makers.
+          Diagnose failures, dial in settings, and get back to printing &mdash; no accounts, no paywalls.
+        </p>
+        <div class="btn-row">
+          <a href="tools.html" class="btn">Run Tools</a>
+          <a href="models.html" class="btn btn-outline">Download Models</a>
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="hero-sys-panel">
+          <div class="hero-sys-header">
+            <span class="hero-sys-led"></span>
+            <span class="hero-sys-title">SYSTEM_STATUS</span>
+          </div>
+          <div class="hero-sys-uptime-row">
+            <div class="hero-sys-uptime-label">// SESSION UPTIME</div>
+            <div class="hero-sys-uptime-val" id="uptime">00:00:00</div>
+          </div>
+          <div class="hero-sys-divider"></div>
+          <div class="hero-sys-metrics">
+            <div class="hero-sys-metric">
+              <div class="hero-sys-metric-val" id="toolCount">0</div>
+              <div class="hero-sys-metric-label">TOOLS ONLINE</div>
+            </div>
+            <div class="hero-sys-metric">
+              <div class="hero-sys-metric-val" id="bpCount">0</div>
+              <div class="hero-sys-metric-label">BUILD PROFILES</div>
+            </div>
+            <div class="hero-sys-metric">
+              <div class="hero-sys-metric-val" id="nodeCount">0</div>
+              <div class="hero-sys-metric-label">PRINTERS</div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -303,5 +332,30 @@
 
   <script src="nav.js"></script>
   <script src="motion.js"></script>
+  <script>
+    /* ---- HERO: uptime counter ---- */
+    let seconds = 0;
+    setInterval(() => {
+      seconds++;
+      const h = String(Math.floor(seconds / 3600)).padStart(2, '0');
+      const m = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
+      const s = String(seconds % 60).padStart(2, '0');
+      document.getElementById('uptime').textContent = `${h}:${m}:${s}`;
+    }, 1000);
+
+    /* ---- HERO: count-up metrics ---- */
+    function countUp(el, target, duration) {
+      let start = 0, step = target / (duration / 16);
+      const tick = () => {
+        start = Math.min(start + step, target);
+        el.textContent = Math.floor(start);
+        if (start < target) requestAnimationFrame(tick);
+      };
+      setTimeout(() => requestAnimationFrame(tick), 1800);
+    }
+    countUp(document.getElementById('toolCount'), 28, 1200);
+    countUp(document.getElementById('bpCount'), 9, 1200);
+    countUp(document.getElementById('nodeCount'), 115, 1200);
+  </script>
 </body>
 </html>
