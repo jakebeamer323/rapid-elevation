@@ -596,8 +596,7 @@ a.tool-card:hover {
 }
 
 .home-hero {
-  padding: 5.25rem 2rem 3.5rem;
-  max-width: 720px;
+  max-width: none;
 }
 
 .home-hero-sub {
