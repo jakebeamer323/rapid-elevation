@@ -1,37 +1,13 @@
 /**
- * motion.js - Living Print Studio motion & depth system
- * Rapid Elevation - shared across all pages
+ * motion.js — Rapid Elevation motion system
+ * Phase 7: Parallax removed, burn-in counter added, tilt system removed
  */
 (function () {
   'use strict';
 
   var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  function clamp(value, min, max) {
-    return Math.min(Math.max(value, min), max);
-  }
-
-  function setCardTilt(card, event, lift) {
-    var rect = card.getBoundingClientRect();
-    var px = clamp((event.clientX - rect.left) / rect.width, 0, 1);
-    var py = clamp((event.clientY - rect.top) / rect.height, 0, 1);
-    var tiltY = (px - 0.5) * 14;
-    var tiltX = (0.5 - py) * 12;
-    card.style.setProperty('--pointer-x', (px * 100).toFixed(2) + '%');
-    card.style.setProperty('--pointer-y', (py * 100).toFixed(2) + '%');
-    card.style.setProperty('--tilt-x', tiltX.toFixed(2) + 'deg');
-    card.style.setProperty('--tilt-y', tiltY.toFixed(2) + 'deg');
-    card.style.setProperty('--card-lift', lift || '-8px');
-  }
-
-  function resetCardTilt(card) {
-    card.style.removeProperty('--pointer-x');
-    card.style.removeProperty('--pointer-y');
-    card.style.removeProperty('--tilt-x');
-    card.style.removeProperty('--tilt-y');
-    card.style.removeProperty('--card-lift');
-  }
-
+  /* ── REVEAL: scroll snap-in ── */
   var revealObserver = new IntersectionObserver(function (entries) {
     entries.forEach(function (entry) {
       if (entry.isIntersecting) {
@@ -42,12 +18,103 @@
         revealObserver.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
 
   document.querySelectorAll('.reveal, .layer-wipe').forEach(function (el) {
     revealObserver.observe(el);
   });
 
+  /* Reveal elements already in viewport on load */
+  setTimeout(function () {
+    document.querySelectorAll('.layer-wipe').forEach(function (el) {
+      var rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight) {
+        el.classList.add('wipe-in');
+      }
+    });
+  }, 200);
+
+  /* ── BURN-IN COUNTER ── */
+  /* Animates a numeric element from 0 → value in ~280ms, then pulses a glow */
+  function burnIn(el) {
+    if (prefersReducedMotion) return;
+    var raw = el.textContent.trim();
+    var isFloat = raw.indexOf('.') !== -1;
+    var numStr = raw.replace(/[^\d.\-]/g, '');
+    var num = parseFloat(numStr);
+    if (isNaN(num) || num === 0) return;
+
+    /* Preserve prefix (e.g. "$") and suffix (e.g. " mm", "%") */
+    var prefix = '';
+    var suffix = '';
+    var numIdx = raw.search(/[\d\-]/);
+    if (numIdx > 0) prefix = raw.slice(0, numIdx);
+    var afterNum = raw.slice(numIdx + numStr.length);
+    suffix = afterNum;
+
+    var duration = 280;
+    var start = null;
+
+    function step(ts) {
+      if (!start) start = ts;
+      var progress = Math.min((ts - start) / duration, 1);
+      var eased = 1 - Math.pow(1 - progress, 2);
+      var current = eased * num;
+      el.textContent = prefix + (isFloat ? current.toFixed(2) : Math.round(current)) + suffix;
+      if (progress < 1) {
+        requestAnimationFrame(step);
+      } else {
+        el.textContent = raw; /* restore exact original */
+        /* Glow pulse: bright → steady dim */
+        el.style.textShadow = '0 0 12px rgba(255, 107, 0, 0.9)';
+        setTimeout(function () {
+          el.style.textShadow = '0 0 6px rgba(255, 107, 0, 0.4)';
+          setTimeout(function () {
+            el.style.textShadow = '';
+          }, 400);
+        }, 120);
+      }
+    }
+
+    requestAnimationFrame(step);
+  }
+
+  /* Expose globally so tool scripts can call window.burnIn(el) */
+  window.burnIn = burnIn;
+
+  /* Auto-detect changes in .readout-value and .calc-output elements */
+  if (!prefersReducedMotion) {
+    var burnInObserver = new MutationObserver(function (mutations) {
+      mutations.forEach(function (m) {
+        var node = m.type === 'characterData' ? m.target.parentElement : m.target;
+        if (!node) return;
+        /* Walk up max 2 levels to find a readout container */
+        var readout = null;
+        for (var i = 0; i < 3; i++) {
+          if (!node) break;
+          if (node.classList &&
+              (node.classList.contains('readout-value') ||
+               node.classList.contains('calc-output'))) {
+            readout = node;
+            break;
+          }
+          node = node.parentElement;
+        }
+        if (!readout || readout._burnActive) return;
+        readout._burnActive = true;
+        burnIn(readout);
+        setTimeout(function () { readout._burnActive = false; }, 500);
+      });
+    });
+
+    burnInObserver.observe(document.body, {
+      subtree: true,
+      childList: true,
+      characterData: true
+    });
+  }
+
+  /* ── HOME STATS COUNTER (with burn-in glow) ── */
   function animateCounter(el) {
     var raw = el.textContent.trim();
     var num = parseInt(raw, 10);
@@ -61,7 +128,16 @@
       var progress = Math.min((ts - start) / duration, 1);
       var eased = 1 - Math.pow(1 - progress, 3);
       el.textContent = Math.round(eased * num) + suffix;
-      if (progress < 1) requestAnimationFrame(step);
+      if (progress < 1) {
+        requestAnimationFrame(step);
+      } else {
+        /* Burn-in glow on completion */
+        el.style.textShadow = '0 0 14px rgba(255, 107, 0, 0.8)';
+        setTimeout(function () {
+          el.style.textShadow = '0 0 6px rgba(255, 107, 0, 0.3)';
+          setTimeout(function () { el.style.textShadow = ''; }, 500);
+        }, 150);
+      }
     }
 
     requestAnimationFrame(step);
@@ -81,18 +157,20 @@
   var statsBar = document.querySelector('.home-stats');
   if (statsBar) statsObserver.observe(statsBar);
 
+  /* ── SCROLL PROGRESS BAR ── */
   var progressBar = document.getElementById('scrollProgress');
   function updateScrollProgress() {
     if (!progressBar) return;
     var total = document.documentElement.scrollHeight - window.innerHeight;
-    var pct = total > 0 ? (window.scrollY / total) * 100 : 0;
-    progressBar.style.setProperty('--scroll-pct', pct / 100);
+    var pct = total > 0 ? window.scrollY / total : 0;
+    progressBar.style.setProperty('--scroll-pct', pct);
   }
   if (progressBar) {
     window.addEventListener('scroll', updateScrollProgress, { passive: true });
     updateScrollProgress();
   }
 
+  /* ── JOURNEY SECTION OBSERVER ── */
   var journeySections = Array.prototype.slice.call(document.querySelectorAll('[data-journey]'));
   if (journeySections.length) {
     var journeyObserver = new IntersectionObserver(function (entries) {
@@ -108,111 +186,19 @@
     });
   }
 
-  if (!prefersReducedMotion) {
-    var heroGlow = document.querySelector('.home-hero-glow');
-    var heroVisual = document.querySelector('.hero-visual');
-    var heroScene = document.getElementById('heroPrinterScene');
-    if (heroGlow) {
-      document.addEventListener('mousemove', function (e) {
-        var cx = window.innerWidth / 2;
-        var cy = window.innerHeight / 2;
-        var dx = (e.clientX - cx) / cx;
-        var dy = (e.clientY - cy) / cy;
-        heroGlow.style.transform = 'translateX(calc(-50% + ' + (dx * 18) + 'px)) translateY(' + (dy * 10) + 'px)';
-      }, { passive: true });
-    }
-
-    if (heroVisual && heroScene) {
-      heroVisual.addEventListener('mousemove', function (e) {
-        var rect = heroVisual.getBoundingClientRect();
-        var px = clamp((e.clientX - rect.left) / rect.width, 0, 1);
-        var py = clamp((e.clientY - rect.top) / rect.height, 0, 1);
-        heroScene.style.setProperty('--scene-tilt-x', ((0.5 - py) * 1.6).toFixed(2) + 'deg');
-        heroScene.style.setProperty('--scene-tilt-y', ((px - 0.5) * 2.2).toFixed(2) + 'deg');
-      });
-
-      heroVisual.addEventListener('mouseleave', function () {
-        heroScene.style.setProperty('--scene-tilt-x', '0deg');
-        heroScene.style.setProperty('--scene-tilt-y', '0deg');
-      });
-    }
-
-    document.querySelectorAll('.tool-card').forEach(function (card) {
-      card.addEventListener('mousemove', function (e) {
-        setCardTilt(card, e, '-6px');
-      });
-      card.addEventListener('mouseleave', function () {
-        resetCardTilt(card);
-      });
-    });
-
-    document.querySelectorAll('.home-cat-card, .home-featured-card').forEach(function (card) {
-      card.addEventListener('mousemove', function (e) {
-        setCardTilt(card, e, '-10px');
-      });
-      card.addEventListener('mouseleave', function () {
-        resetCardTilt(card);
-      });
-    });
-  }
-
-  var homeMain = document.querySelector('.home-main');
-  if (homeMain) {
-    var workflowChips = Array.prototype.slice.call(document.querySelectorAll('.workflow-chip[data-workflow-stage]'));
-    var homeSections = Array.prototype.slice.call(document.querySelectorAll('.home-main [data-journey]'));
-    var ticking = false;
-
-    function updateHomeDepth() {
-      ticking = false;
-      var viewportHeight = window.innerHeight || document.documentElement.clientHeight;
-      var mainRect = homeMain.getBoundingClientRect();
-      var total = Math.max(homeMain.offsetHeight - viewportHeight, 1);
-      var progress = clamp((-mainRect.top) / total, 0, 1);
-
-      homeMain.style.setProperty('--home-scroll', progress.toFixed(3));
-
-      var activeStage = document.body.dataset.journey || 'diagnose';
-      var strongestDepth = 0;
-
-      homeSections.forEach(function (section) {
-        var rect = section.getBoundingClientRect();
-        var center = rect.top + rect.height / 2;
-        var distance = Math.abs((viewportHeight / 2) - center);
-        var depth = clamp(1 - (distance / (viewportHeight * 0.8)), 0, 1);
-        section.style.setProperty('--section-depth', depth.toFixed(3));
-        section.style.setProperty('--section-shift', ((0.5 - depth) * 100).toFixed(1) + 'px');
-
-        if (depth > strongestDepth) {
-          strongestDepth = depth;
-          activeStage = section.dataset.journey;
-        }
-      });
-
-      workflowChips.forEach(function (chip) {
-        chip.classList.toggle('is-active', chip.getAttribute('data-workflow-stage') === activeStage);
-      });
-    }
-
-    function requestHomeDepthUpdate() {
-      if (!ticking) {
-        ticking = true;
-        requestAnimationFrame(updateHomeDepth);
-      }
-    }
-
-    window.addEventListener('scroll', requestHomeDepthUpdate, { passive: true });
-    window.addEventListener('resize', requestHomeDepthUpdate, { passive: true });
-    updateHomeDepth();
-  }
-
+  /* ── DIAGNOSIS SCAN COMPLETE ── */
   var resultsWrap = document.getElementById('resultsWrap');
   if (resultsWrap) {
     var diagObserver = new MutationObserver(function (mutations) {
       mutations.forEach(function (m) {
         if (m.type === 'attributes' && m.attributeName === 'style') {
-          if (resultsWrap.style.display !== 'none' && resultsWrap.style.display !== '' && !prefersReducedMotion) {
+          if (resultsWrap.style.display !== 'none' &&
+              resultsWrap.style.display !== '' &&
+              !prefersReducedMotion) {
             resultsWrap.classList.add('scan-complete');
-            setTimeout(function () { resultsWrap.classList.remove('scan-complete'); }, 600);
+            setTimeout(function () {
+              resultsWrap.classList.remove('scan-complete');
+            }, 600);
           }
         }
       });
@@ -220,12 +206,4 @@
     diagObserver.observe(resultsWrap, { attributes: true });
   }
 
-  setTimeout(function () {
-    document.querySelectorAll('.layer-wipe').forEach(function (el) {
-      var rect = el.getBoundingClientRect();
-      if (rect.top < window.innerHeight) {
-        el.classList.add('wipe-in');
-      }
-    });
-  }, 200);
 })();
