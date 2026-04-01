@@ -292,7 +292,7 @@ main {
   margin-bottom: 1.25rem;
 }
 
-.hero h1 .h1-accent { color: var(--accent-bright); }
+.hero h1 .h1-accent { color: var(--accent); }
 
 .hero-intro {
   font-size: 1rem;
@@ -1915,7 +1915,7 @@ footer a:hover { color: var(--accent); }
   overflow: hidden;
   padding: 4rem 5vw;
   display: grid;
-  grid-template-columns: 1fr 480px;
+  grid-template-columns: 1fr 640px;
   align-items: center;
   gap: 4rem;
   font-family: 'Share Tech Mono', monospace;
@@ -1944,7 +1944,7 @@ footer a:hover { color: var(--accent); }
   letter-spacing: -0.02em;
 }
 
-.h1-accent { color: var(--accent-bright); }
+.h1-accent { color: var(--accent); }
 
 .home-hero-sub {
   font-size: 1rem;
@@ -2127,20 +2127,6 @@ footer a:hover { color: var(--accent); }
   position: relative;
   display: inline-block;
   animation: heroFadeIn 0.4s 1.4s both;
-}
-.glitch-sub::before {
-  content: attr(data-text);
-  position: absolute;
-  top: 0; left: 0;
-  color: #ff0040;
-  animation: glitchSub 6s steps(1) infinite;
-  clip-path: polygon(0 30%, 100% 30%, 100% 70%, 0 70%);
-}
-@keyframes glitchSub {
-  0%, 88%, 100% { transform: translate(0); opacity: 0; }
-  89% { transform: translate(-2px, 0); opacity: 0.5; }
-  91% { transform: translate(2px, 0); opacity: 0.4; }
-  93% { transform: translate(0); opacity: 0; }
 }
 
 /* Metrics */
