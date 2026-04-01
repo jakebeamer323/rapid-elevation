@@ -7,9 +7,18 @@
   // Inject parallax background element
   var siteBg = document.createElement('div');
   siteBg.id = 'site-bg';
+
+  function updateBgHeight() {
+    var maxTranslate = document.documentElement.scrollHeight * 0.2;
+    siteBg.style.height = (window.innerHeight + maxTranslate) + 'px';
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
     document.body.insertBefore(siteBg, document.body.firstChild);
+    updateBgHeight();
   });
+
+  window.addEventListener('resize', updateBgHeight);
 
   // Parallax scroll handler — bg drifts at 20% of scroll speed
   var ticking = false;
