@@ -1913,11 +1913,46 @@ footer a:hover { color: var(--accent); }
 .home-hero {
   position: relative;
   overflow: hidden;
-  min-height: 85vh;
+  padding: 4rem 5vw;
   display: flex;
+  flex-direction: row;
   align-items: center;
-  justify-content: center;
+  gap: 3rem;
   font-family: 'Share Tech Mono', monospace;
+}
+
+.hero-left {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+  position: relative;
+  z-index: 5;
+}
+
+.hero-right {
+  flex-shrink: 0;
+  position: relative;
+  z-index: 5;
+}
+
+.home-h1 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(2.2rem, 4vw, 3.4rem);
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--text);
+  margin-bottom: 1.25rem;
+  letter-spacing: -0.02em;
+}
+
+.h1-accent { color: var(--accent-bright); }
+
+.home-hero-sub {
+  font-size: 1rem;
+  color: var(--text-muted);
+  line-height: 1.75;
+  max-width: 480px;
+  margin: 0 0 2rem;
 }
 
 /* CRT scanlines */
@@ -1978,10 +2013,9 @@ footer a:hover { color: var(--accent); }
 
 .hero-inner {
   position: relative;
-  z-index: 5;
-  max-width: 860px;
-  width: 90%;
-  padding: 80px 0 60px;
+  width: 480px;
+  max-width: 100%;
+  padding: 36px 28px;
   text-align: left;
 }
 
@@ -2444,9 +2478,10 @@ footer a:hover { color: var(--accent); }
   .sev-legend { gap: 0.75rem; }
   .likelihood-bar { display: none; }
   .results-layout { grid-template-columns: 1fr; }
-  .home-hero { min-height: 100svh; }
-  .hero-inner { padding: 60px 0 40px; }
-  .glitch-headline { font-size: clamp(22px, 7vw, 42px); }
+  .home-hero { flex-direction: column; align-items: flex-start; padding: 3rem 1.25rem 2.5rem; gap: 2rem; }
+  .hero-right { width: 100%; }
+  .hero-inner { width: 100%; padding: 28px 20px; }
+  .glitch-headline { font-size: clamp(18px, 6vw, 32px); }
   .term-metrics { gap: 20px; flex-wrap: wrap; }
   .home-stat { padding: 0 1.25rem; }
   .home-value-inner { grid-template-columns: 1fr; gap: 1.5rem; }
