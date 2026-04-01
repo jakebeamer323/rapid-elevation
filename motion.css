@@ -582,23 +582,8 @@ a.tool-card:hover {
 }
 
 .home-hero {
-  min-height: auto;
-  padding: 5.25rem 2rem 2.5rem;
-}
-
-.home-hero-inner {
-  width: min(1320px, 100%);
-  display: grid;
-  grid-template-columns: minmax(320px, 520px) minmax(420px, 1fr);
-  gap: 2rem;
-  align-items: center;
-  position: relative;
-  z-index: 2;
-}
-
-.home-hero-content {
-  text-align: left;
-  max-width: 520px;
+  padding: 5.25rem 2rem 3.5rem;
+  max-width: 720px;
 }
 
 .home-hero-sub {
