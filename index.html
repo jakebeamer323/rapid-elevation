@@ -357,6 +357,45 @@
   <script src="nav.js"></script>
   <script src="motion.js"></script>
   <script>
+    /* ---- HERO: headline scramble ---- */
+    (function () {
+      const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%!?/\\|[]{}^&*<>';
+      const ORIGINAL = '> ACCESS GRANTED TO THE PRINT UNDERGROUND';
+      const FRAME_MS = 35;
+      const RESOLVE_PER_FRAME = 1;
+
+      function scramble() {
+        const el = document.querySelector('.glitch-headline');
+        if (!el) return;
+        let resolved = 0;
+        const total = ORIGINAL.length;
+        const ticker = setInterval(() => {
+          let out = '';
+          for (let i = 0; i < total; i++) {
+            if (ORIGINAL[i] === ' ') { out += ' '; continue; }
+            out += i < resolved
+              ? ORIGINAL[i]
+              : CHARS[Math.floor(Math.random() * CHARS.length)];
+          }
+          el.firstChild.textContent = out;
+          el.dataset.text = out;
+          resolved += RESOLVE_PER_FRAME;
+          if (resolved > total) {
+            clearInterval(ticker);
+            el.firstChild.textContent = ORIGINAL;
+            el.dataset.text = ORIGINAL;
+          }
+        }, FRAME_MS);
+      }
+
+      document.addEventListener('DOMContentLoaded', function () {
+        setTimeout(scramble, 400);
+        (function loop() {
+          setTimeout(function () { scramble(); loop(); }, 8000 + Math.random() * 10000);
+        })();
+      });
+    })();
+
     /* ---- HERO: uptime counter ---- */
     let seconds = 0;
     setInterval(() => {

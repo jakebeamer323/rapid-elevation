@@ -1947,7 +1947,7 @@ footer a:hover { color: var(--accent); }
 .h1-accent { color: var(--accent); }
 
 .home-hero-sub {
-  font-size: 1rem;
+  font-size: 1.15rem;
   color: var(--text-muted);
   line-height: 1.75;
   max-width: 480px;
@@ -2209,12 +2209,12 @@ footer a:hover { color: var(--accent); }
 /* Blinking cursor inside headline */
 .hero-cursor {
   display: inline-block;
-  width: 10px;
-  height: 1.1em;
+  width: 2px;
+  height: 0.9em;
   background: #ff6a00;
   vertical-align: text-bottom;
   margin-left: 4px;
-  animation: blink 1s steps(1) infinite;
+  animation: blink 0.8s steps(1) infinite;
 }
 
 @keyframes heroFadeIn {
@@ -2234,6 +2234,8 @@ footer a:hover { color: var(--accent); }
   padding: 1.25rem 2rem;
   flex-wrap: wrap;
   margin-bottom: 2.5rem;
+  -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
 }
 
 .home-stat {
@@ -2247,7 +2249,7 @@ footer a:hover { color: var(--accent); }
   font-family: 'JetBrains Mono', monospace;
   font-size: 1.8rem;
   font-weight: 700;
-  color: var(--accent-bright);
+  color: var(--accent);
   line-height: 1;
 }
 
