@@ -7,6 +7,7 @@
   <meta name="description" content="Free 3D printing tools and resources built by a maker, for makers. Diagnose print failures, calculate costs, and level up your prints.">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="motion.css">
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -76,44 +77,53 @@
   <main class="home-main">
 
     <section class="home-hero">
-      <div class="hero-left">
-        <div class="hero-ambient-dot">System Ready</div>
-        <p class="hero-eyebrow">Free 3D Printing Tools &amp; Resources</p>
-        <h1 class="home-h1">Better prints,<br><span class="h1-accent">fewer headaches.</span></h1>
-        <p class="home-hero-sub">
-          A free collection of calculators, analyzers, and references built by a maker, for makers.
-          Diagnose failures, dial in settings, and get back to printing &mdash; no accounts, no paywalls.
-        </p>
-        <div class="btn-row">
-          <a href="tools.html" class="btn">Run Tools</a>
-          <a href="models.html" class="btn btn-outline">Download Models</a>
+      <div class="hero-scanline-sweep"></div>
+
+      <div class="hero-inner">
+        <div class="hud-frame">
+          <span class="tl"></span><span class="tr"></span>
+          <span class="bl"></span><span class="br"></span>
         </div>
-      </div>
-      <div class="hero-right">
-        <div class="hero-sys-panel">
-          <div class="hero-sys-header">
-            <span class="hero-sys-led"></span>
-            <span class="hero-sys-title">SYSTEM_STATUS</span>
+
+        <div class="boot-lines">
+          <div class="boot-line">BIOS v2.3.7 &hellip; INITIALIZING PRINT MATRIX &hellip;</div>
+          <div class="boot-line">FILAMENT ARRAY &hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip; <span class="ok">[ OK ]</span></div>
+          <div class="boot-line">SLICER DAEMON &hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip; <span class="ok">[ OK ]</span></div>
+          <div class="boot-line">UNDERGROUND NODE &hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip;&hellip; <span class="ok">[ OK ]</span></div>
+        </div>
+
+        <div class="term-status">
+          SYS:<span>ONLINE</span> &nbsp;|&nbsp; NODE:<span>UNRESTRICTED</span> &nbsp;|&nbsp; UPTIME:<span id="uptime">00:00:00</span>
+        </div>
+
+        <h1 class="glitch-headline" data-text="&gt; ACCESS GRANTED TO THE PRINT UNDERGROUND">
+          &gt; ACCESS GRANTED TO THE PRINT UNDERGROUND<span class="hero-cursor"></span>
+        </h1>
+
+        <div class="term-divider"></div>
+
+        <p class="glitch-sub" data-text="Calculators • Models • Tools • Troubleshoot the Matrix">
+          Calculators &nbsp;&bull;&nbsp; Models &nbsp;&bull;&nbsp; Tools &nbsp;&bull;&nbsp; Troubleshoot the Matrix
+        </p>
+
+        <div class="term-metrics">
+          <div class="metric">
+            <span class="metric-label">TOOLS INDEXED</span>
+            <span class="metric-value" id="toolCount">0</span>
           </div>
-          <div class="hero-sys-uptime-row">
-            <div class="hero-sys-uptime-label">// SESSION UPTIME</div>
-            <div class="hero-sys-uptime-val" id="uptime">00:00:00</div>
+          <div class="metric">
+            <span class="metric-label">MODELS ONLINE</span>
+            <span class="metric-value" id="bpCount">0</span>
           </div>
-          <div class="hero-sys-divider"></div>
-          <div class="hero-sys-metrics">
-            <div class="hero-sys-metric">
-              <div class="hero-sys-metric-val" id="toolCount">0</div>
-              <div class="hero-sys-metric-label">TOOLS ONLINE</div>
-            </div>
-            <div class="hero-sys-metric">
-              <div class="hero-sys-metric-val" id="bpCount">0</div>
-              <div class="hero-sys-metric-label">BUILD PROFILES</div>
-            </div>
-            <div class="hero-sys-metric">
-              <div class="hero-sys-metric-val" id="nodeCount">0</div>
-              <div class="hero-sys-metric-label">PRINTERS</div>
-            </div>
+          <div class="metric">
+            <span class="metric-label">PRINTERS AVAILABLE</span>
+            <span class="metric-value" id="nodeCount">0</span>
           </div>
+        </div>
+
+        <div class="term-btns">
+          <a href="tools.html" class="term-btn primary">RUN TOOLS</a>
+          <a href="models.html" class="term-btn">DOWNLOAD MODELS</a>
         </div>
       </div>
     </section>
