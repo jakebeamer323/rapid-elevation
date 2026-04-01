@@ -363,20 +363,38 @@
       const ORIGINAL = '> ACCESS GRANTED TO THE PRINT UNDERGROUND';
       const FRAME_MS = 35;
 
-      function countUp(el, target, duration) {
-        let start = 0, step = target / (duration / 16);
-        const tick = () => {
-          start = Math.min(start + step, target);
-          el.textContent = Math.floor(start);
-          if (start < target) requestAnimationFrame(tick);
-        };
-        requestAnimationFrame(tick);
-      }
+      const METRICS = [
+        { id: 'toolCount', target: 28 },
+        { id: 'bpCount',   target: 9  },
+        { id: 'nodeCount', target: 115 }
+      ];
 
-      function runCountUps() {
-        countUp(document.getElementById('toolCount'), 28, 1200);
-        countUp(document.getElementById('bpCount'), 9, 1200);
-        countUp(document.getElementById('nodeCount'), 115, 1200);
+      function scrambleMetrics() {
+        METRICS.forEach(function (m) {
+          const el = document.getElementById(m.id);
+          if (!el) return;
+          const digits = '0123456789';
+          let elapsed = 0;
+          const scrambleDuration = 600;
+          const countDuration = 700;
+          const ticker = setInterval(function () {
+            elapsed += 50;
+            if (elapsed < scrambleDuration) {
+              const rand = Math.floor(Math.random() * (m.target * 3));
+              el.textContent = rand;
+            } else {
+              clearInterval(ticker);
+              let start = 0;
+              const step = m.target / (countDuration / 16);
+              const tick = function () {
+                start = Math.min(start + step, m.target);
+                el.textContent = Math.floor(start);
+                if (start < m.target) requestAnimationFrame(tick);
+              };
+              requestAnimationFrame(tick);
+            }
+          }, 50);
+        });
       }
 
       function scramble(onComplete) {
@@ -384,6 +402,7 @@
         if (!el) { if (onComplete) onComplete(); return; }
         let resolved = 0;
         const total = ORIGINAL.length;
+        scrambleMetrics();
         const ticker = setInterval(() => {
           let out = '';
           for (let i = 0; i < total; i++) {
@@ -405,10 +424,8 @@
       }
 
       document.addEventListener('DOMContentLoaded', function () {
-        // Initial load: scramble then immediately start count-ups
-        setTimeout(function () { scramble(runCountUps); }, 400);
+        setTimeout(function () { scramble(); }, 400);
 
-        // Repeat scramble at random intervals (no count-up repeat)
         (function loop() {
           setTimeout(function () { scramble(); loop(); }, 8000 + Math.random() * 10000);
         })();
