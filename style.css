@@ -2070,6 +2070,18 @@ footer a:hover { color: var(--accent); }
 }
 .term-status span { color: rgba(255,106,0,0.73); }
 
+/* Tagline between status and headline */
+.term-tagline {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--text);
+  text-transform: uppercase;
+  margin-bottom: 18px;
+  animation: heroFadeIn 0.4s 1s both;
+}
+
 /* Glitch headline */
 .glitch-headline {
   font-family: 'VT323', monospace;
