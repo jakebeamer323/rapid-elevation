@@ -2076,9 +2076,10 @@ footer a:hover { color: var(--accent); }
   font-size: 15px;
   font-weight: 700;
   letter-spacing: 3px;
-  color: var(--text);
+  color: rgba(255,106,0,0.73);
   text-transform: uppercase;
   margin-bottom: 18px;
+  text-shadow: 0 0 8px rgba(255,106,0,0.55), 0 0 20px rgba(255,106,0,0.25);
   animation: heroFadeIn 0.4s 1s both;
 }
 
