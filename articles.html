@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Articles — Rapid Elevation</title>
+  <meta name="description" content="In-depth 3D printing guides and articles — printer setup, filament selection, slicer comparisons, post-processing, and more.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="motion.css">
+  <style>
+    .article-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 3rem;
+    }
+    .article-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.2s, transform 0.15s, filter 0.2s;
+      clip-path: polygon(
+        12px 0%, calc(100% - 12px) 0%,
+        100% 12px, 100% calc(100% - 12px),
+        calc(100% - 12px) 100%, 12px 100%,
+        0% calc(100% - 12px), 0% 12px
+      );
+    }
+    .article-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+      filter: drop-shadow(0 8px 24px rgba(0,0,0,0.45)) drop-shadow(0 0 16px rgba(255,107,0,0.12));
+    }
+    .article-card-icon {
+      padding: 1.5rem 1.5rem 0;
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+    .article-card-body {
+      padding: 1rem 1.5rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .article-card-tag {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.4rem;
+    }
+    .article-card-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.5rem;
+      line-height: 1.4;
+    }
+    .article-card-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+      flex: 1;
+    }
+    .article-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 1rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--border);
+    }
+    .article-card-status {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.55rem;
+      border-radius: 20px;
+    }
+    .article-card-status.coming-soon {
+      background: rgba(255,107,0,0.08);
+      color: var(--text-dim);
+      border: 1px solid var(--border);
+    }
+    .article-card-arrow {
+      font-size: 1rem;
+      color: var(--accent);
+      opacity: 0.6;
+    }
+    .article-card:hover .article-card-arrow { opacity: 1; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">Rapid <span class="logo-accent">Elevation</span></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-trigger" data-href="tools.html">Tools <span class="nav-dd-arrow">&#9660;</span></button>
+        <div class="nav-dropdown-menu nav-mega-menu">
+          <div class="nav-mega-col">
+            <div class="nav-mega-heading">Diagnostic</div>
+            <a href="diagnosis.html">Print Diagnosis</a>
+            <a href="troubleshooting-db.html">Troubleshooting Database</a>
+            <div class="nav-mega-heading">Calibration</div>
+            <a href="esteps.html">E-Steps Calculator</a>
+            <a href="flow-rate.html">Flow Rate Calculator</a>
+            <a href="temp-tower.html">Temperature Tower</a>
+            <a href="retraction-tool.html">Retraction Test</a>
+            <a href="pressure-advance.html">Pressure Advance / K-factor</a>
+            <a href="max-flow.html">Max Volumetric Flow</a>
+          </div>
+          <div class="nav-mega-col">
+            <div class="nav-mega-heading">Print Preparation</div>
+            <a href="print-time.html">Print Time Estimator</a>
+            <a href="layer-height.html">Layer Height Optimizer</a>
+            <a href="infill-optimizer.html">Support &amp; Infill Optimizer</a>
+            <div class="nav-mega-heading">Model &amp; File</div>
+            <a href="stl-analyzer.html">STL Analyzer</a>
+            <a href="wall-checker.html">Wall Thickness Checker</a>
+            <a href="orientation-calc.html">Orientation Calculator</a>
+          </div>
+          <div class="nav-mega-col">
+            <div class="nav-mega-heading">Material &amp; Hardware</div>
+            <a href="filament-cost.html">Filament Cost Calculator</a>
+            <a href="settings-cheat.html">Settings Cheat Sheet</a>
+            <a href="drying-guide.html">Drying Guide &amp; Timer</a>
+            <a href="nozzle-compat.html">Nozzle Compatibility</a>
+            <a href="spool-estimator.html">Spool Estimator</a>
+            <a href="diameter-variance.html">Diameter Variance</a>
+            <div class="nav-mega-heading">Advanced</div>
+            <a href="gcode-viewer.html">G-code Viewer</a>
+            <a href="test-print-gen.html">Test Print Generator</a>
+            <a href="firmware-compare.html">Firmware Compare</a>
+            <a href="ams-planner.html">AMS Planner</a>
+            <a href="slicer-profile.html">Slicer Profile Generator</a>
+            <a href="ai-chat.html">3D Printing FAQ</a>
+          </div>
+          <div class="nav-mega-viewall"><a href="tools.html">Browse all tools &rarr;</a></div>
+        </div>
+      </div>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-trigger">Popular <span class="nav-dd-arrow">&#9660;</span></button>
+        <div class="nav-dropdown-menu">
+          <a href="diagnosis.html">Print Diagnosis</a>
+          <a href="esteps.html">E-Steps Calculator</a>
+          <a href="settings-cheat.html">Settings Cheat Sheet</a>
+        </div>
+      </div>
+      <a href="models.html">Models</a>
+      <a href="articles.html" class="active">Articles</a>
+      <a href="about.html">About</a>
+    </div>
+  </nav>
+
+  <main>
+
+    <div class="page-header reveal">
+      <h1>Articles</h1>
+      <p>In-depth guides written for makers at every level &mdash; from first-time setup to advanced finishing techniques.</p>
+    </div>
+
+    <div class="article-grid reveal reveal-stagger">
+
+      <!-- Printer Setup -->
+      <a href="#" class="article-card card-depth">
+        <div class="article-card-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" viewBox="0 0 256 256">
+            <path d="M213.66,82.34l-56-56A8,8,0,0,0,152,24H56A16,16,0,0,0,40,40V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V88A8,8,0,0,0,213.66,82.34ZM160,51.31,188.69,80H160ZM200,216H56V40h88V88a8,8,0,0,0,8,8h48V216Zm-40-72a8,8,0,0,1-8,8H104a8,8,0,0,1,0-16h48A8,8,0,0,1,160,144Zm0,32a8,8,0,0,1-8,8H104a8,8,0,0,1,0-16h48A8,8,0,0,1,160,176Z"></path>
+          </svg>
+        </div>
+        <div class="article-card-body">
+          <div class="article-card-tag">Beginner Guide</div>
+          <div class="article-card-title">The Fully Comprehensive Guide to Setting Up Your First 3D Printer</div>
+          <div class="article-card-desc">Unboxing to first successful print — covers assembly, leveling, first-layer tuning, slicer setup, and the most common beginner mistakes to avoid.</div>
+          <div class="article-card-footer">
+            <span class="article-card-status coming-soon">Coming Soon</span>
+            <span class="article-card-arrow">&rarr;</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Best Tools -->
+      <a href="#" class="article-card card-depth">
+        <div class="article-card-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" viewBox="0 0 256 256">
+            <path d="M221.66,90.34l-128,128a8,8,0,0,1-11.32,0l-48-48a8,8,0,0,1,11.32-11.32L88,201.37,210.34,79a8,8,0,0,1,11.32,11.31ZM165.66,18.34A8,8,0,0,0,154.34,29.66L160,35.31l-26.34,26.35-5.66-5.66a8,8,0,0,0-11.32,11.31l5.66,5.66L96,99.31,90.34,93.66A8,8,0,0,0,79,105l5.66,5.66L57.37,138l-5.71-5.71a8,8,0,1,0-11.32,11.32l48,48A8,8,0,0,0,99.66,180l-5.71-5.71,26.34-26.34,5.66,5.66A8,8,0,0,0,137.27,142l-5.66-5.66L158,110l5.66,5.66a8,8,0,0,0,11.32-11.31L169.32,99,196,72.69l5.66,5.66a8,8,0,1,0,11.32-11.32Z"></path>
+          </svg>
+        </div>
+        <div class="article-card-body">
+          <div class="article-card-tag">Gear &amp; Accessories</div>
+          <div class="article-card-title">Best Tools &amp; Accessories for Any 3D Printer Hobbyist</div>
+          <div class="article-card-desc">The calipers, spatulas, clippers, and upgrades that actually matter — what to buy first, what to skip, and what makes a real difference day to day.</div>
+          <div class="article-card-footer">
+            <span class="article-card-status coming-soon">Coming Soon</span>
+            <span class="article-card-arrow">&rarr;</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Filament 101 -->
+      <a href="#" class="article-card card-depth">
+        <div class="article-card-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" viewBox="0 0 256 256">
+            <path d="M140,180a12,12,0,1,1-12-12A12,12,0,0,1,140,180ZM128,72c-22.06,0-40,16.15-40,36v4a8,8,0,0,0,16,0v-4c0-11,10.77-20,24-20s24,9,24,20-10.77,20-24,20a8,8,0,0,0-8,8v8a8,8,0,0,0,16,0v-.72c18.24-3.35,32-17.9,32-35.28C168,88.15,150.06,72,128,72Zm104,56A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Zm-16,0a88,88,0,1,0-88,88A88.1,88.1,0,0,0,216,128Z"></path>
+          </svg>
+        </div>
+        <div class="article-card-body">
+          <div class="article-card-tag">Materials</div>
+          <div class="article-card-title">Filament 101: Choosing the Right Material for Every Project</div>
+          <div class="article-card-desc">PLA, PETG, ABS, ASA, TPU, PA, and more — what each is actually good for, its real limitations, and how to pick the right one without overthinking it.</div>
+          <div class="article-card-footer">
+            <span class="article-card-status coming-soon">Coming Soon</span>
+            <span class="article-card-arrow">&rarr;</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Best Slicers -->
+      <a href="#" class="article-card card-depth">
+        <div class="article-card-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" viewBox="0 0 256 256">
+            <path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"></path>
+          </svg>
+        </div>
+        <div class="article-card-body">
+          <div class="article-card-tag">Software</div>
+          <div class="article-card-title">Best Free and Paid Slicers: A Straight Comparison</div>
+          <div class="article-card-desc">OrcaSlicer, PrusaSlicer, Bambu Studio, Cura, Simplify3D — features, printer support, interface, and which one actually suits your workflow.</div>
+          <div class="article-card-footer">
+            <span class="article-card-status coming-soon">Coming Soon</span>
+            <span class="article-card-arrow">&rarr;</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Designing Your First Model -->
+      <a href="#" class="article-card card-depth">
+        <div class="article-card-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" viewBox="0 0 256 256">
+            <path d="M230.14,70.54,185.46,25.86a20,20,0,0,0-28.29,0L33.86,149.17A19.85,19.85,0,0,0,28,163.31V208a12,12,0,0,0,12,12H84.69a19.86,19.86,0,0,0,14.14-5.86L222.14,90.83a20,20,0,0,0,0-28.29ZM84.69,204H40V163.31l88-88L172.69,120Zm120-120L183.31,105,151,72.69l21.34-21.34,32.31,32.31Z"></path>
+          </svg>
+        </div>
+        <div class="article-card-body">
+          <div class="article-card-tag">Modeling</div>
+          <div class="article-card-title">Designing Your First Model: Fusion 360, TinkerCAD, and Blender</div>
+          <div class="article-card-desc">Which tool fits your goal, how to think about design for printing, and a practical walkthrough of your first part from sketch to sliceable STL.</div>
+          <div class="article-card-footer">
+            <span class="article-card-status coming-soon">Coming Soon</span>
+            <span class="article-card-arrow">&rarr;</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Post Processing -->
+      <a href="#" class="article-card card-depth">
+        <div class="article-card-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" viewBox="0 0 256 256">
+            <path d="M232.49,215.51l-48.4-48.4A96.26,96.26,0,0,0,200,116a96,96,0,0,0-96-96c-13.47,0-23.22,4.28-30.2,8.31C59.95,35.49,48,48.28,48,64a40,40,0,0,0,40,40c10.2,0,18.08-3.37,24-6.52V200a32,32,0,0,0,32,32h16a8,8,0,0,0,0-16H144a16,16,0,0,1-16-16V168h32a8,8,0,0,0,0-16H128V130.45A96.16,96.16,0,0,0,176.89,152l39.11,39.1a8,8,0,0,0,11.32,0A8,8,0,0,0,232.49,215.51ZM104,88a24,24,0,0,1-24-24c0-8.56,6.4-15.71,13.35-20A80.24,80.24,0,0,1,104,40a80,80,0,1,1,64.77,128.94A80.09,80.09,0,0,1,104,88Z"></path>
+          </svg>
+        </div>
+        <div class="article-card-body">
+          <div class="article-card-tag">Finishing</div>
+          <div class="article-card-title">Post-Processing Secrets: Sanding, Priming, and Painting Your Prints</div>
+          <div class="article-card-desc">How to get a finish that doesn't look 3D-printed — the right grits, primers, filler sprays, and painting techniques for a clean final result.</div>
+          <div class="article-card-footer">
+            <span class="article-card-status coming-soon">Coming Soon</span>
+            <span class="article-card-arrow">&rarr;</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Magnets -->
+      <a href="#" class="article-card card-depth">
+        <div class="article-card-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" viewBox="0 0 256 256">
+            <path d="M248,112v48a88,88,0,0,1-176,0V112a8,8,0,0,1,16,0v48a72,72,0,0,0,144,0V112a8,8,0,0,1,16,0ZM32,56a8,8,0,0,1,8-8H96a8,8,0,0,1,8,8v56a32,32,0,0,0,64,0V56a8,8,0,0,1,8-8h56a8,8,0,0,1,0,16H184v48a48,48,0,0,1-96,0V64H48A8,8,0,0,1,32,56Z"></path>
+          </svg>
+        </div>
+        <div class="article-card-body">
+          <div class="article-card-tag">Tips &amp; Tricks</div>
+          <div class="article-card-title">Magnets in Prints: How Should You Actually Embed Them?</div>
+          <div class="article-card-desc">The methods that work, the ones that don't, and which approach to use depending on magnet size, material, and whether you need it removable or permanent.</div>
+          <div class="article-card-footer">
+            <span class="article-card-status coming-soon">Coming Soon</span>
+            <span class="article-card-arrow">&rarr;</span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Rapid Elevation &mdash; Built by <a href="https://jakebeamer323.github.io/my-site" target="_blank">Jake Lewien</a></p>
+  </footer>
+
+  <script src="nav.js"></script>
+  <script src="motion.js"></script>
+</body>
+</html>
