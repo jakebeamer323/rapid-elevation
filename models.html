@@ -294,6 +294,136 @@
       <p style="font-size: 0.95rem; color: var(--text-muted);">Print-in-place models coming soon.</p>
     </section>
 
+    <!-- Commission a Model -->
+    <section class="section reveal" id="commission">
+      <div class="tool-category-label layer-wipe">Commission a Model</div>
+
+      <div style="display: flex; gap: 2.5rem; align-items: flex-start; flex-wrap: wrap;">
+
+        <!-- Left: description -->
+        <div class="diag-form reveal" style="flex: 1; min-width: 280px;">
+
+          <div class="calibrating-indicator">
+            <span class="calibrating-cursor"></span>
+            Custom Work
+          </div>
+
+          <div class="form-section-label">Everything here stays free</div>
+          <p style="font-size: 0.95rem; line-height: 1.85; color: var(--text-muted); margin-bottom: 1.25rem;">
+            All the tools, calculators, and models on this site are free and always will be &mdash; no accounts, no paywalls, no catches. That doesn't change.
+          </p>
+          <p style="font-size: 0.95rem; line-height: 1.85; color: var(--text-muted); margin-bottom: 1.75rem;">
+            But if you need something <strong style="color: var(--text);">specific</strong> that isn't in the library &mdash; a bracket with exact tolerances, a custom enclosure, a part that fits your exact hardware &mdash; that's where commissions come in. Fill out the form and I'll get back to you with a quote before any work starts.
+          </p>
+
+          <div style="background: var(--surface); border: 1px solid var(--accent); border-radius: var(--radius-sm); padding: 0.9rem 1.1rem; margin-bottom: 1.75rem;">
+            <span style="font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); display: block; margin-bottom: 0.3rem;">Pricing</span>
+            <span style="font-size: 1rem; font-weight: 600; color: var(--text);">Starting at $20</span>
+            <span style="font-size: 0.85rem; color: var(--text-muted);"> &mdash; price varies by complexity, quoted before work begins.</span>
+          </div>
+
+          <div class="form-section-label">What I design</div>
+          <ul style="font-size: 0.9rem; line-height: 2; color: var(--text-muted); margin: 0 0 1.5rem 1.1rem; padding: 0;">
+            <li>Functional brackets, mounts, and holders</li>
+            <li>Custom enclosures and housings</li>
+            <li>Mechanical assemblies and moving parts</li>
+            <li>Parts that must fit around existing hardware</li>
+            <li>Anything requiring specific dimensions or tolerances</li>
+          </ul>
+
+          <div class="form-section-label">What I don't design</div>
+          <p style="font-size: 0.9rem; line-height: 1.75; color: var(--text-muted); margin-bottom: 0;">
+            Organic shapes, figurines, characters, or sculpted artwork.
+          </p>
+
+        </div>
+
+        <!-- Right: form -->
+        <div class="diag-form reveal" style="flex: 1; min-width: 280px; align-self: flex-start;">
+
+          <div class="calibrating-indicator">
+            <span class="calibrating-cursor"></span>
+            Submit a Request
+          </div>
+
+          <div class="form-section-label">Tell me about your project</div>
+
+          <form action="https://formspree.io/f/mgopyawg" method="post" style="display: flex; flex-direction: column; gap: 1rem;">
+            <input type="hidden" name="_subject" value="Commission Request — Rapid Elevation">
+            <input type="hidden" name="request_type" value="commission">
+
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+              <div class="field" style="flex: 1; min-width: 140px;">
+                <label for="comm-name">Name</label>
+                <input type="text" id="comm-name" name="name" placeholder="Your name" autocomplete="name" required>
+              </div>
+              <div class="field" style="flex: 1; min-width: 140px;">
+                <label for="comm-email">Email</label>
+                <input type="email" id="comm-email" name="email" placeholder="you@example.com" autocomplete="email" required>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="comm-description">What do you need designed?</label>
+              <textarea id="comm-description" name="description" rows="3" placeholder="Describe the part — what it is, what it does, any key features." required></textarea>
+            </div>
+
+            <div class="field">
+              <label for="comm-purpose">What is it for / how will it be used?</label>
+              <textarea id="comm-purpose" name="purpose" rows="2" placeholder="e.g. mounts to the side of my Ender 3, holds a Raspberry Pi, sits on a desk..."></textarea>
+            </div>
+
+            <div class="field">
+              <label for="comm-fit">Does it need to fit or attach to an existing part?</label>
+              <select id="comm-fit" name="existing_part_fit">
+                <option value="" disabled selected>Select one</option>
+                <option value="yes">Yes — I have dimensions / reference photos</option>
+                <option value="yes-approx">Yes — I have approximate measurements only</option>
+                <option value="no">No — standalone part</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="comm-dimensions">Key dimensions or tolerances</label>
+              <textarea id="comm-dimensions" name="dimensions" rows="2" placeholder="e.g. 60mm × 40mm × 20mm, 5mm hole for M5 bolt, ±0.2mm fit required. Rough estimates are fine."></textarea>
+            </div>
+
+            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+              <div class="field" style="flex: 1; min-width: 140px;">
+                <label for="comm-printer">Printer &amp; material</label>
+                <input type="text" id="comm-printer" name="printer_material" placeholder="e.g. Ender 3, PLA">
+              </div>
+              <div class="field" style="flex: 1; min-width: 140px;">
+                <label for="comm-format">File format needed</label>
+                <select id="comm-format" name="file_format">
+                  <option value="stl">STL only</option>
+                  <option value="stl-source">STL + Source file (STEP / F3D)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="comm-timeline">Timeline</label>
+              <select id="comm-timeline" name="timeline">
+                <option value="flexible">Flexible — no rush</option>
+                <option value="2-weeks">Within 2 weeks</option>
+                <option value="asap">As soon as possible</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="comm-notes">Anything else?</label>
+              <textarea id="comm-notes" name="notes" rows="2" placeholder="Extra context, reference images you can email separately, questions, etc."></textarea>
+            </div>
+
+            <button type="submit" class="btn" style="align-self: flex-start;">Send Request</button>
+          </form>
+
+        </div>
+
+      </div>
+    </section>
+
     <!-- Ad placeholder -->
 
   </main>
