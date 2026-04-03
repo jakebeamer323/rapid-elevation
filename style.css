@@ -212,6 +212,13 @@ nav {
   padding: 1rem 0.5rem;
 }
 
+/* Articles dropdown — align right edge under trigger, same as Tools */
+.nav-dropdown:has([data-href="articles.html"]) .nav-dropdown-menu {
+  left: auto;
+  right: 0;
+  transform: none;
+}
+
 .nav-dropdown.open .nav-mega-menu { display: flex; gap: 0; flex-wrap: wrap; }
 
 .nav-mega-col {
