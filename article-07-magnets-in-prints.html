@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Magnets in Prints: How Should You Actually Embed Them? — Rapid Elevation</title>
+  <meta name="description" content="The methods that work, the ones that don't, and which approach to use depending on magnet size, material, and whether you need it removable or permanent.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="motion.css">
+  <style>
+    .article-page {
+      max-width: 780px;
+      margin: 0 auto;
+    }
+    .article-breadcrumb {
+      margin-bottom: 2rem;
+    }
+    .article-breadcrumb a {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .article-breadcrumb a:hover {
+      text-decoration: underline;
+    }
+    .article-header {
+      margin-bottom: 2.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .article-tag-label {
+      display: inline-block;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+    .article-h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(1.3rem, 3vw, 1.9rem);
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1.3;
+      margin: 0;
+    }
+    .article-body {
+      font-size: 1rem;
+      line-height: 1.85;
+    }
+    .article-body p {
+      color: var(--text);
+      margin-bottom: 1.5rem;
+    }
+    .article-body h2 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin: 2.75rem 0 0.85rem;
+      padding-bottom: 0.45rem;
+      border-bottom: 1px solid var(--border);
+      line-height: 1.4;
+    }
+    .article-signature {
+      font-style: italic;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+    .article-back-footer {
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+    .article-back-footer a {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .article-back-footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">Rapid <span class="logo-accent">Elevation</span></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-trigger" data-href="tools.html">Tools <span class="nav-dd-arrow">&#9660;</span></button>
+        <div class="nav-dropdown-menu nav-mega-menu">
+          <div class="nav-mega-col">
+            <div class="nav-mega-heading">Diagnostic</div>
+            <a href="diagnosis.html">Print Diagnosis</a>
+            <a href="troubleshooting-db.html">Troubleshooting Database</a>
+            <div class="nav-mega-heading">Calibration</div>
+            <a href="esteps.html">E-Steps Calculator</a>
+            <a href="flow-rate.html">Flow Rate Calculator</a>
+            <a href="temp-tower.html">Temperature Tower</a>
+            <a href="retraction-tool.html">Retraction Test</a>
+            <a href="pressure-advance.html">Pressure Advance / K-factor</a>
+            <a href="max-flow.html">Max Volumetric Flow</a>
+          </div>
+          <div class="nav-mega-col">
+            <div class="nav-mega-heading">Print Preparation</div>
+            <a href="print-time.html">Print Time Estimator</a>
+            <a href="layer-height.html">Layer Height Optimizer</a>
+            <a href="infill-optimizer.html">Support &amp; Infill Optimizer</a>
+            <div class="nav-mega-heading">Model &amp; File</div>
+            <a href="stl-analyzer.html">STL Analyzer</a>
+            <a href="wall-checker.html">Wall Thickness Checker</a>
+            <a href="orientation-calc.html">Orientation Calculator</a>
+          </div>
+          <div class="nav-mega-col">
+            <div class="nav-mega-heading">Material &amp; Hardware</div>
+            <a href="filament-cost.html">Filament Cost Calculator</a>
+            <a href="settings-cheat.html">Settings Cheat Sheet</a>
+            <a href="drying-guide.html">Drying Guide &amp; Timer</a>
+            <a href="nozzle-compat.html">Nozzle Compatibility</a>
+            <a href="spool-estimator.html">Spool Estimator</a>
+            <a href="diameter-variance.html">Diameter Variance</a>
+            <div class="nav-mega-heading">Advanced</div>
+            <a href="gcode-viewer.html">G-code Viewer</a>
+            <a href="test-print-gen.html">Test Print Generator</a>
+            <a href="firmware-compare.html">Firmware Compare</a>
+            <a href="ams-planner.html">AMS Planner</a>
+            <a href="slicer-profile.html">Slicer Profile Generator</a>
+            <a href="ai-chat.html">3D Printing FAQ</a>
+          </div>
+          <div class="nav-mega-viewall"><a href="tools.html">Browse all tools &rarr;</a></div>
+        </div>
+      </div>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-trigger">Popular <span class="nav-dd-arrow">&#9660;</span></button>
+        <div class="nav-dropdown-menu">
+          <a href="diagnosis.html">Print Diagnosis</a>
+          <a href="esteps.html">E-Steps Calculator</a>
+          <a href="settings-cheat.html">Settings Cheat Sheet</a>
+        </div>
+      </div>
+      <a href="models.html">Models</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-trigger" data-href="articles.html">Articles <span class="nav-dd-arrow">&#9660;</span></button>
+        <div class="nav-dropdown-menu">
+          <a href="article-01-printer-setup.html">Setting Up Your First Printer</a>
+          <a href="article-02-tools-accessories.html">Best Tools &amp; Accessories</a>
+          <a href="article-03-filament-101.html">Filament 101</a>
+          <a href="article-04-slicers-comparison.html">Best Slicers Compared</a>
+          <a href="article-05-designing-first-model.html">Designing Your First Model</a>
+          <a href="article-06-post-processing.html">Post-Processing: Sand, Prime &amp; Paint</a>
+          <a href="article-07-magnets-in-prints.html">Magnets in Prints</a>
+          <div class="nav-mega-viewall"><a href="articles.html">Browse all articles &rarr;</a></div>
+        </div>
+      </div>
+      <a href="about.html">About</a>
+    </div>
+  </nav>
+
+  <main>
+
+    <div class="article-page reveal">
+
+      <div class="article-breadcrumb">
+        <a href="articles.html">&larr; All Articles</a>
+      </div>
+
+      <div class="article-header">
+        <div class="article-tag-label">Tips &amp; Tricks</div>
+        <h1 class="article-h1">Magnets in Prints: How Should You Actually Embed Them?</h1>
+      </div>
+
+      <div class="article-body">
+
+        <p>Embedded magnets might be my favorite trick in the entire 3D printing toolbox. I've used them for snap-close project boxes, tool holders that cling to steel shelving, and cable management clips that attach and detach without tools. Once you learn how to embed magnets properly, you'll start seeing applications everywhere.</p>
+
+        <p>The technique itself isn't complicated, but there are enough subtle gotchas — particularly around polarity — that I've seen plenty of people end up with beautiful prints where the magnets repel each other instead of attracting. After doing this many times and making most of the mistakes myself, here's the complete process for doing it right from the start.</p>
+
+        <h2>Choosing the Right Magnets</h2>
+
+        <p>Not all magnets are created equal for 3D printing applications. You want neodymium (rare earth) magnets — specifically the disc or cylinder-shaped variety. They're small, incredibly strong for their size, affordable in bulk, and easy to source online.</p>
+
+        <p>The two most common sizes you'll encounter in hobbyist applications are 6x2mm discs and 10x3mm discs. The first number is diameter, the second is thickness. 6x2mm discs are perfect for small enclosures, lids, and lightweight attachments. 10x3mm are better for anything load-bearing or where you want a more confident snap.</p>
+
+        <p>Grade matters too. N35 and N52 are the most common grades you'll find. N52 is stronger per size, but for most hobby applications either works fine. I keep a large pack of 6x2mm N35 and a pack of 10x3mm N52 on hand and that covers probably 90% of what I need.</p>
+
+        <p>Avoid ceramic or ferrite magnets — they're orders of magnitude weaker than neodymium and typically not worth using unless you have a specific reason. Also avoid the tiny super-thin decorative magnets you find at hobby stores — they're weak and inconsistent in size.</p>
+
+        <p>A 50-pack of quality neodymium disc magnets runs a few dollars on Amazon. Buy in bulk. You'll use more than you expect.</p>
+
+        <h2>Designing Magnet Pockets in Your Model</h2>
+
+        <p>The cleanest, most professional method of embedding magnets is designing the pocket directly into your model from the start. This gives you a precise, intentional void that holds the magnet exactly where you want it, at the right depth, with clean edges.</p>
+
+        <p>The key dimension is tolerance. If you design the pocket to exactly match the magnet's dimensions, the print's slight dimensional variation will likely make it too tight to insert — or the magnet will be loose and wobbly. I design pockets to be 0.2&ndash;0.3mm larger in diameter than the magnet, and exactly the magnet's thickness in depth. This gives a firm press-fit in most cases — the magnet snaps in snugly with finger pressure and friction holds it without any glue required.</p>
+
+        <p>If your printer runs dimensionally accurate, press-fit works beautifully. If yours runs slightly large or small, you may need to adjust that tolerance offset. Print a small calibration piece with two or three pockets at slightly different tolerances and find what gives you the best fit for your printer.</p>
+
+        <p>In TinkerCAD, create the pocket by making a cylinder with the pocket dimensions and using it as a hole subtracted from your model. In Fusion 360, sketch a circle at the pocket location and extrude-cut to the pocket depth. Both approaches give you a clean, precise result.</p>
+
+        <p>One design tip I've learned from experience: always make the pocket at least 1&ndash;2mm from any external wall or edge. Too close to an edge and the thin remaining wall may not print reliably, or the magnet pocket may distort the outer surface of your model.</p>
+
+        <h2>The Pause-Mid-Print Method</h2>
+
+        <p>For magnets that you want completely sealed inside a model — invisible, with no visible pocket opening — the pause-mid-print method is the technique to use. This is where you print most of the model, pause the print at a specific layer height, insert the magnet into a partially-printed cavity, then resume printing. The printer continues and covers the magnet, sealing it permanently inside.</p>
+
+        <p>Most slicers support this via filament change commands at a specific layer height. In OrcaSlicer and Cura, you can insert a pause command at any layer in the layer view. Set the pause to occur one layer above the bottom of the magnet cavity.</p>
+
+        <p>When the printer pauses, it should move the printhead away from the model — most printers do this automatically during filament change routines. You have a window of time to insert the magnet into the cavity. Drop it in and make sure it's seated flat. Then resume the print and watch as the printer closes over it.</p>
+
+        <p>Two important things to get right: First, make sure there are at least 2&ndash;3 solid layers below the magnet cavity before the pause. If the cavity bottom is just infill, the magnet may sink or shift. Second, make sure the cavity is slightly undersized laterally so the magnet sits snugly and doesn't slide around before the top layers seal it in.</p>
+
+        <p>This method works beautifully for completely hidden magnets — internal closures, embedded alignment features, magnets inside decorative objects where you don't want the pocket to be visible.</p>
+
+        <h2>Gluing vs. Press-Fitting</h2>
+
+        <p>There are three ways to secure a magnet in a pocket: press-fit (friction alone), glue, or a combination of both. Each has its place.</p>
+
+        <p>Press-fit works when your tolerance is right — the magnet goes in with firm finger pressure and stays put without assistance. This is clean, reversible if you need to replace a magnet, and requires no consumables. Test every pocket before committing to a glued solution, because press-fit is preferable when achievable.</p>
+
+        <p>When the press-fit is too loose — the magnet slides in too easily or wiggles — a small drop of super glue (cyanoacrylate) in the bottom of the pocket before inserting the magnet creates a permanent, rigid bond. Apply the smallest amount possible: a tiny drop, not a puddle. Too much glue will squeeze out when you insert the magnet, making a mess and potentially gluing adjacent surfaces. Apply glue, insert magnet immediately, hold for 30 seconds.</p>
+
+        <p>Epoxy is better than super glue for high-stress applications where the magnet will experience repeated removal force. It cures slower (giving you working time) but bonds extremely strongly. I use epoxy for magnets in cosplay armor and similar applications where pieces will be put on and taken off repeatedly.</p>
+
+        <p>Avoid hot glue. It's tempting because it's easy, but it doesn't bond well to PLA, and the slight flexibility of hot glue means magnets shift over time. It's also heat-sensitive — if your print ever gets warm, the hot glue softens and your magnets migrate.</p>
+
+        <h2>Getting Polarity Right &mdash; The Step People Skip</h2>
+
+        <p>I saved polarity for its own section because it's the detail that trips up even people who've embedded magnets before. It's easy to rush past, and the consequence of getting it wrong is a finished print where the magnets repel instead of attract — and depending on how they're embedded, that might mean the whole print is useless.</p>
+
+        <p>Here's the deal: two disc magnets will attract each other when opposite faces touch (north to south), and repel each other when same faces touch (north to north or south to south). When you embed magnets into two mating parts — like a box and a lid — you need the faces that will touch each other when the parts come together to be opposite poles. If both pieces have their north face pointing outward, they'll repel.</p>
+
+        <p>The fix is simple but requires consistency: before you use any batch of magnets, mark every single one. I put a dot on the north face with a black permanent marker. Now I can see orientation at a glance. When embedding pairs, I make sure one piece always receives a magnet with the dot facing toward me, and the mating piece receives a magnet with the dot facing away. The two dots face each other through the print, meaning opposite poles face outward on each piece, meaning they attract.</p>
+
+        <p>Test every pair before they go into your print. Stack a magnet from piece A and a magnet from piece B together in their intended orientation. Do they attract? Yes? Good. If they repel, flip one magnet over. Mark your arrangement before you insert them. Never trust your memory.</p>
+
+        <p>If you're using the pause-mid-print method for buried magnets, this testing becomes even more critical — you can't retrieve a sealed magnet if the polarity is wrong. Test your orientation setup with loose magnets before the print even starts, then be systematic and careful when inserting during the pause.</p>
+
+        <h2>Applications Worth Trying</h2>
+
+        <p>If you're looking for projects to practice on, here are the embedded magnet applications I come back to most often: snap-close storage boxes with lids (start here — it's simple and immediately useful), magnetic cable clips that attach to steel surfaces, wall-mounted tool holders for steel-panel workspaces, articulated models with magnetic joints, and hinged display boxes where you want a satisfying click-closed feeling.</p>
+
+        <p>The snap of two correctly embedded magnets coming together is weirdly satisfying every single time. Once you've printed your first magnetic box and felt that snap, you'll be looking for excuses to add magnets to everything you design.</p>
+
+        <p>Good luck — and check your polarity.</p>
+
+        <p class="article-signature">&mdash; Mark your magnets. Every time. Learn from my mistakes.</p>
+
+      </div>
+
+      <div class="article-back-footer">
+        <a href="articles.html">&larr; Back to All Articles</a>
+      </div>
+
+    </div>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Rapid Elevation &mdash; Built by <a href="https://jakebeamer323.github.io/my-site" target="_blank">Jake Lewien</a></p>
+  </footer>
+
+  <script src="nav.js"></script>
+  <script src="motion.js"></script>
+</body>
+</html>

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Designing Your First Model: Fusion 360, TinkerCAD, and Blender — Rapid Elevation</title>
+  <meta name="description" content="Which 3D design tool fits your goal — TinkerCAD for beginners, Fusion 360 for precision, Blender for art. A practical guide from sketch to sliceable STL.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="motion.css">
+  <style>
+    .article-page {
+      max-width: 780px;
+      margin: 0 auto;
+    }
+    .article-breadcrumb {
+      margin-bottom: 2rem;
+    }
+    .article-breadcrumb a {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .article-breadcrumb a:hover {
+      text-decoration: underline;
+    }
+    .article-header {
+      margin-bottom: 2.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .article-tag-label {
+      display: inline-block;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+    .article-h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(1.3rem, 3vw, 1.9rem);
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1.3;
+      margin: 0;
+    }
+    .article-body {
+      font-size: 1rem;
+      line-height: 1.85;
+    }
+    .article-body p {
+      color: var(--text);
+      margin-bottom: 1.5rem;
+    }
+    .article-body h2 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin: 2.75rem 0 0.85rem;
+      padding-bottom: 0.45rem;
+      border-bottom: 1px solid var(--border);
+      line-height: 1.4;
+    }
+    .article-signature {
+      font-style: italic;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+    .article-back-footer {
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+    .article-back-footer a {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .article-back-footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">Rapid <span class="logo-accent">Elevation</span></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-trigger" data-href="tools.html">Tools <span class="nav-dd-arrow">&#9660;</span></button>
+        <div class="nav-dropdown-menu nav-mega-menu">
+          <div class="nav-mega-col">
+            <div class="nav-mega-heading">Diagnostic</div>
+            <a href="diagnosis.html">Print Diagnosis</a>
+            <a href="troubleshooting-db.html">Troubleshooting Database</a>
+            <div class="nav-mega-heading">Calibration</div>
+            <a href="esteps.html">E-Steps Calculator</a>
+            <a href="flow-rate.html">Flow Rate Calculator</a>
+            <a href="temp-tower.html">Temperature Tower</a>
+            <a href="retraction-tool.html">Retraction Test</a>
+            <a href="pressure-advance.html">Pressure Advance / K-factor</a>
+            <a href="max-flow.html">Max Volumetric Flow</a>
+          </div>
+          <div class="nav-mega-col">
+            <div class="nav-mega-heading">Print Preparation</div>
+            <a href="print-time.html">Print Time Estimator</a>
+            <a href="layer-height.html">Layer Height Optimizer</a>
+            <a href="infill-optimizer.html">Support &amp; Infill Optimizer</a>
+            <div class="nav-mega-heading">Model &amp; File</div>
+            <a href="stl-analyzer.html">STL Analyzer</a>
+            <a href="wall-checker.html">Wall Thickness Checker</a>
+            <a href="orientation-calc.html">Orientation Calculator</a>
+          </div>
+          <div class="nav-mega-col">
+            <div class="nav-mega-heading">Material &amp; Hardware</div>
+            <a href="filament-cost.html">Filament Cost Calculator</a>
+            <a href="settings-cheat.html">Settings Cheat Sheet</a>
+            <a href="drying-guide.html">Drying Guide &amp; Timer</a>
+            <a href="nozzle-compat.html">Nozzle Compatibility</a>
+            <a href="spool-estimator.html">Spool Estimator</a>
+            <a href="diameter-variance.html">Diameter Variance</a>
+            <div class="nav-mega-heading">Advanced</div>
+            <a href="gcode-viewer.html">G-code Viewer</a>
+            <a href="test-print-gen.html">Test Print Generator</a>
+            <a href="firmware-compare.html">Firmware Compare</a>
+            <a href="ams-planner.html">AMS Planner</a>
+            <a href="slicer-profile.html">Slicer Profile Generator</a>
+            <a href="ai-chat.html">3D Printing FAQ</a>
+          </div>
+          <div class="nav-mega-viewall"><a href="tools.html">Browse all tools &rarr;</a></div>
+        </div>
+      </div>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-trigger">Popular <span class="nav-dd-arrow">&#9660;</span></button>
+        <div class="nav-dropdown-menu">
+          <a href="diagnosis.html">Print Diagnosis</a>
+          <a href="esteps.html">E-Steps Calculator</a>
+          <a href="settings-cheat.html">Settings Cheat Sheet</a>
+        </div>
+      </div>
+      <a href="models.html">Models</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-trigger" data-href="articles.html">Articles <span class="nav-dd-arrow">&#9660;</span></button>
+        <div class="nav-dropdown-menu">
+          <a href="article-01-printer-setup.html">Setting Up Your First Printer</a>
+          <a href="article-02-tools-accessories.html">Best Tools &amp; Accessories</a>
+          <a href="article-03-filament-101.html">Filament 101</a>
+          <a href="article-04-slicers-comparison.html">Best Slicers Compared</a>
+          <a href="article-05-designing-first-model.html">Designing Your First Model</a>
+          <a href="article-06-post-processing.html">Post-Processing: Sand, Prime &amp; Paint</a>
+          <a href="article-07-magnets-in-prints.html">Magnets in Prints</a>
+          <div class="nav-mega-viewall"><a href="articles.html">Browse all articles &rarr;</a></div>
+        </div>
+      </div>
+      <a href="about.html">About</a>
+    </div>
+  </nav>
+
+  <main>
+
+    <div class="article-page reveal">
+
+      <div class="article-breadcrumb">
+        <a href="articles.html">&larr; All Articles</a>
+      </div>
+
+      <div class="article-header">
+        <div class="article-tag-label">Modeling</div>
+        <h1 class="article-h1">Designing Your First Model: Fusion 360, TinkerCAD, and Blender</h1>
+      </div>
+
+      <div class="article-body">
+
+        <p>Downloading and printing other people's models is great — Printables, Thingiverse, and MyMiniFactory have incredible libraries of free designs. But the moment you design and print something that exists nowhere else in the world, something you made from scratch to solve a problem only you had? That's when 3D printing becomes something else entirely.</p>
+
+        <p>I remember the first time I designed a custom print-in-place model to test tolerances. It wasn't pretty. The tolerances were off and I printed it three times before it fit. But when it finally popped off the print bed and did exactly what I needed, I understood why people get obsessed with this hobby.</p>
+
+        <p>The biggest barrier to designing your own models is knowing where to start. There are dozens of 3D design tools out there, and choosing the wrong one for your goals and experience level is genuinely discouraging. Let me give you my honest breakdown of the three tools that cover basically everything a hobbyist needs.</p>
+
+        <h2>TinkerCAD &mdash; Start Here, Seriously</h2>
+
+        <p>TinkerCAD is a browser-based design tool made by Autodesk (the same company behind Fusion 360 and AutoCAD). It's completely free, requires no installation, and runs in any modern browser. It works on a simple but powerful principle: you combine basic 3D shapes — cubes, cylinders, spheres, cones, and so on — and use them additively (to add material) or subtractively (to cut holes and cavities) to build up your model.</p>
+
+        <p>That sounds overly simple until you realize how much you can accomplish with that approach. Want a box with rounded corners? Box plus cylinders. Want a holder with a hole for a bolt? Cylinder subtracted from a rectangular block. Want an organizer tray with different sized compartments? Combinations of boxes and subtracted boxes. You can design genuinely useful, functional objects in TinkerCAD without any prior experience in 3D design.</p>
+
+        <p>I've seen complete beginners produce print-ready models in their first hour with TinkerCAD. That's not hyperbole — it genuinely is that approachable. The tutorial system is excellent, and there's a massive library of community models you can pull into your own designs and modify.</p>
+
+        <p>The limitations become apparent as you advance. Complex curved surfaces, parametric design (where dimensions drive geometry and updating a number updates the whole model), and anything requiring engineering precision quickly hit TinkerCAD's ceiling. But for learning the fundamentals and producing useful models quickly? It's unmatched.</p>
+
+        <p>If you've never designed a 3D model before, open TinkerCAD right now. Literally. Make an account, open a new design, drop in a box, and spend twenty minutes poking at things. That's your homework.</p>
+
+        <h2>Fusion 360 &mdash; For When You're Ready to Get Serious</h2>
+
+        <p>Fusion 360 is a professional-grade CAD (Computer-Aided Design) and CAM (Computer-Aided Manufacturing) platform made by Autodesk. It's parametric, cloud-connected, and used by professional engineers, product designers, and manufacturers. It's also free for personal/hobby use, which is genuinely remarkable for software of its caliber.</p>
+
+        <p>'Parametric' is the key word here. In Fusion 360, your design is driven by dimensions, constraints, and relationships rather than shapes you manually push around. You sketch a 2D profile with specific measurements, extrude it to a specific depth, add features with specific parameters, and the whole model knows its geometry as equations rather than static shapes. Change one dimension and everything that depends on it updates automatically.</p>
+
+        <p>This is enormously powerful for functional parts. If I design a bracket in Fusion 360 and the bolt hole needs to be 0.3mm larger to fit properly, I change one number in the sketch and the hole updates instantly. If I need a version of the same bracket that's 20% longer, I change the length parameter and all the proportional features follow. TinkerCAD cannot do this.</p>
+
+        <p>Fusion 360 also handles complex organic shapes better than TinkerCAD, has excellent sheet metal and mechanical assembly tools, and integrates simulation for stress analysis. For anything that needs to be precise, strong, and right the first time, Fusion 360 is the tool.</p>
+
+        <p>The learning curve is real and shouldn't be understated. Give yourself a few solid weekends of following structured tutorials (the official Autodesk learning path is good; Kevin Kennedy's 'Product Design Online' YouTube channel is even better) before you expect to be productive. But unlike some software where the hard part is using the tools, in Fusion 360 the hard part is learning to think parametrically — and once you do, it opens up everything.</p>
+
+        <p>The free personal license has some limitations — cloud storage cap, no commercial use, some advanced simulation features gated behind paid tiers — but for hobbyist work, it's more than enough.</p>
+
+        <h2>Blender &mdash; The Creative Powerhouse</h2>
+
+        <p>Blender is a different beast from the other two. Where TinkerCAD and Fusion 360 are CAD tools built around precise dimensions and geometry, Blender is a full 3D creation suite used for animation, visual effects, game assets, product visualization, and film production. It's free, open-source, and developed by the Blender Foundation.</p>
+
+        <p>For 3D printing, Blender excels at organic, artistic, and sculptural models — things that would be awkward or impossible to model in a CAD environment. Characters, creatures, figurines, decorative objects, detailed terrain, artistic props. If you're printing miniatures for tabletop gaming, designing cosplay armor, creating figurines, or working on any project that prioritizes visual creativity over dimensional precision, Blender is your tool.</p>
+
+        <p>Blender has a notoriously steep learning curve and an interface that takes real time to internalize. I won't sugarcoat it: your first sessions with Blender will probably be frustrating. The default keyboard shortcuts are unusual, the viewport controls feel backwards if you're used to other tools, and there are seemingly endless panels and options that don't reveal their purpose until you've been using the software for a while.</p>
+
+        <p>But the ceiling is essentially unlimited, the community is enormous, and the tutorial resources are extraordinary. YouTube channels like Blender Guru, Grant Abbitt, and Polygon Runway offer high-quality, free instruction that will take you from confused beginner to capable creator. Once things click, Blender is one of the most creatively liberating tools I've ever used.</p>
+
+        <p>For 3D printing specifically, you'll want to learn Blender's sculpting and modeling tools, get comfortable with the Mesh Analysis overlay (which shows potential printing problems), and use the 3D Print Toolbox plugin that comes pre-installed — it checks your models for common issues like non-manifold geometry that would prevent printing.</p>
+
+        <h2>Choosing Based on Your Goals</h2>
+
+        <p>New to design and want quick results? TinkerCAD. No contest.</p>
+
+        <p>Want to design precise, functional parts that integrate with real hardware? Invest the time in Fusion 360. It'll pay off every time you design something that fits perfectly on the first print.</p>
+
+        <p>Interested in artistic models, figurines, characters, or anything where creativity trumps precision? Blender is where you want to end up. Consider starting with TinkerCAD to understand 3D space first, then transitioning.</p>
+
+        <p>Many experienced hobbyists use all three, switching based on the project. There's no loyalty required. Use the tool that fits the task.</p>
+
+        <h2>From Model to Print: Exporting</h2>
+
+        <p>All three tools export STL files, which is the universal standard format for 3D printing. TinkerCAD exports directly from the browser with a single button. Fusion 360 exports via File &gt; 3D Print (choose the bodies you want to export). Blender exports via File &gt; Export &gt; STL, but make sure to apply any scale transformations first (Ctrl+A &gt; Apply All Transforms) to avoid scale issues in your slicer.</p>
+
+        <p>3MF is an increasingly popular alternative to STL that preserves more information (color, scale, units). OrcaSlicer and Bambu Studio both work great with 3MF files if you want to try it.</p>
+
+        <p>Once you have your exported file, import it into your slicer, orient it for printing, generate supports if needed, and slice it. Then print it. Hold it in your hands. You made that.</p>
+
+        <p class="article-signature">&mdash; Design tools are just tools. The ideas are already yours.</p>
+
+      </div>
+
+      <div class="article-back-footer">
+        <a href="articles.html">&larr; Back to All Articles</a>
+      </div>
+
+    </div>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Rapid Elevation &mdash; Built by <a href="https://jakebeamer323.github.io/my-site" target="_blank">Jake Lewien</a></p>
+  </footer>
+
+  <script src="nav.js"></script>
+  <script src="motion.js"></script>
+</body>
+</html>

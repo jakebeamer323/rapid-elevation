@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Post-Processing Secrets: Sanding, Priming and Painting — Rapid Elevation</title>
+  <meta name="description" content="How to get a finish that doesn't look 3D-printed — the right grits, primers, filler sprays, and painting techniques for a clean, professional final result.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="motion.css">
+  <style>
+    .article-page {
+      max-width: 780px;
+      margin: 0 auto;
+    }
+    .article-breadcrumb {
+      margin-bottom: 2rem;
+    }
+    .article-breadcrumb a {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .article-breadcrumb a:hover {
+      text-decoration: underline;
+    }
+    .article-header {
+      margin-bottom: 2.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .article-tag-label {
+      display: inline-block;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+    .article-h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(1.3rem, 3vw, 1.9rem);
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1.3;
+      margin: 0;
+    }
+    .article-body {
+      font-size: 1rem;
+      line-height: 1.85;
+    }
+    .article-body p {
+      color: var(--text);
+      margin-bottom: 1.5rem;
+    }
+    .article-body h2 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin: 2.75rem 0 0.85rem;
+      padding-bottom: 0.45rem;
+      border-bottom: 1px solid var(--border);
+      line-height: 1.4;
+    }
+    .article-signature {
+      font-style: italic;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+    .article-back-footer {
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+    .article-back-footer a {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .article-back-footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">Rapid <span class="logo-accent">Elevation</span></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-trigger" data-href="tools.html">Tools <span class="nav-dd-arrow">&#9660;</span></button>
+        <div class="nav-dropdown-menu nav-mega-menu">
+          <div class="nav-mega-col">
+            <div class="nav-mega-heading">Diagnostic</div>
+            <a href="diagnosis.html">Print Diagnosis</a>
+            <a href="troubleshooting-db.html">Troubleshooting Database</a>
+            <div class="nav-mega-heading">Calibration</div>
+            <a href="esteps.html">E-Steps Calculator</a>
+            <a href="flow-rate.html">Flow Rate Calculator</a>
+            <a href="temp-tower.html">Temperature Tower</a>
+            <a href="retraction-tool.html">Retraction Test</a>
+            <a href="pressure-advance.html">Pressure Advance / K-factor</a>
+            <a href="max-flow.html">Max Volumetric Flow</a>
+          </div>
+          <div class="nav-mega-col">
+            <div class="nav-mega-heading">Print Preparation</div>
+            <a href="print-time.html">Print Time Estimator</a>
+            <a href="layer-height.html">Layer Height Optimizer</a>
+            <a href="infill-optimizer.html">Support &amp; Infill Optimizer</a>
+            <div class="nav-mega-heading">Model &amp; File</div>
+            <a href="stl-analyzer.html">STL Analyzer</a>
+            <a href="wall-checker.html">Wall Thickness Checker</a>
+            <a href="orientation-calc.html">Orientation Calculator</a>
+          </div>
+          <div class="nav-mega-col">
+            <div class="nav-mega-heading">Material &amp; Hardware</div>
+            <a href="filament-cost.html">Filament Cost Calculator</a>
+            <a href="settings-cheat.html">Settings Cheat Sheet</a>
+            <a href="drying-guide.html">Drying Guide &amp; Timer</a>
+            <a href="nozzle-compat.html">Nozzle Compatibility</a>
+            <a href="spool-estimator.html">Spool Estimator</a>
+            <a href="diameter-variance.html">Diameter Variance</a>
+            <div class="nav-mega-heading">Advanced</div>
+            <a href="gcode-viewer.html">G-code Viewer</a>
+            <a href="test-print-gen.html">Test Print Generator</a>
+            <a href="firmware-compare.html">Firmware Compare</a>
+            <a href="ams-planner.html">AMS Planner</a>
+            <a href="slicer-profile.html">Slicer Profile Generator</a>
+            <a href="ai-chat.html">3D Printing FAQ</a>
+          </div>
+          <div class="nav-mega-viewall"><a href="tools.html">Browse all tools &rarr;</a></div>
+        </div>
+      </div>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-trigger">Popular <span class="nav-dd-arrow">&#9660;</span></button>
+        <div class="nav-dropdown-menu">
+          <a href="diagnosis.html">Print Diagnosis</a>
+          <a href="esteps.html">E-Steps Calculator</a>
+          <a href="settings-cheat.html">Settings Cheat Sheet</a>
+        </div>
+      </div>
+      <a href="models.html">Models</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-trigger" data-href="articles.html">Articles <span class="nav-dd-arrow">&#9660;</span></button>
+        <div class="nav-dropdown-menu">
+          <a href="article-01-printer-setup.html">Setting Up Your First Printer</a>
+          <a href="article-02-tools-accessories.html">Best Tools &amp; Accessories</a>
+          <a href="article-03-filament-101.html">Filament 101</a>
+          <a href="article-04-slicers-comparison.html">Best Slicers Compared</a>
+          <a href="article-05-designing-first-model.html">Designing Your First Model</a>
+          <a href="article-06-post-processing.html">Post-Processing: Sand, Prime &amp; Paint</a>
+          <a href="article-07-magnets-in-prints.html">Magnets in Prints</a>
+          <div class="nav-mega-viewall"><a href="articles.html">Browse all articles &rarr;</a></div>
+        </div>
+      </div>
+      <a href="about.html">About</a>
+    </div>
+  </nav>
+
+  <main>
+
+    <div class="article-page reveal">
+
+      <div class="article-breadcrumb">
+        <a href="articles.html">&larr; All Articles</a>
+      </div>
+
+      <div class="article-header">
+        <div class="article-tag-label">Finishing</div>
+        <h1 class="article-h1">Post-Processing Secrets: Sanding, Priming, and Painting Your Prints</h1>
+      </div>
+
+      <div class="article-body">
+
+        <p>There's a version of 3D printing where everything comes off the bed looking perfect, layer lines are invisible, surfaces are silky smooth, and colors are exactly right. That version requires post-processing. The printer gets you 80% of the way there. Finishing gets you the rest.</p>
+
+        <p>I spent my first year printing things and leaving them exactly as they came off the bed. They were fine — functional, recognizable, useful. Then I started sanding. Then priming. Then painting. The first time I held a print that I could genuinely have passed off as a store-bought object, I understood what post-processing is really about. It's the difference between a 3D print and a finished product.</p>
+
+        <p>This is everything I know about turning a raw print into something you're proud to display or give away.</p>
+
+        <h2>Before You Even Start: Print Smart</h2>
+
+        <p>Post-processing starts before you print. The decisions you make in your slicer affect how much finishing work you'll have to do later, and doing that thinking up front saves a lot of sandpaper.</p>
+
+        <p>Increase your wall count. Three or four perimeters gives you a lot more material to work with when sanding — you're less likely to sand through to the infill. Use a higher infill percentage for pieces that will be sanded, especially thin sections. Orient your model so the least-critical surfaces are on the bottom, because the base layer against the print bed often has texture from the bed surface that's harder to sand away.</p>
+
+        <p>If the final piece will be painted, print it in grey or white. Dark filaments can bleed through light-colored paint and require dramatically more primer coats. Grey is my default for anything destined for paint — it works as a natural primer tone and makes it easy to see where you've achieved a smooth surface.</p>
+
+        <p>Also: remove support material carefully. Don't rip it off impulsively. Use flush cutters or pliers to remove supports in sections, then a hobby knife to carefully clean up any remaining nibs or witness marks. Rushing this step leaves surface defects that take twice as long to fix with sandpaper.</p>
+
+        <h2>Sanding: The Foundation of Everything</h2>
+
+        <p>Sanding is the step that makes everything else work. Do it well and your primer goes on smoothly. Skip it and every imperfection gets magnified under paint.</p>
+
+        <p>The fundamental rule of sanding is always the same: start coarse, finish fine. If you start with fine grit sandpaper on a rough surface, you'll be sanding forever and accomplishing very little. Start with the coarsest grit that makes sense for the surface, knock down the big stuff, then work up progressively to finer grits.</p>
+
+        <p>For most prints, I start at 150 grit to address significant layer lines, then move to 220 to refine the surface, then 400 to remove the scratches left by the coarser grits, then 800 or even 1000 for a near-smooth finish before priming. You don't have to hit every grit — jumping from 220 to 400 is fine. What you don't want to do is jump from 150 directly to 800, because you'll just be polishing the scratches rather than removing them.</p>
+
+        <p>For flat surfaces, wrap your sandpaper around a flat block — a piece of wood, a sanding block from a hardware store, or even a credit card. This prevents the sandpaper from conforming to your finger shape and creating uneven, rounded surfaces. For curved areas, you can use your fingers, foam-backed sanding pads, or wrap sandpaper around a dowel for cylindrical shapes.</p>
+
+        <p>Wet sanding is a technique worth learning. Dipping your sandpaper in water while sanding higher grits (400+) helps carry away sanding debris, reduces heat from friction, and produces a noticeably smoother finish. It's especially effective on PLA and PETG. The print gets wet but that's fine — just let it dry before priming.</p>
+
+        <p>Take your time with this step. The sanding phase is genuinely meditative once you get into it, and rushing produces results you'll be unhappy with when the paint goes on.</p>
+
+        <h2>Filling Gaps and Defects</h2>
+
+        <p>Sanding smooths surfaces but doesn't fill voids — layer separation, small holes, print artifacts. For these, you need filler.</p>
+
+        <p>Spot putty (available in automotive sections of hardware stores) is excellent for small defects. Apply it with a fingertip, let it cure, sand smooth. Bondo or similar two-part body filler works for larger gaps. Both sand easily and take primer and paint well.</p>
+
+        <p>For PLA specifically, super glue (cyanoacrylate) can be used as a gap filler and adheres chemically to the print. Apply to voids, let it cure fully (accelerator spray speeds this up dramatically), then sand. The cured superglue sands similarly to the surrounding PLA.</p>
+
+        <p>For ABS, acetone can be used as a chemical smoothing agent — brush or wipe it on and it partially dissolves and reflows the surface, smoothing layer lines without any sanding. This doesn't work on PLA or PETG, only ABS. Do this outside or with excellent ventilation.</p>
+
+        <h2>Priming: Don't Skip This Step</h2>
+
+        <p>I've seen people sand their prints beautifully and then go straight to color paint. I understand the impatience — you've already spent hours sanding, you just want to see the color. But skipping primer is almost always a mistake.</p>
+
+        <p>Primer does three things. First, it reveals surface imperfections — under primer, every scratch, every bump, and every low spot that you missed while sanding becomes visible. It's your quality check before you commit to color. Second, it fills micro-scratches left by sanding, creating a smoother surface for the final paint. Third, it gives the paint something to bond to — paint over bare PLA often peels or chips; paint over primer is chemically bonded and dramatically more durable.</p>
+
+        <p>Get spray-on filler primer specifically — it goes on thick, fills surface texture, and can be sanded. Gray filler primer is my standard. Hold the can 25&ndash;30cm away from the surface and apply thin, even coats using sweeping motions. Don't try to cover everything in one coat. Two or three thin coats with drying time between them is far better than one thick coat that runs.</p>
+
+        <p>Once the primer is dry, look at the surface in raking light — hold it at an angle to a lamp or light source. Every imperfection that needs more attention will cast a shadow and become obvious. Sand those areas with 400 grit, wipe away the dust, and apply another primer coat. Repeat until the surface looks uniform and smooth under that raking light inspection. This might be two coats. It might be four. Don't rush it.</p>
+
+        <h2>Painting: Thin Coats, Patience, Craft</h2>
+
+        <p>With sanding done and primer cured, you're ready for color. And the most important rule in painting is this: many thin coats beat one thick one, every single time. Thick coats run, drip, pool in recesses, and take forever to dry without cracking or wrinkling. Thin coats build up evenly, dry quickly, and layer beautifully.</p>
+
+        <p>Rattle cans (spray paint) are beginner-friendly and produce great results on larger surfaces. Tamiya, Rustoleum, and Vallejo make excellent spray paints with good coverage and durability. For detail work, for small areas, or for anything with multiple colors, acrylic brush painting gives you precision that spray cans can't match.</p>
+
+        <p>For brush painting: thin your acrylics with water or acrylic medium to a consistency that flows off the brush but doesn't run uncontrollably. Multiple thin layers build up smoothly without obscuring detail. Load the brush lightly and work in controlled strokes. Let each layer dry before applying the next.</p>
+
+        <p>For larger basecoats, spray prime and spray paint where you can — it's faster and produces more even coverage than brush painting large areas. Then use brush painting for detail colors, highlights, and areas that need precision.</p>
+
+        <p>Washes are a painter's secret weapon. A wash is highly diluted dark paint (often dark brown or black) applied over a dry base coat and allowed to flow into recesses before being wiped off raised surfaces. The result is naturally shaded detail that gives depth and realism to textured surfaces — scales, fur, stone, mechanical greebles. It's the technique that makes a good paint job look great.</p>
+
+        <h2>Sealing and Finishing</h2>
+
+        <p>You've spent hours getting the finish right. Now protect it. Clear coat — also called varnish or topcoat — seals your paint against chipping, fingerprints, and handling wear. Apply it exactly like primer and paint: thin coats, sweeping motions, at least two layers.</p>
+
+        <p>The sheen level is a creative choice. Matte clear coat produces a flat, non-reflective finish that works beautifully for realistic props, terrain, and organic models. Satin is a subtle sheen that suits most general-purpose finishes. Gloss produces a shiny, plastic-like finish that makes colors pop and works well for stylized or toy-like pieces.</p>
+
+        <p>Let the clear coat cure fully before handling the piece — not just surface-dry, but cured through. Most products say 24 hours; I usually give it 48 before subjecting a piece to any real handling. After that, your print is sealed, protected, and done.</p>
+
+        <p>Hold it up. Look at what you made. It doesn't look like a 3D print anymore.</p>
+
+        <p class="article-signature">&mdash; Finishing is where patience becomes pride.</p>
+
+      </div>
+
+      <div class="article-back-footer">
+        <a href="articles.html">&larr; Back to All Articles</a>
+      </div>
+
+    </div>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Rapid Elevation &mdash; Built by <a href="https://jakebeamer323.github.io/my-site" target="_blank">Jake Lewien</a></p>
+  </footer>
+
+  <script src="nav.js"></script>
+  <script src="motion.js"></script>
+</body>
+</html>

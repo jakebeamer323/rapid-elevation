@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Filament 101: Choosing the Right Material — Rapid Elevation</title>
+  <meta name="description" content="PLA, PETG, ABS, ASA, TPU and more — what each material is actually good for, its real limitations, and how to pick the right one for your project.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="motion.css">
+  <style>
+    .article-page {
+      max-width: 780px;
+      margin: 0 auto;
+    }
+    .article-breadcrumb {
+      margin-bottom: 2rem;
+    }
+    .article-breadcrumb a {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .article-breadcrumb a:hover {
+      text-decoration: underline;
+    }
+    .article-header {
+      margin-bottom: 2.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .article-tag-label {
+      display: inline-block;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+    .article-h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(1.3rem, 3vw, 1.9rem);
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1.3;
+      margin: 0;
+    }
+    .article-body {
+      font-size: 1rem;
+      line-height: 1.85;
+    }
+    .article-body p {
+      color: var(--text);
+      margin-bottom: 1.5rem;
+    }
+    .article-body h2 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin: 2.75rem 0 0.85rem;
+      padding-bottom: 0.45rem;
+      border-bottom: 1px solid var(--border);
+      line-height: 1.4;
+    }
+    .article-signature {
+      font-style: italic;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+    .article-back-footer {
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+    .article-back-footer a {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .article-back-footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">Rapid <span class="logo-accent">Elevation</span></a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-trigger" data-href="tools.html">Tools <span class="nav-dd-arrow">&#9660;</span></button>
+        <div class="nav-dropdown-menu nav-mega-menu">
+          <div class="nav-mega-col">
+            <div class="nav-mega-heading">Diagnostic</div>
+            <a href="diagnosis.html">Print Diagnosis</a>
+            <a href="troubleshooting-db.html">Troubleshooting Database</a>
+            <div class="nav-mega-heading">Calibration</div>
+            <a href="esteps.html">E-Steps Calculator</a>
+            <a href="flow-rate.html">Flow Rate Calculator</a>
+            <a href="temp-tower.html">Temperature Tower</a>
+            <a href="retraction-tool.html">Retraction Test</a>
+            <a href="pressure-advance.html">Pressure Advance / K-factor</a>
+            <a href="max-flow.html">Max Volumetric Flow</a>
+          </div>
+          <div class="nav-mega-col">
+            <div class="nav-mega-heading">Print Preparation</div>
+            <a href="print-time.html">Print Time Estimator</a>
+            <a href="layer-height.html">Layer Height Optimizer</a>
+            <a href="infill-optimizer.html">Support &amp; Infill Optimizer</a>
+            <div class="nav-mega-heading">Model &amp; File</div>
+            <a href="stl-analyzer.html">STL Analyzer</a>
+            <a href="wall-checker.html">Wall Thickness Checker</a>
+            <a href="orientation-calc.html">Orientation Calculator</a>
+          </div>
+          <div class="nav-mega-col">
+            <div class="nav-mega-heading">Material &amp; Hardware</div>
+            <a href="filament-cost.html">Filament Cost Calculator</a>
+            <a href="settings-cheat.html">Settings Cheat Sheet</a>
+            <a href="drying-guide.html">Drying Guide &amp; Timer</a>
+            <a href="nozzle-compat.html">Nozzle Compatibility</a>
+            <a href="spool-estimator.html">Spool Estimator</a>
+            <a href="diameter-variance.html">Diameter Variance</a>
+            <div class="nav-mega-heading">Advanced</div>
+            <a href="gcode-viewer.html">G-code Viewer</a>
+            <a href="test-print-gen.html">Test Print Generator</a>
+            <a href="firmware-compare.html">Firmware Compare</a>
+            <a href="ams-planner.html">AMS Planner</a>
+            <a href="slicer-profile.html">Slicer Profile Generator</a>
+            <a href="ai-chat.html">3D Printing FAQ</a>
+          </div>
+          <div class="nav-mega-viewall"><a href="tools.html">Browse all tools &rarr;</a></div>
+        </div>
+      </div>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-trigger">Popular <span class="nav-dd-arrow">&#9660;</span></button>
+        <div class="nav-dropdown-menu">
+          <a href="diagnosis.html">Print Diagnosis</a>
+          <a href="esteps.html">E-Steps Calculator</a>
+          <a href="settings-cheat.html">Settings Cheat Sheet</a>
+        </div>
+      </div>
+      <a href="models.html">Models</a>
+      <div class="nav-dropdown">
+        <button class="nav-dropdown-trigger" data-href="articles.html">Articles <span class="nav-dd-arrow">&#9660;</span></button>
+        <div class="nav-dropdown-menu">
+          <a href="article-01-printer-setup.html">Setting Up Your First Printer</a>
+          <a href="article-02-tools-accessories.html">Best Tools &amp; Accessories</a>
+          <a href="article-03-filament-101.html">Filament 101</a>
+          <a href="article-04-slicers-comparison.html">Best Slicers Compared</a>
+          <a href="article-05-designing-first-model.html">Designing Your First Model</a>
+          <a href="article-06-post-processing.html">Post-Processing: Sand, Prime &amp; Paint</a>
+          <a href="article-07-magnets-in-prints.html">Magnets in Prints</a>
+          <div class="nav-mega-viewall"><a href="articles.html">Browse all articles &rarr;</a></div>
+        </div>
+      </div>
+      <a href="about.html">About</a>
+    </div>
+  </nav>
+
+  <main>
+
+    <div class="article-page reveal">
+
+      <div class="article-breadcrumb">
+        <a href="articles.html">&larr; All Articles</a>
+      </div>
+
+      <div class="article-header">
+        <div class="article-tag-label">Materials</div>
+        <h1 class="article-h1">Filament 101: Choosing the Right Material for Every Project</h1>
+      </div>
+
+      <div class="article-body">
+
+        <p>One of the first things that surprised me when I got into 3D printing was how much the choice of filament actually matters. I assumed plastic was plastic — you just loaded whatever was cheapest and hit print. Within a week I'd had prints delaminate, warp off the bed, snap under light stress, and melt in a hot car. The printer wasn't wrong. I was using the wrong material.</p>
+
+        <p>Here's the thing: there's no single 'best' filament. Every material has strengths, weaknesses, and sweet spots. The right choice depends on what you're making, where it'll live, whether it needs to flex or stay rigid, whether it'll get hot, whether it needs to look good, and half a dozen other factors.</p>
+
+        <p>I'm going to walk you through the materials that actually matter for everyday hobbyist printing — no hype, no filler, just honest guidance on when to use what. By the end of this you'll know exactly which spool to reach for before you even start designing.</p>
+
+        <h2>PLA &mdash; Where Everyone Should Start</h2>
+
+        <p>PLA (Polylactic Acid) is the gateway drug of 3D printing filament, and it earns that reputation for good reason. It prints at relatively low temperatures (around 195&ndash;215&deg;C depending on brand), doesn't require a heated bed to adhere reliably, and produces very little odor compared to other materials. It's made from plant-based starches — corn, sugarcane, cassava — which makes it more environmentally friendly than petroleum-based plastics, though let's be realistic: 'biodegradable' on the packaging means under specific industrial composting conditions, not in your trash bin.</p>
+
+        <p>PLA is where you learn your printer. Its tolerances are forgiving, it's easy to dial in, and there are dozens of color options at every price point. Almost every tutorial, profile, and guide you'll find online defaults to PLA, so the community support is massive.</p>
+
+        <p>The trade-off is heat resistance. PLA softens at around 55&ndash;60&deg;C, which means it won't survive in a hot car in summer, next to certain electronics, or in any environment where temperatures climb. I've also found it more brittle than other materials — it'll snap under sharp impact more readily than PETG or ABS.</p>
+
+        <p>Use PLA for: display models, decorative pieces, household organizers, cosplay props, low-stress functional parts, anything that lives indoors in a temperature-controlled environment. It should be your default unless you have a specific reason to use something else.</p>
+
+        <h2>PETG &mdash; The Workhorse You'll Reach For More and More</h2>
+
+        <p>PETG (Polyethylene Terephthalate Glycol) is my personal go-to for anything that needs to actually function in the real world. It's tougher than PLA, slightly flexible so it resists shattering, handles temperatures up to around 80&deg;C without deforming, and has excellent chemical resistance. It's also largely considered food-safe when printed correctly — though the layer lines can harbor bacteria, so it's better suited to dry food contact rather than anything that'll hold liquids long-term.</p>
+
+        <p>PETG does like to string more than PLA, and it's more sensitive to moisture in the filament causing bubbling or weak layer adhesion. But once you dial in your retraction settings and keep your spool stored properly, the results are excellent. I print PETG at around 230&ndash;240&deg;C with a bed temperature of 70&ndash;85&deg;C.</p>
+
+        <p>One thing I wish someone had told me early: PETG bonds to PEI sheets very aggressively. Always use a layer of bed glue between PETG and PEI — otherwise you risk ripping the coating off when you remove the print. Hard lesson to learn.</p>
+
+        <p>Use PETG for: mechanical parts, clips and brackets, anything that goes outdoors, parts that'll experience heat or UV, food-contact containers, any functional part where you'd otherwise worry about PLA being too brittle.</p>
+
+        <h2>ABS &mdash; Powerful, But Demanding</h2>
+
+        <p>ABS (Acrylonitrile Butadiene Styrene) was the gold standard of desktop 3D printing for years. It's very tough, has good heat resistance (around 100&deg;C), and can be post-processed with acetone to produce an incredibly smooth, near-injection-molded surface finish. That last property is genuinely impressive when you see it for the first time.</p>
+
+        <p>The problem is that ABS is difficult to print. It requires high temperatures (230&ndash;250&deg;C nozzle, 100&ndash;110&deg;C bed), an enclosure to maintain ambient temperature and prevent warping, and good ventilation because ABS fumes are genuinely unpleasant and potentially harmful in an enclosed space. Without an enclosure, ABS warps — corners lift off the bed, layers crack, and prints fail with infuriating regularity.</p>
+
+        <p>For most hobbyists in most situations, PETG or ASA are better choices. ABS is worth learning if you specifically need acetone smoothing, very high heat resistance, or you're printing parts for automotive applications. Otherwise, the difficulty isn't worth it.</p>
+
+        <p>Use ABS for: professional prototypes requiring smooth finish, high-heat environments (engine bays, etc.), parts that specifically benefit from acetone post-processing. Requires enclosure.</p>
+
+        <h2>TPU &mdash; When Your Part Needs to Flex</h2>
+
+        <p>TPU (Thermoplastic Polyurethane) is the rubbery one. It's flexible, highly durable, abrasion-resistant, and bounces back from deformation rather than breaking. If you've seen flexible phone cases or wearable tech printed at home, that's TPU.</p>
+
+        <p>It's genuinely a different animal to print. You need to slow way down — I typically run TPU at 20&ndash;35mm/s, sometimes slower. It also doesn't like retraction-heavy setups, and Bowden extruder systems (where the motor is separated from the hotend by a tube) struggle with it significantly. Direct drive extruders handle TPU much better. If your printer is Bowden and you want to print TPU regularly, a direct drive upgrade is worth considering.</p>
+
+        <p>Shore hardness ratings (like 95A, 87A) tell you how stiff the filament is — lower numbers are squishier. 95A is the most common and has a moderate flex. If you want something almost rigid, go higher; for very soft, bouncy prints, go lower.</p>
+
+        <p>Use TPU for: phone cases, protective covers, flexible hinges, cable strain reliefs, wearables, gaskets, grip surfaces, anything that needs to absorb impact or flex repeatedly without breaking.</p>
+
+        <h2>ASA &mdash; ABS Without the Headaches</h2>
+
+        <p>ASA (Acrylonitrile Styrene Acrylate) is what happens when engineers look at ABS and ask 'what if this was actually good for outdoor use?' It has similar strength and heat resistance to ABS, but with dramatically better UV resistance and less tendency to warp. It still benefits from an enclosure, but it's generally more forgiving than ABS.</p>
+
+        <p>If you need to print something that lives outside — garden markers, outdoor fixtures, car exterior parts, drone components — ASA is the right answer. PLA will eventually become brittle and discolor. PETG handles UV better than PLA but still degrades over time. ASA genuinely holds up.</p>
+
+        <p>Use ASA for: anything that will live outdoors or in direct sunlight, automotive exterior applications, drone frames, garden or patio accessories.</p>
+
+        <h2>Specialty Filaments &mdash; Once You're Ready</h2>
+
+        <p>Once you've got the basics down, the specialty filaments open up a whole world of creative possibilities. Wood-fill PLA adds real wood fiber to the mix, and prints can actually be sanded and stained like wood. Metal-fill filaments (copper, brass, bronze) produce heavy, metallic-looking prints. Glow-in-the-dark filaments are exactly what they sound like and are very popular for display pieces.</p>
+
+        <p>There are also engineering-grade materials like Nylon (tough and slightly flexible, great for functional parts but very moisture-sensitive), PC (Polycarbonate, almost indestructible but difficult to print), and PA-CF (carbon fiber reinforced nylon for lightweight structural parts). These are genuinely exciting materials, but they require fine-tuned setups, high temperatures, and often hardened nozzles.</p>
+
+        <p>My honest advice: get comfortable with PLA and PETG first. Master your settings, understand your printer, produce consistent results. Then start experimenting. The specialty materials are much less frustrating to dial in once you have a solid baseline.</p>
+
+        <h2>Quick Reference: Material Selection</h2>
+
+        <p>Decorative or display piece? PLA. Functional indoor part? PLA or PETG. Functional part that gets warm? PETG. Outdoor part? ASA. Flexible part? TPU. Needs acetone smoothing? ABS. High-stress mechanical part? PETG or Nylon. Creative or artistic piece? Whatever sounds fun.</p>
+
+        <p>When in doubt, use PLA. It's not a cop-out — it's genuinely the right answer for more situations than people think.</p>
+
+        <p class="article-signature">&mdash; Learned material by material, print by print.</p>
+
+      </div>
+
+      <div class="article-back-footer">
+        <a href="articles.html">&larr; Back to All Articles</a>
+      </div>
+
+    </div>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Rapid Elevation &mdash; Built by <a href="https://jakebeamer323.github.io/my-site" target="_blank">Jake Lewien</a></p>
+  </footer>
+
+  <script src="nav.js"></script>
+  <script src="motion.js"></script>
+</body>
+</html>
