@@ -85,13 +85,36 @@
     // Close on outside click
     document.addEventListener('click', function () {
       closeAll();
+      closeMobileMenu();
     });
 
     // Close on Escape
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape') {
         closeAll();
+        closeMobileMenu();
       }
     });
+
+    // Hamburger menu toggle
+    var hamburger = document.getElementById('navHamburger');
+    var mobileMenu = document.getElementById('navMobileMenu');
+
+    function closeMobileMenu() {
+      if (hamburger) hamburger.classList.remove('open');
+      if (mobileMenu) mobileMenu.classList.remove('open');
+    }
+
+    if (hamburger && mobileMenu) {
+      hamburger.addEventListener('click', function (e) {
+        e.stopPropagation();
+        hamburger.classList.toggle('open');
+        mobileMenu.classList.toggle('open');
+      });
+
+      mobileMenu.addEventListener('click', function (e) {
+        e.stopPropagation();
+      });
+    }
   });
 })();
